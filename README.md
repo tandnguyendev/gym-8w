@@ -13,8 +13,13 @@ không tài khoản. Mọi số liệu nằm trong `localStorage` của máy b�
 - **Tôi** — cân nặng, BMI, mục tiêu calo/đạm (Mifflin–St Jeor), trình sửa chương
   trình, xuất/nhập JSON.
 
-Kèm sẵn một giáo án full-body 8 tuần, 3 buổi/tuần, cho người quay lại tập sau
-một thời gian chỉ tập bodyweight. Sửa thoải mái — nó chỉ là dữ liệu khởi tạo.
+Kèm sẵn một giáo án full-body 8 tuần, 3 buổi/tuần, cho người từng tập tạ vài
+năm rồi nghỉ. Mức tạ khởi điểm đặt ở khoảng 65% mức cũ; khối lượng dồn về
+đùi trước vì đó thường là nhóm bị bỏ khi tập kiểu chia nhóm cơ. Sửa thoải
+mái — nó chỉ là dữ liệu khởi tạo.
+
+Chương trình có `progVersion`: khi bản mặc định đổi, app tự thay vào nếu bạn
+chưa ghi buổi nào, còn đã tập rồi thì giữ nguyên dữ liệu của bạn.
 
 ## Cài lên điện thoại
 

@@ -209,7 +209,8 @@ const mmss = s => Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
 const FIGLABEL = { squat: "Squat (đòn trên vai)", bench: "Đẩy ngực nằm", pullup: "Kéo xà",
   rdl: "Romanian deadlift", facepull: "Face pull (cáp)", legraise: "Treo nâng chân",
   deadlift: "Deadlift từ sàn", ohp: "Đẩy vai qua đầu", row: "Kéo tạ khom người",
-  bss: "Squat một chân, chân sau gác", lateral: "Nâng tạ ngang vai", curl: "Cuốn tay trước" };
+  bss: "Squat một chân, chân sau gác", lateral: "Nâng tạ ngang vai", curl: "Cuốn tay trước",
+  legpress: "Đạp đùi (máy)", pushdown: "Đẩy tay sau (cáp)" };
 
 function figureHTML(key) {
   if (!key || !FIGLABEL[key]) return "";
@@ -229,7 +230,9 @@ const FIGKEY = {
   "Romanian Deadlift": "rdl", "Face Pull": "facepull", "Hanging Leg Raise": "legraise",
   "Deadlift": "deadlift", "Overhead Press": "ohp", "Barbell Row": "row",
   "Bulgarian Split Squat": "bss", "Lateral Raise": "lateral", "Hammer Curl": "curl",
+  "Leg Press": "legpress", "Triceps Pushdown": "pushdown",
 };
+const PROG_VERSION = 2;
 function seed() {
   const ex = (name, sets, reps, start, step, rest, unit, note) =>
     ({ id: uid(), name, sets, reps, start, step, rest, unit: unit || "kg",
@@ -240,23 +243,25 @@ function seed() {
       goalWeight: "", startDate: today(), weeks: 8 },
     days: [
       { id: uid(), name: "Buổi A", exercises: [
-        ex("Back Squat", 3, "6–8", 30, 2.5, 180, "kg", "Bài chính, tập đầu buổi khi còn khoẻ. Xuống tới khi đùi song song sàn. Lưng giữ thẳng, gối mở theo hướng mũi chân."),
-        ex("Bench Press", 3, "6–10", 30, 2.5, 150, "kg", "Thay hoàn toàn cho push up. Siết bả vai xuống, chân đạp chắc sàn. Có người đỡ hoặc dùng giá an toàn."),
+        ex("Back Squat", 4, "6–8", 42.5, 2.5, 180, "kg", "Bài quan trọng nhất với bạn — squat đang là lift yếu nhất so với thân trên. Xuống tới khi đùi song song sàn. Khởi điểm 42.5kg ≈ 65% mức cũ."),
+        ex("Bench Press", 3, "6–10", 40, 2.5, 150, "kg", "Ngực đang là điểm mạnh, 3 set đủ để giữ. Siết bả vai xuống, chân đạp chắc sàn."),
         ex("Xà đeo tạ", 4, "5–8", 5, 2.5, 150, "+kg", "Balo đựng tạ hoặc đai. Đủ 8 rep ở set cuối 2 buổi liên tiếp thì tăng 2.5kg."),
-        ex("Romanian Deadlift", 3, "8–10", 35, 2.5, 120, "kg", "Đùi sau — nhóm cơ đang trống. Đẩy hông ra sau, gối hơi cong, tạ trượt sát chân. Thấy căng đùi sau là đúng."),
-        ex("Face Pull", 3, "15", 10, 2.5, 60, "kg", "Chống vai gù do ngồi bàn phím. Kéo dây về phía trán, siết bả vai, đừng nặng quá."),
+        ex("Romanian Deadlift", 3, "8–10", 40, 2.5, 120, "kg", "Đùi sau. Đẩy hông ra sau, gối hơi cong, tạ trượt sát chân. Thấy căng đùi sau là đúng."),
+        ex("Leg Press", 3, "10–12", 60, 5, 120, "kg", "Thêm khối lượng cho đùi mà không dồn thêm mỏi lên cột sống sau squat. Đừng duỗi khoá gối ở đỉnh."),
+        ex("Face Pull", 4, "15", 12.5, 2.5, 60, "kg", "Chống vai gù do ngồi bàn phím. Kéo dây về phía trán, siết bả vai, đừng nặng quá."),
         ex("Hanging Leg Raise", 3, "10–15", 0, 1, 60, "+kg", "Treo người trên xà, nâng chân bằng cơ bụng. Không đu người lấy đà."),
       ]},
       { id: uid(), name: "Buổi B", exercises: [
-        ex("Deadlift", 3, "5", 40, 5, 180, "kg", "Tuần 1–2 tập nhẹ để học form, đừng ăn thua. Lưng thẳng tuyệt đối, đẩy sàn bằng chân chứ không giật bằng lưng."),
-        ex("Overhead Press", 3, "6–8", 20, 2.5, 150, "kg", "Pattern đẩy dọc — trước giờ chưa có. Siết mông và bụng để khỏi ưỡn lưng. Đòn không đã là 20kg."),
-        ex("Barbell Row", 4, "8–10", 30, 2.5, 120, "kg", "Kéo ngang — nhóm cơ đang trống. Người gập khoảng 45°, kéo tạ về phía rốn."),
-        ex("Bulgarian Split Squat", 3, "8–10/chân", 6, 1, 120, "kg/tay", "Rất hợp dân đá banh — sửa lệch chân trái phải. Chân sau gác ghế, dồn lực vào gót chân trước."),
-        ex("Lateral Raise", 3, "12–15", 3, 1, 60, "kg/tay", "Vai ngang, giúp nở vai. Nhẹ thôi, nâng tới ngang vai rồi hạ chậm."),
-        ex("Hammer Curl", 3, "10–12", 6, 1, 60, "kg/tay", "Tay trước. Lòng bàn tay hướng vào nhau, khuỷu giữ sát người."),
+        ex("Deadlift", 3, "5", 52.5, 5, 180, "kg", "Khởi điểm 52.5kg ≈ 65% mức cũ 80kg. Lưng thẳng tuyệt đối, đẩy sàn bằng chân chứ không giật bằng lưng."),
+        ex("Overhead Press", 3, "6–8", 25, 2.5, 150, "kg", "Siết mông và bụng để khỏi ưỡn lưng. Đòn không đã là 20kg."),
+        ex("Barbell Row", 4, "8–10", 35, 2.5, 120, "kg", "Người gập khoảng 45°, kéo tạ về phía rốn."),
+        ex("Bulgarian Split Squat", 4, "8–10/chân", 12, 1, 120, "kg/tay", "Sửa lệch chân trái phải, rất hợp dân đá banh. Chân sau gác ghế, dồn lực vào gót chân trước."),
+        ex("Triceps Pushdown", 3, "10–12", 15, 2.5, 60, "kg", "Tay sau chỉ được tập gián tiếp qua bench và OHP nên cần thêm bài riêng. Khuỷu giữ sát người."),
+        ex("Lateral Raise", 4, "12–15", 6, 1, 60, "kg/tay", "Vai ngang, giúp nở vai. Nhẹ thôi, nâng tới ngang vai rồi hạ chậm."),
+        ex("Hammer Curl", 3, "10–12", 10, 1, 60, "kg/tay", "Lòng bàn tay hướng vào nhau, khuỷu giữ sát người."),
       ]},
     ],
-    log: {}, bw: [],
+    log: {}, bw: [], progVersion: PROG_VERSION,
   };
 }
 
@@ -265,7 +270,7 @@ function load() {
   try {
     const d = JSON.parse(localStorage.getItem(KEY) || "null");
     // migrate cả dữ liệu v2 đã lưu: chỉ điền trường còn thiếu nên chạy lại vô hại
-    if (d && d.profile && Array.isArray(d.days) && d.days.length) return migrate(d);
+    if (d && d.profile && Array.isArray(d.days) && d.days.length) return refresh(migrate(d));
     const old = JSON.parse(localStorage.getItem("soSat.v1") || "null");
     if (old && old.profile && Array.isArray(old.days)) return migrate(old);
   } catch (e) { /* dữ liệu hỏng hoặc trình duyệt chặn — dùng bản mặc định */ }
@@ -283,6 +288,15 @@ function migrate(old) {
     if (e.fig == null) e.fig = FIGKEY[e.name] || "";
   }));
   return old;
+}
+/** Chương trình mặc định có bản mới: thay vào nếu người dùng chưa ghi buổi nào
+ *  (đã tập rồi thì giữ nguyên — dùng nút "Khôi phục chương trình gốc" nếu muốn đổi). */
+function refresh(d) {
+  if (d.progVersion >= PROG_VERSION) return d;
+  const daGhi = Object.keys(d.log || {}).some(k => (d.log[k] || []).length);
+  if (!daGhi) d.days = seed().days;
+  d.progVersion = PROG_VERSION;
+  return d;
 }
 let saveTimer = null;
 function save(now) {
@@ -573,7 +587,7 @@ function viewMe() {
         <label class="f"><span>Tuổi</span><input type="number" inputmode="numeric" id="p-age" value="${esc(p.age)}" placeholder="29"></label>
         <label class="f"><span>Cao (cm)</span><input type="number" inputmode="numeric" id="p-height" value="${esc(p.height)}" placeholder="172"></label>
         <label class="f"><span>Nặng (kg)</span><input type="number" step="0.1" inputmode="decimal" id="p-weight" value="${esc(p.weight)}" placeholder="54"></label>
-        <label class="f"><span>Mục tiêu (kg)</span><input type="number" step="0.1" inputmode="decimal" id="p-goalWeight" value="${esc(p.goalWeight)}" placeholder="57"></label>
+        <label class="f"><span>Mục tiêu (kg)</span><input type="number" step="0.1" inputmode="decimal" id="p-goalWeight" value="${esc(p.goalWeight)}" placeholder="60"></label>
         <label class="f"><span>Giới tính</span><select id="p-sex">
           <option value="m"${p.sex === "m" ? " selected" : ""}>Nam</option>
           <option value="f"${p.sex === "f" ? " selected" : ""}>Nữ</option></select></label>
@@ -865,7 +879,7 @@ document.addEventListener("click", e => {
   if (el.id === "resetBtn") {
     if (confirm("Khôi phục chương trình gốc?\nNhật ký và cân nặng vẫn được giữ.")) {
       const f = seed();
-      S.days = f.days; curDay = S.days[0].id; exIdx = 0;
+      S.days = f.days; S.progVersion = PROG_VERSION; curDay = S.days[0].id; exIdx = 0;
       save(true); render(); toast("Đã khôi phục");
     } return;
   }
