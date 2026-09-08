@@ -10,240 +10,244 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Be+Vietnam+Pro:wght@400;500;600&display=swap">
 <style>
 :root{
-  --ground:#0d1014;
-  --surface:#161b1f;
-  --raised:#1e242a;
-  --line:#2a323b;
-  --chalk:#e8eaed;
-  --muted:#8792a0;
-  --dim:#5d6772;
-  --brass:#d99a2b;
-  --brass-dim:#8a6320;
-  --jade:#3fb98f;
-  --rust:#c9563f;
+  --ground:#0d1014; --surface:#171d22; --raised:#222a31; --line:#2e3841;
+  --chalk:#eef0f3; --muted:#96a1ae; --dim:#68737f;
+  --brass:#e0a233; --brass-ink:#17120a; --jade:#43c295; --rust:#cf5c43;
   --display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
   --body:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
-*{box-sizing:border-box}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{-webkit-text-size-adjust:100%}
-body{
-  margin:0;background:var(--ground);color:var(--chalk);
-  font-family:var(--body);font-size:15px;line-height:1.55;
-  -webkit-font-smoothing:antialiased;
-}
-.app{max-width:620px;margin:0 auto;padding:0 16px calc(84px + env(safe-area-inset-bottom))}
-
-/* ---------- header ---------- */
-header{
-  position:sticky;top:0;z-index:20;background:var(--ground);
-  padding:14px 0 10px;border-bottom:1px solid var(--line);
-  margin-bottom:16px;
-}
-.brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
-.brand h1{
-  font-family:var(--display);font-weight:700;font-size:26px;letter-spacing:.02em;
-  margin:0;text-transform:uppercase;
-}
-.brand h1 span{color:var(--brass)}
-.stat{font-family:var(--display);font-size:15px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-variant-numeric:tabular-nums}
-.stat b{color:var(--chalk);font-weight:600}
-
-/* ---------- generic ---------- */
-h2{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:19px;font-weight:600;margin:26px 0 10px;color:var(--chalk)}
-h2:first-of-type{margin-top:6px}
-.sub{color:var(--muted);font-size:13px;margin:-6px 0 14px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px}
-.stack{display:flex;flex-direction:column;gap:12px}
-.row{display:flex;align-items:center;gap:10px}
-.spread{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.muted{color:var(--muted)}
-.dim{color:var(--dim)}
-.small{font-size:13px}
+body{margin:0;background:var(--ground);color:var(--chalk);
+  font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.app{max-width:640px;margin:0 auto;padding:0 16px calc(90px + env(safe-area-inset-bottom))}
 .num{font-family:var(--display);font-variant-numeric:tabular-nums;font-weight:600}
+.muted{color:var(--muted)} .dim{color:var(--dim)}
+.small{font-size:14px} .tiny{font-size:12.5px;letter-spacing:.06em;text-transform:uppercase}
+.stack{display:flex;flex-direction:column;gap:12px}
+.spread{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.row{display:flex;align-items:center;gap:10px}
+h2{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;
+  font-size:21px;font-weight:600;margin:28px 0 8px}
+h2:first-child{margin-top:8px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
 
-/* ---------- controls ---------- */
-button{font-family:inherit;font-size:15px;cursor:pointer}
-.btn{
-  background:var(--brass);color:#17120a;border:0;border-radius:10px;
-  padding:13px 18px;font-weight:600;min-height:48px;width:100%;
-}
-.btn:active{background:#c08722}
-.btn-ghost{
-  background:transparent;color:var(--chalk);border:1px solid var(--line);
-  border-radius:10px;padding:11px 16px;min-height:44px;font-weight:500;
-}
-.btn-ghost:active{background:var(--raised)}
-.btn-sm{padding:7px 12px;min-height:36px;font-size:13px;width:auto}
-.btn-danger{color:var(--rust);border-color:#4a2a24}
-.icon-btn{
-  background:transparent;border:1px solid var(--line);color:var(--muted);
-  width:38px;height:38px;border-radius:9px;display:grid;place-items:center;
-  font-size:18px;line-height:1;flex:none;
-}
-.icon-btn:active{background:var(--raised)}
-input,select,textarea{
-  font-family:var(--body);font-size:16px;background:var(--ground);color:var(--chalk);
-  border:1px solid var(--line);border-radius:9px;padding:11px 12px;width:100%;
-  min-height:46px;
-}
-input[type=number]{font-family:var(--display);font-size:19px;font-weight:600;font-variant-numeric:tabular-nums;text-align:center;padding:9px 6px}
-input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--brass);outline-offset:1px}
-label.field{display:block}
-label.field>span{display:block;font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:20;background:var(--ground);padding:12px 0 10px}
+.topline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.session{font-family:var(--display);font-size:23px;font-weight:600;letter-spacing:.02em;text-transform:uppercase}
+.session em{font-style:normal;color:var(--brass)}
+.bar{height:5px;background:var(--raised);border-radius:99px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--brass);border-radius:99px;transition:width .25s}
+.dots{display:flex;gap:7px;margin-top:11px;overflow-x:auto;padding-bottom:2px}
+.dot{flex:none;width:38px;height:38px;border-radius:11px;border:1px solid var(--line);
+  background:var(--surface);color:var(--dim);font-family:var(--display);font-size:17px;font-weight:600}
+.dot.done{background:#1d3830;border-color:#27503f;color:var(--jade)}
+.dot[aria-current=true]{background:var(--brass);border-color:var(--brass);color:var(--brass-ink)}
 
-/* ---------- day chips ---------- */
-.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
-.chip{
-  background:var(--surface);border:1px solid var(--line);color:var(--muted);
-  border-radius:999px;padding:9px 16px;white-space:nowrap;min-height:42px;font-weight:500;
-}
-.chip[aria-pressed=true]{background:var(--brass);border-color:var(--brass);color:#17120a;font-weight:600}
+/* ---------- buttons ---------- */
+button{font-family:inherit;font-size:16px;cursor:pointer;color:inherit}
+.btn{background:var(--brass);color:var(--brass-ink);border:0;border-radius:13px;
+  padding:17px 20px;font-weight:600;font-size:17px;min-height:60px;width:100%;
+  font-family:var(--display);font-size:22px;letter-spacing:.04em;text-transform:uppercase}
+.btn:active{background:#c78e29}
+.btn.jade{background:var(--jade);color:#08201a}
+.ghost{background:transparent;border:1px solid var(--line);border-radius:12px;
+  padding:14px 16px;min-height:52px;font-weight:500}
+.ghost:active{background:var(--raised)}
+.ghost.sm{min-height:42px;padding:8px 14px;font-size:14px;border-radius:10px}
+.ghost.danger{color:var(--rust);border-color:#4d2c25}
+.iconbtn{background:transparent;border:1px solid var(--line);color:var(--muted);
+  width:44px;height:44px;border-radius:11px;display:grid;place-items:center;font-size:20px;flex:none}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
 /* ---------- exercise ---------- */
-.ex{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-.ex-head{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-.ex-name{font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:.01em;line-height:1.2}
-.ex-rx{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--brass);margin-top:3px;font-weight:500}
-.ex-note{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.45}
-.ex-body{padding:10px 14px 14px}
-.last{
-  font-size:12.5px;color:var(--muted);padding:8px 10px;background:var(--ground);
-  border-radius:8px;margin-bottom:10px;border-left:2px solid var(--brass-dim);
-}
-.last b{color:var(--chalk);font-family:var(--display);font-size:14px;font-variant-numeric:tabular-nums}
-.setrow{display:grid;grid-template-columns:34px 1fr 14px 1fr;align-items:center;gap:8px;margin-bottom:8px}
-.setrow:last-child{margin-bottom:0}
-.setno{font-family:var(--display);font-size:15px;color:var(--dim);text-align:center;font-weight:600}
-.times{text-align:center;color:var(--dim);font-family:var(--display);font-size:15px}
-.unit{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);text-align:center;margin-bottom:4px}
+.exname{font-family:var(--display);font-size:34px;font-weight:700;line-height:1.08;
+  letter-spacing:.01em;margin:2px 0 4px;text-wrap:balance}
+.exrx{font-family:var(--display);font-size:18px;letter-spacing:.07em;text-transform:uppercase;color:var(--brass)}
+.prev{font-size:14px;color:var(--muted);background:var(--surface);border-left:3px solid var(--brass);
+  border-radius:10px;padding:10px 13px;margin:14px 0}
+.prev b{color:var(--chalk);font-family:var(--display);font-size:16px;font-variant-numeric:tabular-nums}
+details.note{margin-top:14px}
+details.note summary{color:var(--muted);font-size:14px;cursor:pointer;list-style:none;padding:6px 0}
+details.note summary::-webkit-details-marker{display:none}
+details.note summary::before{content:"▸ ";color:var(--dim)}
+details.note[open] summary::before{content:"▾ "}
+details.note p{margin:4px 0 0;font-size:14px;color:var(--muted);line-height:1.5}
 
-/* ---------- list rows ---------- */
-.lrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+/* ---------- done sets ---------- */
+.doneset{display:flex;align-items:center;gap:12px;width:100%;background:var(--surface);
+  border:1px solid var(--line);border-radius:12px;padding:13px 15px;text-align:left;margin-bottom:8px}
+.doneset .tick{color:var(--jade);font-size:18px}
+.doneset .val{font-family:var(--display);font-size:21px;font-weight:600;font-variant-numeric:tabular-nums;margin-left:auto}
+.doneset.editing{border-color:var(--brass)}
+
+/* ---------- stepper ---------- */
+.setlabel{font-family:var(--display);font-size:17px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--dim);text-align:center;margin:18px 0 10px}
+.steppers{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.stepper{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px}
+.stepper .cap{text-align:center;color:var(--dim);font-size:12.5px;letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:8px}
+.stepper .ctrl{display:grid;grid-template-columns:46px minmax(0,1fr) 46px;align-items:center;gap:4px}
+.stepper button{background:var(--raised);border:0;border-radius:11px;height:54px;
+  font-size:26px;font-family:var(--display);font-weight:600;color:var(--chalk)}
+.stepper button:active{background:#2d363f}
+.stepper input{width:100%;min-width:0;background:transparent;border:0;color:var(--chalk);text-align:center;
+  font-family:var(--display);font-size:28px;font-weight:700;font-variant-numeric:tabular-nums;
+  padding:0 2px;min-height:54px;-moz-appearance:textfield}
+.stepper input::-webkit-outer-spin-button,.stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+
+/* ---------- rest timer ---------- */
+.rest{background:var(--surface);border:1px solid var(--brass);border-radius:14px;padding:18px;text-align:center}
+.rest .lab{font-family:var(--display);font-size:17px;letter-spacing:.1em;text-transform:uppercase;color:var(--brass)}
+.rest .clock{font-family:var(--display);font-size:56px;font-weight:700;line-height:1.05;font-variant-numeric:tabular-nums}
+
+/* ---------- generic form ---------- */
+input,select,textarea{font-family:var(--body);font-size:16px;background:var(--ground);color:var(--chalk);
+  border:1px solid var(--line);border-radius:11px;padding:13px 13px;width:100%;min-height:52px}
+input[type=number]{font-family:var(--display);font-size:21px;font-weight:600;text-align:center;
+  font-variant-numeric:tabular-nums;padding:10px 6px}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+label.f{display:block}
+label.f>span{display:block;font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:6px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px}
+.lrow{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:14px 0;border-bottom:1px solid var(--line)}
 .lrow:last-child{border-bottom:0}
-.badge{font-family:var(--display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:5px;background:var(--raised);color:var(--muted)}
-.badge.up{background:#16302a;color:var(--jade)}
-.badge.down{background:#33211d;color:var(--rust)}
+.badge{font-family:var(--display);font-size:13px;letter-spacing:.06em;padding:3px 9px;
+  border-radius:6px;background:var(--raised);color:var(--muted)}
+.badge.up{background:#1d3830;color:var(--jade)} .badge.down{background:#3a251f;color:var(--rust)}
+details.sec{border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden}
+details.sec>summary{padding:17px 16px;font-family:var(--display);font-size:20px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.05em;cursor:pointer;list-style:none;display:flex;
+  justify-content:space-between;align-items:center}
+details.sec>summary::-webkit-details-marker{display:none}
+details.sec>summary::after{content:"+";color:var(--brass);font-size:26px;line-height:1}
+details.sec[open]>summary::after{content:"–"}
+details.sec>.body{padding:0 16px 16px;border-top:1px solid var(--line)}
 
 /* ---------- nav ---------- */
-nav{
-  position:fixed;left:0;right:0;bottom:0;z-index:30;
-  background:rgba(13,16,20,.96);backdrop-filter:blur(12px);
-  border-top:1px solid var(--line);
-  padding:6px 8px calc(6px + env(safe-area-inset-bottom));
-  display:grid;grid-template-columns:repeat(4,1fr);gap:2px;
-}
-.tab{
-  background:transparent;border:0;color:var(--dim);padding:8px 2px 6px;
-  display:flex;flex-direction:column;align-items:center;gap:3px;border-radius:9px;min-height:52px;
-}
-.tab span:first-child{font-size:19px;line-height:1}
-.tab span:last-child{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;font-weight:500}
-.tab[aria-current=page]{color:var(--brass)}
-
-.empty{text-align:center;color:var(--dim);padding:36px 16px;font-size:14px}
-.toast{
-  position:fixed;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom));
-  background:var(--jade);color:#08201a;padding:11px 20px;border-radius:999px;font-weight:600;font-size:14px;
-  z-index:50;opacity:0;pointer-events:none;transition:opacity .18s;white-space:nowrap;
-}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(13,16,20,.97);
+  backdrop-filter:blur(14px);border-top:1px solid var(--line);
+  padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+  display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.tab{background:transparent;border:0;color:var(--dim);padding:8px 2px 6px;border-radius:11px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;min-height:56px}
+.tab .ico{font-size:21px;line-height:1}
+.tab .lb{font-family:var(--display);font-size:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.tab[aria-current=page]{color:var(--brass);background:var(--surface)}
+.empty{text-align:center;color:var(--dim);padding:44px 16px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(100px + env(safe-area-inset-bottom));
+  background:var(--jade);color:#08201a;padding:13px 22px;border-radius:99px;font-weight:600;
+  z-index:50;opacity:0;pointer-events:none;transition:opacity .18s;white-space:nowrap}
 .toast.show{opacity:1}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
 <div class="app">
-  <header>
-    <div class="brand">
-      <h1>Sổ <span>Sắt</span></h1>
-      <div class="stat" id="hdrStat"></div>
-    </div>
-  </header>
+  <div class="topbar" id="topbar"></div>
   <main id="view"></main>
 </div>
 <nav>
-  <button class="tab" data-tab="train"><span>🏋</span><span>Tập</span></button>
-  <button class="tab" data-tab="history"><span>📓</span><span>Nhật ký</span></button>
-  <button class="tab" data-tab="body"><span>⚖</span><span>Cơ thể</span></button>
-  <button class="tab" data-tab="program"><span>⚙</span><span>Chương trình</span></button>
+  <button class="tab" data-tab="train"><span class="ico">🏋</span><span class="lb">Tập</span></button>
+  <button class="tab" data-tab="history"><span class="ico">📓</span><span class="lb">Nhật ký</span></button>
+  <button class="tab" data-tab="me"><span class="ico">⚖</span><span class="lb">Tôi</span></button>
 </nav>
 <div class="toast" id="toast"></div>
 <script>
 "use strict";
-const KEY = "soSat.v1";
+const KEY = "soSat.v2";
 const uid = () => Math.random().toString(36).slice(2, 9);
 const today = () => new Date().toISOString().slice(0, 10);
-const $ = (s, r = document) => r.querySelector(s);
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c =>
+  ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const n1 = v => Math.round(v * 10) / 10;
+const fmtDate = s => { const [, m, d] = s.split("-"); return d + "/" + m; };
+const mmss = s => Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
 
-/* ---------------- seed: chương trình 8 tuần, 54kg / 1m72 ---------------- */
+/* ---------------- dữ liệu khởi tạo ---------------- */
 function seed() {
+  const ex = (name, sets, reps, start, step, rest, unit, note) =>
+    ({ id: uid(), name, sets, reps, start, step, rest, unit: unit || "kg", note: note || "" });
   return {
-    profile: {
-      name: "", sex: "m", age: "", height: "", weight: "",
-      activity: 1.6, surplus: 450, proteinPerKg: 2.0, fatPerKg: 1.2,
-      goalWeight: "", startDate: today(), weeks: 8,
-    },
+    profile: { name: "", sex: "m", age: "", height: "", weight: "",
+      activity: 1.6, surplus: 450, proteinPerKg: 2, fatPerKg: 1.2,
+      goalWeight: "", startDate: today(), weeks: 8 },
     days: [
-      { id: "a", name: "Buổi A", exercises: [
-        { id: uid(), name: "Back Squat",           sets: 3, reps: "6–8",       unit: "kg",     note: "Bài chính, tập đầu buổi. Xuống tới đùi song song sàn. Khởi điểm 30kg (đòn 20 + 5/bên)." },
-        { id: uid(), name: "Bench Press",          sets: 3, reps: "6–10",      unit: "kg",     note: "Thay hoàn toàn push up. Khởi điểm 30kg." },
-        { id: uid(), name: "Xà đeo tạ",            sets: 4, reps: "5–8",       unit: "+kg",    note: "Balo hoặc đai tạ. Đủ 8 rep ở set cuối 2 buổi liên tiếp → +2.5kg. Khởi điểm +5kg." },
-        { id: uid(), name: "Romanian Deadlift",    sets: 3, reps: "8–10",      unit: "kg",     note: "Đùi sau — nhóm cơ đang trống. Đẩy hông ra sau, lưng thẳng. Khởi điểm 35kg." },
-        { id: uid(), name: "Face Pull",            sets: 3, reps: "15",        unit: "kg",     note: "Chống vai gù do ngồi code. Nhẹ thôi, siết bả vai." },
-        { id: uid(), name: "Hanging Leg Raise",    sets: 3, reps: "10–15",     unit: "+kg",    note: "Tay không. Không đu người." },
+      { id: uid(), name: "Buổi A", exercises: [
+        ex("Back Squat", 3, "6–8", 30, 2.5, 180, "kg", "Bài chính, tập đầu buổi khi còn khoẻ. Xuống tới khi đùi song song sàn. Lưng giữ thẳng, gối mở theo hướng mũi chân."),
+        ex("Bench Press", 3, "6–10", 30, 2.5, 150, "kg", "Thay hoàn toàn cho push up. Siết bả vai xuống, chân đạp chắc sàn. Có người đỡ hoặc dùng giá an toàn."),
+        ex("Xà đeo tạ", 4, "5–8", 5, 2.5, 150, "+kg", "Balo đựng tạ hoặc đai. Đủ 8 rep ở set cuối 2 buổi liên tiếp thì tăng 2.5kg."),
+        ex("Romanian Deadlift", 3, "8–10", 35, 2.5, 120, "kg", "Đùi sau — nhóm cơ đang trống. Đẩy hông ra sau, gối hơi cong, tạ trượt sát chân. Thấy căng đùi sau là đúng."),
+        ex("Face Pull", 3, "15", 10, 2.5, 60, "kg", "Chống vai gù do ngồi bàn phím. Kéo dây về phía trán, siết bả vai, đừng nặng quá."),
+        ex("Hanging Leg Raise", 3, "10–15", 0, 1, 60, "+kg", "Treo người trên xà, nâng chân bằng cơ bụng. Không đu người lấy đà."),
       ]},
-      { id: "b", name: "Buổi B", exercises: [
-        { id: uid(), name: "Deadlift",             sets: 3, reps: "5",         unit: "kg",     note: "Tuần 1–2 tập nhẹ học form, đừng ăn thua. Khởi điểm 40kg." },
-        { id: uid(), name: "Overhead Press",       sets: 3, reps: "6–8",       unit: "kg",     note: "Pattern đẩy dọc — trước giờ chưa có. Khởi điểm đòn không 20kg." },
-        { id: uid(), name: "Barbell Row",          sets: 4, reps: "8–10",      unit: "kg",     note: "Kéo ngang — nhóm cơ đang trống. Khởi điểm 30kg." },
-        { id: uid(), name: "Bulgarian Split Squat",sets: 3, reps: "8–10/chân", unit: "kg/tay", note: "Rất hợp dân đá banh. Khởi điểm 6kg mỗi tay." },
-        { id: uid(), name: "Lateral Raise",        sets: 3, reps: "12–15",     unit: "kg/tay", note: "Vai ngang, nở vai. Khởi điểm 3kg." },
-        { id: uid(), name: "Hammer Curl",          sets: 3, reps: "10–12",     unit: "kg/tay", note: "Khởi điểm 6kg." },
+      { id: uid(), name: "Buổi B", exercises: [
+        ex("Deadlift", 3, "5", 40, 5, 180, "kg", "Tuần 1–2 tập nhẹ để học form, đừng ăn thua. Lưng thẳng tuyệt đối, đẩy sàn bằng chân chứ không giật bằng lưng."),
+        ex("Overhead Press", 3, "6–8", 20, 2.5, 150, "kg", "Pattern đẩy dọc — trước giờ chưa có. Siết mông và bụng để khỏi ưỡn lưng. Đòn không đã là 20kg."),
+        ex("Barbell Row", 4, "8–10", 30, 2.5, 120, "kg", "Kéo ngang — nhóm cơ đang trống. Người gập khoảng 45°, kéo tạ về phía rốn."),
+        ex("Bulgarian Split Squat", 3, "8–10/chân", 6, 1, 120, "kg/tay", "Rất hợp dân đá banh — sửa lệch chân trái phải. Chân sau gác ghế, dồn lực vào gót chân trước."),
+        ex("Lateral Raise", 3, "12–15", 3, 1, 60, "kg/tay", "Vai ngang, giúp nở vai. Nhẹ thôi, nâng tới ngang vai rồi hạ chậm."),
+        ex("Hammer Curl", 3, "10–12", 6, 1, 60, "kg/tay", "Tay trước. Lòng bàn tay hướng vào nhau, khuỷu giữ sát người."),
       ]},
     ],
-    log: {},   // "YYYY-MM-DD|dayId|exId" -> [{kg,reps}]
-    bw: [],    // [{date, kg}]
+    log: {}, bw: [],
   };
 }
 
-/* ---------------- state ---------------- */
-let S = load();
-let tab = targets() ? "train" : "body";
-let curDay = S.days[0] ? S.days[0].id : null;
-let curDate = today();
-let renderedProfileOk = null;
-
+/* ---------------- lưu trữ ---------------- */
 function load() {
   try {
-    const raw = localStorage.getItem(KEY);
-    if (raw) {
-      const d = JSON.parse(raw);
-      if (d && d.profile && Array.isArray(d.days)) return d;
-    }
-  } catch (e) { /* dữ liệu hỏng hoặc bị chặn — dùng bản mặc định */ }
+    const d = JSON.parse(localStorage.getItem(KEY) || "null");
+    if (d && d.profile && Array.isArray(d.days) && d.days.length) return d;
+    const old = JSON.parse(localStorage.getItem("soSat.v1") || "null");
+    if (old && old.profile && Array.isArray(old.days)) return migrate(old);
+  } catch (e) { /* dữ liệu hỏng hoặc trình duyệt chặn — dùng bản mặc định */ }
   return seed();
+}
+/** v1 chưa có start/step/rest — lấy từ bản mặc định theo tên bài. */
+function migrate(old) {
+  const base = seed(), byName = {};
+  base.days.forEach(d => d.exercises.forEach(e => { byName[e.name] = e; }));
+  old.days.forEach(d => d.exercises.forEach(e => {
+    const b = byName[e.name] || {};
+    if (e.start == null) e.start = b.start != null ? b.start : 0;
+    if (e.step == null) e.step = b.step || 2.5;
+    if (e.rest == null) e.rest = b.rest || 120;
+  }));
+  return old;
 }
 let saveTimer = null;
 function save(now) {
   clearTimeout(saveTimer);
-  const write = () => {
-    try { localStorage.setItem(KEY, JSON.stringify(S)); }
-    catch (e) { toast("Không lưu được — bộ nhớ trình duyệt bị chặn"); }
-  };
-  now ? write() : (saveTimer = setTimeout(write, 350));
+  const w = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); }
+                    catch (e) { toast("Không lưu được — bộ nhớ bị chặn"); } };
+  now ? w() : (saveTimer = setTimeout(w, 300));
 }
 
+/* ---------------- trạng thái ---------------- */
+let S = load();
+let tab = "train";
+let curDate = today();
+let curDay = null;
+let exIdx = 0;
+let editIdx = null;
+let restEnd = 0, restTimer = null;
+let showPicker = false;
+
 let toastTimer = null;
-function toast(msg) {
-  const t = $("#toast");
-  t.textContent = msg; t.classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove("show"), 1900);
+function toast(m) {
+  const t = $("#toast"); t.textContent = m; t.classList.add("show");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 1800);
 }
 
 /* ---------------- tính toán ---------------- */
-/** null khi chưa đủ tuổi / chiều cao / cân nặng để tính. */
 function targets() {
   const p = S.profile, w = +p.weight, h = +p.height, a = +p.age;
   if (!(w > 0 && h > 0 && a > 0)) return null;
@@ -252,431 +256,552 @@ function targets() {
   const kcal = tdee + (+p.surplus || 0);
   const protein = w * (+p.proteinPerKg || 2);
   const fat = w * (+p.fatPerKg || 1);
-  const carb = Math.max(0, (kcal - protein * 4 - fat * 9) / 4);
-  return { bmr, tdee, kcal, protein, fat, carb };
+  return { bmr, tdee, kcal, protein, fat, carb: Math.max(0, (kcal - protein * 4 - fat * 9) / 4) };
 }
-function weekNo(dateStr) {
-  const start = new Date(S.profile.startDate + "T00:00:00");
-  const d = new Date(dateStr + "T00:00:00");
-  if (isNaN(start) || isNaN(d)) return 1;
-  return Math.max(1, Math.floor((d - start) / 604800000) + 1);
+function weekNo(d) {
+  const s = new Date(S.profile.startDate + "T00:00:00"), x = new Date(d + "T00:00:00");
+  if (isNaN(s) || isNaN(x)) return 1;
+  return Math.max(1, Math.floor((x - s) / 604800000) + 1);
 }
-function logKey(date, dayId, exId) { return date + "|" + dayId + "|" + exId; }
+const lkey = (date, dayId, exId) => date + "|" + dayId + "|" + exId;
+const sets = (date, dayId, exId) => S.log[lkey(date, dayId, exId)] || [];
+const day = () => S.days.find(d => d.id === curDay) || S.days[0];
 
-/** Buổi gần nhất TRƯỚC ngày đang mở có ghi bài này. */
-function lastPerf(exId, beforeDate) {
+function sessionDates() {
+  const s = new Set();
+  for (const k in S.log) if ((S.log[k] || []).length) s.add(k.split("|")[0]);
+  return [...s].sort().reverse();
+}
+function dayOfDate(date) {
+  for (const d of S.days) for (const e of d.exercises)
+    if (sets(date, d.id, e.id).length) return d.id;
+  return null;
+}
+/** Buổi hôm nay nếu đã ghi; nếu chưa thì buổi kế tiếp sau buổi gần nhất. */
+function autoDay() {
+  const t = dayOfDate(curDate); if (t) return t;
+  for (const dt of sessionDates()) {
+    const d = dayOfDate(dt);
+    if (d) { const i = S.days.findIndex(x => x.id === d); return S.days[(i + 1) % S.days.length].id; }
+  }
+  return S.days[0].id;
+}
+/** Lần gần nhất TRƯỚC ngày đang mở có ghi bài này. */
+function lastPerf(exId) {
   let best = null;
   for (const k in S.log) {
-    const [d, , ex] = k.split("|");
-    if (ex !== exId || d >= beforeDate) continue;
-    const sets = (S.log[k] || []).filter(s => s.kg !== "" || s.reps !== "");
-    if (!sets.length) continue;
-    if (!best || d > best.date) best = { date: d, sets };
+    const [d, , e] = k.split("|");
+    if (e !== exId || d >= curDate || !(S.log[k] || []).length) continue;
+    if (!best || d > best.date) best = { date: d, sets: S.log[k] };
   }
   return best;
 }
-function sessionDates() {
-  const set = new Set();
-  for (const k in S.log) {
-    if ((S.log[k] || []).some(s => s.kg !== "" || s.reps !== "")) set.add(k.split("|")[0]);
+const repLow = r => { const m = String(r).match(/\d+/); return m ? +m[0] : 8; };
+/** Gợi ý tạ/rep: set trước trong buổi → cùng set buổi trước → mức khởi điểm. */
+function suggest(ex, i) {
+  const cur = sets(curDate, curDay, ex.id);
+  if (i > 0 && cur[i - 1]) return { kg: cur[i - 1].kg, reps: cur[i - 1].reps };
+  const p = lastPerf(ex.id);
+  if (p) { const s = p.sets[Math.min(i, p.sets.length - 1)]; return { kg: s.kg, reps: s.reps }; }
+  return { kg: ex.start != null ? ex.start : 0, reps: repLow(ex.reps) };
+}
+function progress() {
+  const d = day(); let done = 0, total = 0;
+  d.exercises.forEach(e => { done += Math.min(sets(curDate, d.id, e.id).length, e.sets); total += +e.sets || 0; });
+  return { done, total, pct: total ? Math.round(done / total * 100) : 0 };
+}
+function volume(date) {
+  let v = 0;
+  for (const k in S.log) if (k.startsWith(date + "|"))
+    (S.log[k] || []).forEach(s => { v += (+s.kg || 0) * (+s.reps || 0); });
+  return v;
+}
+
+/* ---------------- thanh trên cùng ---------------- */
+/** "Buổi A" -> Buổi <em>A</em>; escape từng phần rồi mới ghép thẻ. */
+function hiName(name) {
+  const w = String(name).trim().split(/\s+/);
+  return w.length > 1
+    ? esc(w.slice(0, -1).join(" ")) + " <em>" + esc(w[w.length - 1]) + "</em>"
+    : "<em>" + esc(name) + "</em>";
+}
+function renderTop() {
+  const el = $("#topbar");
+  if (tab !== "train") {
+    el.innerHTML = `<div class="topline"><div class="session">${tab === "history" ? "Nhật <em>ký</em>" : "Hồ <em>sơ</em>"}</div></div>`;
+    return;
   }
-  return [...set].sort().reverse();
-}
-const fmtDate = s => { const [y, m, d] = s.split("-"); return d + "/" + m; };
-const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const n1 = v => Math.round(v * 10) / 10;
-
-/* ---------------- render: TẬP ---------------- */
-function viewTrain() {
-  const day = S.days.find(d => d.id === curDay) || S.days[0];
-  if (!day) return `<div class="empty">Chưa có buổi tập nào.<br>Sang tab <b>Chương trình</b> để tạo.</div>`;
-  curDay = day.id;
-
-  const chips = S.days.map(d =>
-    `<button class="chip" data-day="${d.id}" aria-pressed="${d.id === day.id}">${esc(d.name)}</button>`).join("");
-
-  const exs = day.exercises.map(ex => {
-    const key = logKey(curDate, day.id, ex.id);
-    const cur = S.log[key] || [];
-    const prev = lastPerf(ex.id, curDate);
-    const prevHtml = prev
-      ? `<div class="last">Lần trước · ${fmtDate(prev.date)} — ` +
-        prev.sets.map(s => `<b>${esc(s.kg || "0")}</b>×<b>${esc(s.reps || "0")}</b>`).join(" &nbsp;") + `</div>`
-      : `<div class="last dim">Chưa có dữ liệu buổi trước — buổi này là mốc gốc.</div>`;
-
-    const rows = Array.from({ length: +ex.sets || 1 }, (_, i) => {
-      const s = cur[i] || { kg: "", reps: "" };
-      return `<div class="setrow">
-        <div class="setno">${i + 1}</div>
-        <input type="number" inputmode="decimal" step="0.5" placeholder="–" value="${esc(s.kg)}"
-               data-log="${key}" data-i="${i}" data-f="kg" aria-label="Set ${i + 1} mức tạ">
-        <div class="times">×</div>
-        <input type="number" inputmode="numeric" step="1" placeholder="–" value="${esc(s.reps)}"
-               data-log="${key}" data-i="${i}" data-f="reps" aria-label="Set ${i + 1} số rep">
-      </div>`;
-    }).join("");
-
-    return `<article class="ex">
-      <div class="ex-head">
-        <div>
-          <div class="ex-name">${esc(ex.name)}</div>
-          <div class="ex-rx">${esc(ex.sets)} set × ${esc(ex.reps)}</div>
-        </div>
-      </div>
-      <div class="ex-body">
-        ${ex.note ? `<div class="ex-note" style="margin:0 0 10px">${esc(ex.note)}</div>` : ""}
-        ${prevHtml}
-        <div class="grid2" style="grid-template-columns:34px 1fr 14px 1fr;display:grid;gap:8px;margin-bottom:2px">
-          <div></div><div class="unit">${esc(ex.unit || "kg")}</div><div></div><div class="unit">rep</div>
-        </div>
-        ${rows}
-      </div>
-    </article>`;
+  const d = day(), pr = progress();
+  const dots = d.exercises.map((e, i) => {
+    const n = sets(curDate, d.id, e.id).length;
+    return `<button class="dot ${n >= e.sets ? "done" : ""}" data-jump="${i}"
+      aria-current="${i === exIdx}" aria-label="${esc(e.name)}">${n >= e.sets ? "✓" : i + 1}</button>`;
   }).join("");
-
-  return `
-    <label class="field" style="margin-bottom:12px">
-      <span>Ngày tập · tuần ${weekNo(curDate)}/${esc(S.profile.weeks)}</span>
-      <input type="date" id="dateInput" value="${curDate}">
-    </label>
-    <div class="chips" style="margin-bottom:16px">${chips}</div>
-    <div class="stack">${exs || `<div class="empty">Buổi này chưa có bài nào.</div>`}</div>
-    <p class="small dim" style="margin-top:16px;text-align:center">Số nhập vào tự lưu trên máy này.</p>`;
+  el.innerHTML = `
+    <div class="topline">
+      <div>
+        <div class="session">${hiName(d.name)}</div>
+        <div class="small muted" style="margin-top:-2px">Tuần ${weekNo(curDate)} · ${fmtDate(curDate)} · ${pr.done}/${pr.total} set</div>
+      </div>
+      <button class="iconbtn" id="pickerBtn" aria-label="Đổi ngày hoặc buổi tập">${showPicker ? "×" : "⋯"}</button>
+    </div>
+    <div class="bar"><i style="width:${pr.pct}%"></i></div>
+    <div class="dots">${dots}</div>`;
 }
 
-/* ---------------- render: NHẬT KÝ ---------------- */
+/* ---------------- TẬP ---------------- */
+function viewTrain() {
+  const d = day();
+  if (!d.exercises.length) return `<div class="empty">Buổi này chưa có bài nào.<br><br>
+    <button class="ghost" data-goto="me">Mở Hồ sơ → Chương trình</button></div>`;
+  if (exIdx >= d.exercises.length) exIdx = 0;
+  const ex = d.exercises[exIdx];
+  const done = sets(curDate, d.id, ex.id);
+  const total = +ex.sets || 1;
+  const idx = editIdx != null ? editIdx : done.length;
+  const finished = done.length >= total && editIdx == null;
+
+  let picker = "";
+  if (showPicker) {
+    picker = `<div class="card stack" style="margin-bottom:16px">
+      <label class="f"><span>Ngày tập</span><input type="date" id="dateInput" value="${curDate}"></label>
+      <div><span class="tiny muted" style="display:block;margin-bottom:8px">Buổi tập</span>
+        <div class="pair">${S.days.map(x =>
+          `<button class="ghost" data-day="${x.id}"
+            style="${x.id === curDay ? "border-color:var(--brass);color:var(--brass)" : ""}">${esc(x.name)}</button>`).join("")}</div></div>
+    </div>`;
+  }
+
+  const p = lastPerf(ex.id);
+  const prev = p
+    ? `<div class="prev">Lần trước · ${fmtDate(p.date)} — ` +
+      p.sets.map(s => `<b>${esc(s.kg)}</b>×<b>${esc(s.reps)}</b>`).join(" &nbsp; ") + `</div>`
+    : `<div class="prev dim">Chưa có buổi trước — số bạn ghi hôm nay là mốc gốc.</div>`;
+
+  const doneList = done.map((s, i) => `
+    <button class="doneset ${editIdx === i ? "editing" : ""}" data-edit="${i}">
+      <span class="tick">✓</span><span class="muted">Set ${i + 1}</span>
+      <span class="val">${esc(s.kg)} <span style="color:var(--dim)">×</span> ${esc(s.reps)}</span>
+    </button>`).join("");
+
+  /* --- khu vực hành động --- */
+  let action = "";
+  const resting = restEnd > Date.now();
+
+  if (resting) {
+    action = `<div class="rest">
+      <div class="lab">Nghỉ</div>
+      <div class="clock" id="restNum">${mmss(Math.ceil((restEnd - Date.now()) / 1000))}</div>
+      <div class="pair" style="margin-top:14px">
+        <button class="ghost" id="restAdd">+30 giây</button>
+        <button class="ghost" id="restSkip">Bỏ qua</button>
+      </div></div>`;
+  } else if (finished) {
+    const next = exIdx + 1 < d.exercises.length ? d.exercises[exIdx + 1] : null;
+    const pr = progress();
+    action = next
+      ? `<button class="btn jade" data-jump="${exIdx + 1}">Bài tiếp · ${esc(next.name)}</button>`
+      : pr.done >= pr.total
+        ? `<div class="card" style="text-align:center;border-color:var(--jade)">
+            <div class="num" style="font-size:38px;color:var(--jade)">Xong buổi</div>
+            <div class="muted small" style="margin-bottom:12px">Tổng khối lượng
+              <b class="num" style="color:var(--chalk);font-size:19px">${Math.round(volume(curDate)).toLocaleString("vi-VN")}</b> kg</div>
+            <button class="ghost" data-goto="history">Xem nhật ký</button></div>`
+        : `<button class="btn" data-jump="0">Quay lại bài chưa xong</button>`;
+  } else {
+    const sg = editIdx != null ? done[editIdx] : suggest(ex, idx);
+    action = `
+      <div class="setlabel">${editIdx != null ? "Sửa set " + (editIdx + 1) : "Set " + (idx + 1) + " / " + total}</div>
+      <div class="steppers">
+        <div class="stepper"><div class="cap">${esc(ex.unit)}</div>
+          <div class="ctrl">
+            <button data-step="kg:-1" aria-label="Giảm tạ">−</button>
+            <input id="kgVal" type="number" inputmode="decimal" step="${ex.step || 2.5}" value="${esc(sg.kg)}" aria-label="Mức tạ">
+            <button data-step="kg:1" aria-label="Tăng tạ">+</button>
+          </div></div>
+        <div class="stepper"><div class="cap">rep · mục tiêu ${esc(ex.reps)}</div>
+          <div class="ctrl">
+            <button data-step="reps:-1" aria-label="Giảm rep">−</button>
+            <input id="repVal" type="number" inputmode="numeric" step="1" value="${esc(sg.reps)}" aria-label="Số rep">
+            <button data-step="reps:1" aria-label="Tăng rep">+</button>
+          </div></div>
+      </div>
+      <button class="btn" id="logSet" style="margin-top:14px">
+        ${editIdx != null ? "Cập nhật set " + (editIdx + 1) : "✓ Xong set " + (idx + 1)}</button>
+      ${editIdx != null ? `<button class="ghost" id="cancelEdit" style="margin-top:10px;width:100%">Huỷ</button>` : ""}`;
+  }
+
+  return `${picker}
+    <div class="exname">${esc(ex.name)}</div>
+    <div class="exrx">${total} set × ${esc(ex.reps)} rep</div>
+    ${prev}
+    ${doneList}
+    ${action}
+    ${ex.note ? `<details class="note"><summary>Ghi chú kỹ thuật</summary><p>${esc(ex.note)}</p></details>` : ""}
+    <div class="pair" style="margin-top:22px">
+      <button class="ghost" data-jump="${exIdx - 1}"${exIdx === 0 ? ' disabled style="opacity:.35"' : ""}>‹ Bài trước</button>
+      <button class="ghost" data-jump="${exIdx + 1}"${exIdx >= d.exercises.length - 1 ? ' disabled style="opacity:.35"' : ""}>Bài sau ›</button>
+    </div>`;
+}
+
+/* ---------------- NHẬT KÝ ---------------- */
 function viewHistory() {
   const dates = sessionDates();
-  if (!dates.length) return `<div class="empty">Chưa ghi buổi nào.<br>Vào tab <b>Tập</b> và nhập set đầu tiên.</div>`;
-
-  const items = dates.map(date => {
-    const parts = [];
-    for (const day of S.days) {
-      for (const ex of day.exercises) {
-        const sets = (S.log[logKey(date, day.id, ex.id)] || []).filter(s => s.kg !== "" || s.reps !== "");
-        if (sets.length) {
-          const top = sets.reduce((m, s) => Math.max(m, +s.kg || 0), 0);
-          const vol = sets.reduce((t, s) => t + (+s.kg || 0) * (+s.reps || 0), 0);
-          parts.push({ day: day.name, name: ex.name, sets, top, vol });
-        }
-      }
-    }
-    const vol = parts.reduce((t, p) => t + p.vol, 0);
-    const dayName = parts.length ? parts[0].day : "";
+  if (!dates.length) return `<div class="empty">Chưa ghi buổi nào.<br>Sang tab Tập và bấm xong set đầu tiên.</div>`;
+  return `<div class="sub">${dates.length} buổi. Khối lượng = tạ × rep cộng dồn — con số này tăng đều nghĩa là bạn đang tiến bộ.</div>
+  <div class="stack">` + dates.map(date => {
+    const dId = dayOfDate(date), d = S.days.find(x => x.id === dId);
+    const rows = !d ? "" : d.exercises.map(e => {
+      const s = sets(date, d.id, e.id);
+      return s.length ? `<div class="lrow"><div>${esc(e.name)}</div>
+        <div class="num muted">${s.map(x => `${esc(x.kg)}×${esc(x.reps)}`).join("  ")}</div></div>` : "";
+    }).join("");
     return `<div class="card">
-      <div class="spread" style="margin-bottom:10px">
-        <div>
-          <div class="num" style="font-size:20px">${fmtDate(date)} · ${esc(dayName)}</div>
-          <div class="small muted">Tuần ${weekNo(date)} · ${parts.length} bài</div>
-        </div>
-        <div style="text-align:right">
-          <div class="num" style="font-size:20px;color:var(--brass)">${Math.round(vol).toLocaleString("vi-VN")}</div>
-          <div class="small dim">kg tổng khối lượng</div>
-        </div>
-      </div>
-      ${parts.map(p => `<div class="lrow">
-        <div>${esc(p.name)}</div>
-        <div class="num muted small">${p.sets.map(s => `${esc(s.kg || 0)}×${esc(s.reps || 0)}`).join("  ")}</div>
-      </div>`).join("")}
-    </div>`;
-  }).join("");
-
-  return `<h2>Nhật ký</h2><div class="sub">${dates.length} buổi đã ghi. Khối lượng = tạ × rep cộng dồn cả buổi.</div>
-    <div class="stack">${items}</div>`;
+      <div class="spread" style="margin-bottom:8px">
+        <div><div class="num" style="font-size:22px">${fmtDate(date)} · ${esc(d ? d.name : "?")}</div>
+          <div class="small dim">Tuần ${weekNo(date)}</div></div>
+        <div style="text-align:right"><div class="num" style="font-size:22px;color:var(--brass)">${Math.round(volume(date)).toLocaleString("vi-VN")}</div>
+          <div class="small dim">kg</div></div>
+      </div>${rows}</div>`;
+  }).join("") + `</div>`;
 }
 
-/* ---------------- render: CƠ THỂ ---------------- */
-function viewBody() {
+/* ---------------- TÔI ---------------- */
+function viewMe() {
   const p = S.profile, t = targets();
+  const bw = [...S.bw].sort((a, b) => b.date.localeCompare(a.date));
+  const latest = bw[0] ? bw[0].kg : +p.weight;
 
-  const profileCard = `
-  <div class="card stack">
-    <div class="grid2">
-      <label class="field"><span>Tên</span><input id="p-name" value="${esc(p.name)}" placeholder="Tuỳ bạn"></label>
-      <label class="field"><span>Tuổi</span><input type="number" inputmode="numeric" id="p-age" value="${esc(p.age)}" placeholder="29"></label>
-      <label class="field"><span>Chiều cao (cm)</span><input type="number" inputmode="numeric" id="p-height" value="${esc(p.height)}" placeholder="172"></label>
-      <label class="field"><span>Cân nặng (kg)</span><input type="number" step="0.1" inputmode="decimal" id="p-weight" value="${esc(p.weight)}" placeholder="54"></label>
-      <label class="field"><span>Cân nặng mục tiêu</span><input type="number" step="0.1" inputmode="decimal" id="p-goalWeight" value="${esc(p.goalWeight)}" placeholder="57"></label>
-      <label class="field"><span>Giới tính</span><select id="p-sex">
-        <option value="m"${p.sex === "m" ? " selected" : ""}>Nam</option>
-        <option value="f"${p.sex === "f" ? " selected" : ""}>Nữ</option></select></label>
-    </div>
-    <label class="field"><span>Mức vận động</span><select id="p-activity">
-      <option value="1.2"${+p.activity === 1.2 ? " selected" : ""}>1.2 — ngồi cả ngày, không tập</option>
-      <option value="1.375"${+p.activity === 1.375 ? " selected" : ""}>1.375 — tập nhẹ 1–2 buổi/tuần</option>
-      <option value="1.55"${+p.activity === 1.55 ? " selected" : ""}>1.55 — tập 3–4 buổi/tuần</option>
-      <option value="1.6"${+p.activity === 1.6 ? " selected" : ""}>1.6 — tập 3 buổi + chơi thể thao</option>
-      <option value="1.725"${+p.activity === 1.725 ? " selected" : ""}>1.725 — tập 6 buổi/tuần</option>
-    </select></label>
-    <div class="grid3">
-      <label class="field"><span>Dư kcal</span><input type="number" step="50" inputmode="numeric" id="p-surplus" value="${esc(p.surplus)}"></label>
-      <label class="field"><span>Đạm g/kg</span><input type="number" step="0.1" inputmode="decimal" id="p-proteinPerKg" value="${esc(p.proteinPerKg)}"></label>
-      <label class="field"><span>Béo g/kg</span><input type="number" step="0.1" inputmode="decimal" id="p-fatPerKg" value="${esc(p.fatPerKg)}"></label>
-    </div>
-    <div class="grid2">
-      <label class="field"><span>Ngày bắt đầu</span><input type="date" id="p-startDate" value="${esc(p.startDate)}"></label>
-      <label class="field"><span>Số tuần</span><input type="number" inputmode="numeric" id="p-weeks" value="${esc(p.weeks)}"></label>
-    </div>
-  </div>`;
+  const profileForm = `
+    <div class="stack" style="padding-top:16px">
+      <div class="g2">
+        <label class="f"><span>Tên</span><input id="p-name" value="${esc(p.name)}" placeholder="Tuỳ bạn"></label>
+        <label class="f"><span>Tuổi</span><input type="number" inputmode="numeric" id="p-age" value="${esc(p.age)}" placeholder="29"></label>
+        <label class="f"><span>Cao (cm)</span><input type="number" inputmode="numeric" id="p-height" value="${esc(p.height)}" placeholder="172"></label>
+        <label class="f"><span>Nặng (kg)</span><input type="number" step="0.1" inputmode="decimal" id="p-weight" value="${esc(p.weight)}" placeholder="54"></label>
+        <label class="f"><span>Mục tiêu (kg)</span><input type="number" step="0.1" inputmode="decimal" id="p-goalWeight" value="${esc(p.goalWeight)}" placeholder="57"></label>
+        <label class="f"><span>Giới tính</span><select id="p-sex">
+          <option value="m"${p.sex === "m" ? " selected" : ""}>Nam</option>
+          <option value="f"${p.sex === "f" ? " selected" : ""}>Nữ</option></select></label>
+      </div>
+      <label class="f"><span>Mức vận động</span><select id="p-activity">
+        <option value="1.2"${+p.activity === 1.2 ? " selected" : ""}>Ngồi cả ngày, không tập</option>
+        <option value="1.375"${+p.activity === 1.375 ? " selected" : ""}>Tập nhẹ 1–2 buổi/tuần</option>
+        <option value="1.55"${+p.activity === 1.55 ? " selected" : ""}>Tập 3–4 buổi/tuần</option>
+        <option value="1.6"${+p.activity === 1.6 ? " selected" : ""}>Tập 3 buổi + chơi thể thao</option>
+        <option value="1.725"${+p.activity === 1.725 ? " selected" : ""}>Tập 6 buổi/tuần</option></select></label>
+      <div class="g3">
+        <label class="f"><span>Dư kcal</span><input type="number" step="50" inputmode="numeric" id="p-surplus" value="${esc(p.surplus)}"></label>
+        <label class="f"><span>Đạm g/kg</span><input type="number" step="0.1" inputmode="decimal" id="p-proteinPerKg" value="${esc(p.proteinPerKg)}"></label>
+        <label class="f"><span>Béo g/kg</span><input type="number" step="0.1" inputmode="decimal" id="p-fatPerKg" value="${esc(p.fatPerKg)}"></label>
+      </div>
+      <div class="g2">
+        <label class="f"><span>Ngày bắt đầu</span><input type="date" id="p-startDate" value="${esc(p.startDate)}"></label>
+        <label class="f"><span>Số tuần</span><input type="number" inputmode="numeric" id="p-weeks" value="${esc(p.weeks)}"></label>
+      </div>
+    </div>`;
 
   if (!t) return `
     <h2>Thiết lập</h2>
-    <div class="sub">Nhập tuổi, chiều cao và cân nặng — trang sẽ tự tính mục tiêu calo, đạm và theo dõi tiến độ.
-    Số liệu chỉ nằm trong trình duyệt của máy này, không gửi đi đâu cả.</div>
-    ${profileCard}
-    <p class="small dim" style="margin-top:16px;text-align:center">Giáo án 8 tuần đã có sẵn ở tab <b>Tập</b> — bạn tập được ngay, không cần điền gì.</p>`;
+    <div class="sub">Nhập tuổi, chiều cao, cân nặng để trang tính mục tiêu calo và đạm.
+      Số liệu chỉ nằm trong trình duyệt máy này, không gửi đi đâu.</div>
+    <div class="card">${profileForm}</div>
+    <p class="small dim" style="margin-top:18px;text-align:center">Giáo án ở tab Tập dùng được ngay, không cần điền gì.</p>`;
 
-  const bw = [...S.bw].sort((a, b) => b.date.localeCompare(a.date));
-  const latest = bw[0] ? bw[0].kg : p.weight;
-  const bmi = (+latest) / Math.pow(p.height / 100, 2);
+  const bmi = latest / Math.pow(p.height / 100, 2);
   const goal = +p.goalWeight || 0;
-  const toGo = goal ? goal - (+latest || 0) : 0;
-
   const rows = bw.map((e, i) => {
-    const prev = bw[i + 1];
-    const d = prev ? n1(e.kg - prev.kg) : null;
-    const badge = d === null ? "" : `<span class="badge ${d > 0 ? "up" : d < 0 ? "down" : ""}">${d > 0 ? "+" : ""}${d} kg</span>`;
+    const d = bw[i + 1] ? n1(e.kg - bw[i + 1].kg) : null;
     return `<div class="lrow">
-      <div class="row"><span class="num" style="font-size:19px;width:64px">${e.kg} kg</span>${badge}</div>
+      <div class="row"><span class="num" style="font-size:20px;width:70px">${e.kg} kg</span>
+        ${d === null ? "" : `<span class="badge ${d > 0 ? "up" : d < 0 ? "down" : ""}">${d > 0 ? "+" : ""}${d}</span>`}</div>
       <div class="row"><span class="small muted">${fmtDate(e.date)}</span>
-        <button class="icon-btn" data-delbw="${e.date}" aria-label="Xoá mốc cân ngày ${fmtDate(e.date)}">×</button></div>
-    </div>`;
+        <button class="iconbtn" data-delbw="${e.date}" aria-label="Xoá mốc ${fmtDate(e.date)}">×</button></div></div>`;
   }).join("");
 
-  return `
-  <h2>Cân nặng</h2>
-  <div class="sub">Mốc quan trọng nhất. Cân buổi sáng, sau khi đi vệ sinh, trước khi ăn — cùng một điều kiện mỗi lần.</div>
-  <div class="card">
-    <div class="grid3" style="text-align:center;margin-bottom:14px">
-      <div><div class="num" style="font-size:26px">${n1(latest)}</div><div class="small dim">hiện tại (kg)</div></div>
-      <div><div class="num" style="font-size:26px;color:${bmi < 18.5 ? "var(--rust)" : "var(--jade)"}">${n1(bmi)}</div><div class="small dim">BMI</div></div>
-      <div><div class="num" style="font-size:26px;color:var(--brass)">${goal ? (toGo > 0 ? "+" : "") + n1(toGo) : "–"}</div><div class="small dim">còn tới mục tiêu</div></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end">
-      <label class="field"><span>Ngày</span><input type="date" id="bwDate" value="${today()}"></label>
-      <label class="field"><span>Cân nặng (kg)</span><input type="number" step="0.1" inputmode="decimal" id="bwKg" placeholder="${n1(latest)}"></label>
-      <button class="btn-ghost" id="bwAdd" style="min-width:64px">Ghi</button>
-    </div>
-  </div>
-  ${bw.length ? `<div class="card" style="margin-top:12px">${rows}</div>` : ""}
-
-  <h2>Mục tiêu dinh dưỡng</h2>
-  <div class="sub">Tính lại mỗi khi bạn đổi cân nặng. Công thức Mifflin–St Jeor, sai số ±10% — cái cân mới là trọng tài, không phải con số này.</div>
-  <div class="card">
-    <div class="grid2" style="text-align:center;gap:14px">
-      <div><div class="num" style="font-size:28px;color:var(--brass)">${Math.round(t.kcal)}</div><div class="small dim">kcal / ngày</div></div>
-      <div><div class="num" style="font-size:28px">${Math.round(t.protein)}<span style="font-size:16px"> g</span></div><div class="small dim">đạm / ngày</div></div>
-      <div><div class="num" style="font-size:20px">${Math.round(t.carb)}<span style="font-size:14px"> g</span></div><div class="small dim">tinh bột</div></div>
-      <div><div class="num" style="font-size:20px">${Math.round(t.fat)}<span style="font-size:14px"> g</span></div><div class="small dim">chất béo</div></div>
-    </div>
-    <div class="small muted" style="margin-top:14px;padding-top:12px;border-top:1px solid var(--line)">
-      Chuyển hoá cơ bản ${Math.round(t.bmr)} kcal · duy trì ${Math.round(t.tdee)} kcal · dư ${esc(p.surplus)} kcal
-      → tăng khoảng <b style="color:var(--chalk)">${n1((+p.surplus || 0) / 1100)} kg/tuần</b>.
-    </div>
-  </div>
-
-  <h2>Ăn thế nào cho đủ</h2>
-  <div class="sub">Ăn đủ ${Math.round(t.kcal)} kcal khó hơn tập. Khung tham khảo dưới đây ≈ 2 750 kcal / 145 g đạm — chỉnh khẩu phần theo mục tiêu của bạn.</div>
-  <div class="card">
-    <div class="lrow"><div><b>Sáng</b><div class="small muted">3 trứng + 2 lát bánh mì + 500 ml sữa</div></div><div class="num muted">~750</div></div>
-    <div class="lrow"><div><b>Trưa</b><div class="small muted">2 chén cơm + 150 g thịt/cá + rau</div></div><div class="num muted">~800</div></div>
-    <div class="lrow"><div><b>Trước tập</b><div class="small muted">1 quả chuối + 30 g bơ đậu phộng</div></div><div class="num muted">~300</div></div>
-    <div class="lrow"><div><b>Tối</b><div class="small muted">2 chén cơm + 100 g ức gà + 1 trứng + rau</div></div><div class="num muted">~750</div></div>
-    <div class="lrow"><div><b>Trước ngủ</b><div class="small muted">1 scoop whey hoặc 250 ml sữa</div></div><div class="num muted">~150</div></div>
-    <div class="small dim" style="margin-top:10px">Sữa và bơ đậu phộng là cách rẻ nhất để thêm calo mà không thấy no.</div>
-  </div>
-
-  <h2>Thông số cá nhân</h2>
-  ${profileCard}`;
-}
-
-/* ---------------- render: CHƯƠNG TRÌNH ---------------- */
-function viewProgram() {
-  const days = S.days.map(day => `
-    <div class="card">
-      <div class="spread" style="margin-bottom:12px">
-        <input value="${esc(day.name)}" data-day-name="${day.id}" aria-label="Tên buổi"
-               style="font-family:var(--display);font-size:20px;font-weight:600;border:0;background:transparent;padding:4px 0;min-height:auto">
-        <button class="icon-btn btn-danger" data-del-day="${day.id}" aria-label="Xoá buổi">×</button>
+  const program = S.days.map(d => `
+    <div style="border-top:1px solid var(--line);padding-top:14px;margin-top:14px">
+      <div class="spread" style="margin-bottom:8px">
+        <input value="${esc(d.name)}" data-dayname="${d.id}" aria-label="Tên buổi"
+          style="font-family:var(--display);font-size:21px;font-weight:600;border:0;background:transparent;padding:2px 0;min-height:auto">
+        <button class="iconbtn" style="color:var(--rust);border-color:#4d2c25" data-delday="${d.id}" aria-label="Xoá buổi">×</button>
       </div>
-      ${day.exercises.map(ex => `
-        <div style="padding:12px 0;border-top:1px solid var(--line)">
-          <div class="row" style="margin-bottom:8px">
-            <input value="${esc(ex.name)}" data-ex="${day.id}|${ex.id}|name" aria-label="Tên bài">
-            <button class="icon-btn btn-danger" data-del-ex="${day.id}|${ex.id}" aria-label="Xoá bài">×</button>
+      ${d.exercises.map(e => `
+        <div style="background:var(--ground);border-radius:12px;padding:12px;margin-bottom:10px">
+          <div class="row" style="margin-bottom:9px">
+            <input value="${esc(e.name)}" data-ex="${d.id}|${e.id}|name" aria-label="Tên bài">
+            <button class="iconbtn" style="color:var(--rust);border-color:#4d2c25" data-delex="${d.id}|${e.id}" aria-label="Xoá bài">×</button>
           </div>
-          <div class="grid3" style="margin-bottom:8px">
-            <label class="field"><span>Set</span><input type="number" value="${esc(ex.sets)}" data-ex="${day.id}|${ex.id}|sets"></label>
-            <label class="field"><span>Rep</span><input value="${esc(ex.reps)}" data-ex="${day.id}|${ex.id}|reps" style="font-family:var(--display);font-size:19px;text-align:center;padding:9px 6px"></label>
-            <label class="field"><span>Đơn vị</span><input value="${esc(ex.unit)}" data-ex="${day.id}|${ex.id}|unit" style="font-size:14px;text-align:center;padding:12px 6px"></label>
+          <div class="g3" style="margin-bottom:9px">
+            <label class="f"><span>Set</span><input type="number" inputmode="numeric" value="${esc(e.sets)}" data-ex="${d.id}|${e.id}|sets"></label>
+            <label class="f"><span>Rep</span><input value="${esc(e.reps)}" data-ex="${d.id}|${e.id}|reps" style="font-family:var(--display);font-size:21px;text-align:center;padding:10px 4px"></label>
+            <label class="f"><span>Đơn vị</span><input value="${esc(e.unit)}" data-ex="${d.id}|${e.id}|unit" style="font-size:14px;text-align:center;padding:14px 4px"></label>
           </div>
-          <textarea rows="2" placeholder="Ghi chú kỹ thuật…" data-ex="${day.id}|${ex.id}|note" style="font-size:13px">${esc(ex.note)}</textarea>
+          <div class="g3">
+            <label class="f"><span>Khởi điểm</span><input type="number" step="0.5" inputmode="decimal" value="${esc(e.start)}" data-ex="${d.id}|${e.id}|start"></label>
+            <label class="f"><span>Bước ±</span><input type="number" step="0.5" inputmode="decimal" value="${esc(e.step)}" data-ex="${d.id}|${e.id}|step"></label>
+            <label class="f"><span>Nghỉ (giây)</span><input type="number" step="15" inputmode="numeric" value="${esc(e.rest)}" data-ex="${d.id}|${e.id}|rest"></label>
+          </div>
+          <textarea rows="2" placeholder="Ghi chú kỹ thuật…" data-ex="${d.id}|${e.id}|note" style="font-size:14px;margin-top:9px">${esc(e.note)}</textarea>
         </div>`).join("")}
-      <button class="btn-ghost btn-sm" data-add-ex="${day.id}" style="margin-top:12px">+ Thêm bài</button>
+      <button class="ghost sm" data-addex="${d.id}">+ Thêm bài</button>
     </div>`).join("");
 
   return `
-    <h2>Chương trình</h2>
-    <div class="sub">Sửa gì cũng được — tên bài, số set, rep, ghi chú. Lưu ngay khi gõ.</div>
-    <div class="stack">${days}</div>
-    <button class="btn-ghost" id="addDay" style="margin-top:12px">+ Thêm buổi tập</button>
+  <div class="stack">
+    <details class="sec" open><summary>Cân nặng</summary><div class="body">
+      <div class="g3" style="text-align:center;padding:16px 0">
+        <div><div class="num" style="font-size:30px">${n1(latest)}</div><div class="small dim">kg</div></div>
+        <div><div class="num" style="font-size:30px;color:${bmi < 18.5 ? "var(--rust)" : "var(--jade)"}">${n1(bmi)}</div><div class="small dim">BMI</div></div>
+        <div><div class="num" style="font-size:30px;color:var(--brass)">${goal ? (goal - latest > 0 ? "+" : "") + n1(goal - latest) : "–"}</div><div class="small dim">còn lại</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end">
+        <label class="f"><span>Ngày</span><input type="date" id="bwDate" value="${today()}"></label>
+        <label class="f"><span>Cân nặng</span><input type="number" step="0.1" inputmode="decimal" id="bwKg" placeholder="${n1(latest)}"></label>
+        <button class="ghost" id="bwAdd" style="min-width:70px">Ghi</button>
+      </div>
+      <p class="small dim" style="margin:12px 0 0">Cân buổi sáng, sau vệ sinh, trước khi ăn — cùng điều kiện mỗi lần.</p>
+      ${bw.length ? `<div style="margin-top:8px">${rows}</div>` : ""}
+    </div></details>
 
-    <h2>Dữ liệu</h2>
-    <div class="sub">Mọi thứ nằm trong trình duyệt máy này. Xoá dữ liệu duyệt web là mất — xuất file định kỳ.</div>
-    <div class="card stack">
-      <button class="btn-ghost" id="exportBtn">⬇ Xuất file JSON</button>
-      <button class="btn-ghost" id="importBtn">⬆ Nhập từ file JSON</button>
-      <input type="file" id="importFile" accept="application/json,.json" hidden>
-      <button class="btn-ghost btn-danger" id="resetBtn">Khôi phục chương trình gốc</button>
-    </div>`;
+    <details class="sec"><summary>Dinh dưỡng</summary><div class="body">
+      <div class="g2" style="text-align:center;gap:16px;padding:16px 0">
+        <div><div class="num" style="font-size:32px;color:var(--brass)">${Math.round(t.kcal)}</div><div class="small dim">kcal / ngày</div></div>
+        <div><div class="num" style="font-size:32px">${Math.round(t.protein)}<span style="font-size:17px"> g</span></div><div class="small dim">đạm / ngày</div></div>
+        <div><div class="num" style="font-size:22px">${Math.round(t.carb)}<span style="font-size:14px"> g</span></div><div class="small dim">tinh bột</div></div>
+        <div><div class="num" style="font-size:22px">${Math.round(t.fat)}<span style="font-size:14px"> g</span></div><div class="small dim">chất béo</div></div>
+      </div>
+      <p class="small muted" style="border-top:1px solid var(--line);padding-top:12px;margin:0 0 16px">
+        Chuyển hoá cơ bản ${Math.round(t.bmr)} · duy trì ${Math.round(t.tdee)} · dư ${esc(p.surplus)} kcal
+        → tăng khoảng <b style="color:var(--chalk)">${n1((+p.surplus || 0) / 1100)} kg/tuần</b>.
+        Công thức Mifflin–St Jeor, sai số ±10% — cái cân mới là trọng tài.</p>
+      <div class="lrow"><div><b>Sáng</b><div class="small muted">3 trứng + 2 lát bánh mì + 500 ml sữa</div></div><div class="num muted">~750</div></div>
+      <div class="lrow"><div><b>Trưa</b><div class="small muted">2 chén cơm + 150 g thịt/cá + rau</div></div><div class="num muted">~800</div></div>
+      <div class="lrow"><div><b>Trước tập</b><div class="small muted">1 quả chuối + 30 g bơ đậu phộng</div></div><div class="num muted">~300</div></div>
+      <div class="lrow"><div><b>Tối</b><div class="small muted">2 chén cơm + 100 g ức gà + 1 trứng + rau</div></div><div class="num muted">~750</div></div>
+      <div class="lrow"><div><b>Trước ngủ</b><div class="small muted">1 scoop whey hoặc 250 ml sữa</div></div><div class="num muted">~150</div></div>
+      <p class="small dim" style="margin:12px 0 0">≈ 2 750 kcal / 145 g đạm. Sữa và bơ đậu phộng là cách rẻ nhất để thêm calo mà không thấy no.</p>
+    </div></details>
+
+    <details class="sec"><summary>Thông số</summary><div class="body">${profileForm}</div></details>
+
+    <details class="sec"><summary>Chương trình</summary><div class="body">
+      <p class="small muted" style="margin:14px 0 0">Sửa gì cũng được, lưu ngay khi gõ. <b>Khởi điểm</b> là mức tạ gợi ý cho buổi đầu, <b>bước ±</b> là mức tăng giảm mỗi lần bấm nút.</p>
+      ${program}
+      <button class="ghost" id="addDay" style="margin-top:16px;width:100%">+ Thêm buổi tập</button>
+    </div></details>
+
+    <details class="sec"><summary>Dữ liệu</summary><div class="body">
+      <p class="small muted" style="margin:14px 0">Mọi thứ nằm trong trình duyệt máy này. Xoá dữ liệu duyệt web là mất — xuất file định kỳ.</p>
+      <div class="stack">
+        <button class="ghost" id="exportBtn">⬇ Xuất file JSON</button>
+        <button class="ghost" id="importBtn">⬆ Nhập từ file JSON</button>
+        <input type="file" id="importFile" accept="application/json,.json" hidden>
+        <button class="ghost danger" id="resetBtn">Khôi phục chương trình gốc</button>
+      </div>
+    </div></details>
+  </div>`;
 }
 
 /* ---------------- render ---------------- */
 function render() {
-  const t = targets();
-  renderedProfileOk = !!t;
-  const bw = [...S.bw].sort((a, b) => b.date.localeCompare(a.date));
-  const w = bw[0] ? bw[0].kg : S.profile.weight;
-  $("#hdrStat").innerHTML = t
-    ? `<b>${n1(w)}</b> kg · <b>${Math.round(t.kcal)}</b> kcal`
-    : `<span style="color:var(--brass)">Chưa có thông số</span>`;
-
-  $("#view").innerHTML =
-    tab === "train" ? viewTrain() :
-    tab === "history" ? viewHistory() :
-    tab === "body" ? viewBody() : viewProgram();
-
-  document.querySelectorAll(".tab").forEach(b => {
-    if (b.dataset.tab === tab) b.setAttribute("aria-current", "page");
-    else b.removeAttribute("aria-current");
-  });
-  window.scrollTo(0, 0);
+  if (!curDay || !S.days.some(d => d.id === curDay)) curDay = autoDay();
+  renderTop();
+  $("#view").innerHTML = tab === "train" ? viewTrain() : tab === "history" ? viewHistory() : viewMe();
+  document.querySelectorAll(".tab").forEach(b =>
+    b.dataset.tab === tab ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current"));
 }
 
-/* ---------------- events ---------------- */
+/* ---------------- đồng hồ nghỉ ---------------- */
+let audioCtx = null;
+function ensureAudio() {
+  try { audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === "suspended") audioCtx.resume(); } catch (e) { /* không có audio */ }
+}
+function buzz() {
+  try { if (navigator.vibrate) navigator.vibrate([220, 90, 220]); } catch (e) {}
+  try {
+    if (!audioCtx) return;
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain(), t0 = audioCtx.currentTime;
+    o.frequency.value = 880; o.connect(g); g.connect(audioCtx.destination);
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(0.22, t0 + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.55);
+    o.start(t0); o.stop(t0 + 0.6);
+  } catch (e) { /* trình duyệt chặn âm thanh */ }
+}
+function startRest(sec) {
+  if (!sec || sec <= 0) { render(); return; }
+  restEnd = Date.now() + sec * 1000;
+  render();
+  clearInterval(restTimer);
+  restTimer = setInterval(() => {
+    const left = Math.ceil((restEnd - Date.now()) / 1000);
+    if (left <= 0) { clearInterval(restTimer); restTimer = null; restEnd = 0; buzz(); render(); return; }
+    const el = $("#restNum"); if (el) el.textContent = mmss(left);
+  }, 250);
+}
+function stopRest() { clearInterval(restTimer); restTimer = null; restEnd = 0; render(); }
+
+function firstUnfinished() {
+  const d = day();
+  for (let i = 0; i < d.exercises.length; i++)
+    if (sets(curDate, d.id, d.exercises[i].id).length < d.exercises[i].sets) return i;
+  return 0;
+}
+
+/* ---------------- sự kiện ---------------- */
 document.querySelectorAll(".tab").forEach(b =>
-  b.addEventListener("click", () => { tab = b.dataset.tab; render(); }));
-
-document.addEventListener("input", e => {
-  const el = e.target;
-
-  if (el.dataset.log !== undefined) {          // ô nhập set
-    const key = el.dataset.log, i = +el.dataset.i;
-    if (!S.log[key]) S.log[key] = [];
-    while (S.log[key].length <= i) S.log[key].push({ kg: "", reps: "" });
-    S.log[key][i][el.dataset.f] = el.value;
-    save(); return;
-  }
-  if (el.id && el.id.startsWith("p-")) {        // thông số cá nhân
-    const f = el.id.slice(2);
-    S.profile[f] = ["name", "sex", "startDate"].includes(f) ? el.value : (el.value === "" ? "" : +el.value);
-    save();
-    if (["weight", "height", "age", "sex", "activity", "surplus", "proteinPerKg", "fatPerKg", "goalWeight"].includes(f)) {
-      const t = targets(), bw = [...S.bw].sort((a, b) => b.date.localeCompare(a.date));
-      $("#hdrStat").innerHTML = t
-        ? `<b>${n1(bw[0] ? bw[0].kg : S.profile.weight)}</b> kg · <b>${Math.round(t.kcal)}</b> kcal`
-        : `<span style="color:var(--brass)">Chưa có thông số</span>`;
-    }
-    return;
-  }
-  if (el.dataset.dayName) {
-    const d = S.days.find(x => x.id === el.dataset.dayName);
-    if (d) { d.name = el.value; save(); } return;
-  }
-  if (el.dataset.ex) {
-    const [dayId, exId, field] = el.dataset.ex.split("|");
-    const day = S.days.find(x => x.id === dayId);
-    const ex = day && day.exercises.find(x => x.id === exId);
-    if (ex) { ex[field] = field === "sets" ? (+el.value || 1) : el.value; save(); }
-    return;
-  }
-  if (el.id === "dateInput") { curDate = el.value || today(); render(); }
-});
+  b.addEventListener("click", () => { tab = b.dataset.tab; render(); window.scrollTo(0, 0); }));
 
 document.addEventListener("click", e => {
-  const el = e.target.closest("button");
-  if (!el) return;
+  const el = e.target.closest("button"); if (!el) return;
 
-  if (el.dataset.day) { curDay = el.dataset.day; render(); return; }
+  if (el.dataset.goto) { tab = el.dataset.goto; render(); window.scrollTo(0, 0); return; }
+  if (el.id === "pickerBtn") { showPicker = !showPicker; render(); return; }
+
+  if (el.dataset.jump !== undefined) {
+    const i = +el.dataset.jump, d = day();
+    if (i < 0 || i >= d.exercises.length) return;
+    exIdx = i; editIdx = null; render(); window.scrollTo(0, 0); return;
+  }
+  if (el.dataset.day) {
+    curDay = el.dataset.day; exIdx = firstUnfinished(); editIdx = null; showPicker = false; render(); return;
+  }
+  if (el.dataset.edit !== undefined) {
+    editIdx = editIdx === +el.dataset.edit ? null : +el.dataset.edit;
+    stopRest(); return;
+  }
+
+  if (el.dataset.step) {
+    const [f, dir] = el.dataset.step.split(":");
+    const ex = day().exercises[exIdx];
+    const input = $(f === "kg" ? "#kgVal" : "#repVal");
+    const step = f === "kg" ? (+ex.step || 2.5) : 1;
+    let v = parseFloat(input.value); if (!isFinite(v)) v = 0;
+    v = Math.max(0, Math.round((v + step * +dir) / step) * step);
+    input.value = f === "kg" ? String(n1(v)) : String(Math.round(v));
+    return;
+  }
+  if (el.id === "logSet") {
+    const d = day(), ex = d.exercises[exIdx];
+    const kg = $("#kgVal").value.trim(), reps = $("#repVal").value.trim();
+    if (reps === "" || +reps <= 0) { toast("Nhập số rep đã"); return; }
+    const k = lkey(curDate, d.id, ex.id);
+    if (!S.log[k]) S.log[k] = [];
+    S.log[k][editIdx != null ? editIdx : S.log[k].length] = { kg: kg === "" ? "0" : kg, reps };
+    save(true);
+    if (editIdx != null) { editIdx = null; render(); toast("Đã cập nhật"); return; }
+    ensureAudio();
+    startRest(+ex.rest || 120);
+    return;
+  }
+  if (el.id === "cancelEdit") { editIdx = null; render(); return; }
+  if (el.id === "restAdd") { restEnd += 30000; const n = $("#restNum");
+    if (n) n.textContent = mmss(Math.ceil((restEnd - Date.now()) / 1000)); return; }
+  if (el.id === "restSkip") { stopRest(); return; }
 
   if (el.id === "bwAdd") {
     const date = $("#bwDate").value, kg = parseFloat($("#bwKg").value);
     if (!date || !isFinite(kg)) { toast("Nhập cân nặng đã"); return; }
     S.bw = S.bw.filter(x => x.date !== date).concat([{ date, kg }]);
-    S.profile.weight = kg;
-    save(true); render(); toast("Đã ghi " + n1(kg) + " kg"); return;
+    S.profile.weight = kg; save(true); render(); toast("Đã ghi " + n1(kg) + " kg"); return;
   }
-  if (el.dataset.delbw) {
-    S.bw = S.bw.filter(x => x.date !== el.dataset.delbw);
-    save(true); render(); return;
-  }
+  if (el.dataset.delbw) { S.bw = S.bw.filter(x => x.date !== el.dataset.delbw); save(true); render(); return; }
 
-  if (el.id === "addDay") {
-    S.days.push({ id: uid(), name: "Buổi mới", exercises: [] });
-    save(true); render(); return;
-  }
-  if (el.dataset.delDay) {
-    const d = S.days.find(x => x.id === el.dataset.delDay);
-    if (d && confirm(`Xoá "${d.name}" và toàn bộ bài trong đó?\nNhật ký cũ vẫn giữ nguyên.`)) {
-      S.days = S.days.filter(x => x.id !== el.dataset.delDay);
-      if (curDay === el.dataset.delDay) curDay = S.days[0] ? S.days[0].id : null;
+  if (el.id === "addDay") { S.days.push({ id: uid(), name: "Buổi mới", exercises: [] }); save(true); render(); return; }
+  if (el.dataset.delday) {
+    const d = S.days.find(x => x.id === el.dataset.delday);
+    if (S.days.length < 2) { toast("Phải còn ít nhất một buổi"); return; }
+    if (d && confirm(`Xoá "${d.name}"?\nNhật ký cũ vẫn giữ nguyên.`)) {
+      S.days = S.days.filter(x => x.id !== el.dataset.delday);
+      if (curDay === el.dataset.delday) { curDay = S.days[0].id; exIdx = 0; }
       save(true); render();
     } return;
   }
-  if (el.dataset.addEx) {
-    const d = S.days.find(x => x.id === el.dataset.addEx);
-    if (d) { d.exercises.push({ id: uid(), name: "Bài mới", sets: 3, reps: "8–10", unit: "kg", note: "" }); save(true); render(); }
+  if (el.dataset.addex) {
+    const d = S.days.find(x => x.id === el.dataset.addex);
+    if (d) { d.exercises.push({ id: uid(), name: "Bài mới", sets: 3, reps: "8–10",
+      unit: "kg", start: 20, step: 2.5, rest: 120, note: "" }); save(true); render(); }
     return;
   }
-  if (el.dataset.delEx) {
-    const [dayId, exId] = el.dataset.delEx.split("|");
-    const d = S.days.find(x => x.id === dayId);
-    const ex = d && d.exercises.find(x => x.id === exId);
+  if (el.dataset.delex) {
+    const [dayId, exId] = el.dataset.delex.split("|");
+    const d = S.days.find(x => x.id === dayId), ex = d && d.exercises.find(x => x.id === exId);
     if (ex && confirm(`Xoá bài "${ex.name}"?`)) {
-      d.exercises = d.exercises.filter(x => x.id !== exId); save(true); render();
+      d.exercises = d.exercises.filter(x => x.id !== exId);
+      if (exIdx >= d.exercises.length) exIdx = 0;
+      save(true); render();
     } return;
   }
 
   if (el.id === "exportBtn") {
-    const blob = new Blob([JSON.stringify(S, null, 2)], { type: "application/json" });
     const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "so-sat-" + today() + ".json";
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-    toast("Đã xuất file"); return;
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(S, null, 2)], { type: "application/json" }));
+    a.download = "so-sat-" + today() + ".json"; a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000); toast("Đã xuất file"); return;
   }
   if (el.id === "importBtn") { $("#importFile").click(); return; }
   if (el.id === "resetBtn") {
     if (confirm("Khôi phục chương trình gốc?\nNhật ký và cân nặng vẫn được giữ.")) {
-      const fresh = seed();
-      S.days = fresh.days; S.profile = Object.assign(fresh.profile, { startDate: S.profile.startDate });
-      curDay = S.days[0].id; save(true); render(); toast("Đã khôi phục");
+      const f = seed();
+      S.days = f.days; curDay = S.days[0].id; exIdx = 0;
+      save(true); render(); toast("Đã khôi phục");
     } return;
   }
 });
 
-/* Thông số vừa đủ (hoặc vừa thiếu) → vẽ lại tab Cơ thể ở dạng tương ứng. */
-document.addEventListener("change", e => {
-  if (tab === "body" && e.target.id && e.target.id.startsWith("p-") && !!targets() !== renderedProfileOk) render();
+const NUMFIELDS = ["age", "height", "weight", "goalWeight", "activity", "surplus", "proteinPerKg", "fatPerKg", "weeks"];
+document.addEventListener("input", e => {
+  const el = e.target;
+  if (el.id && el.id.startsWith("p-")) {
+    const f = el.id.slice(2);
+    S.profile[f] = NUMFIELDS.includes(f) ? (el.value === "" ? "" : +el.value) : el.value;
+    save(); return;
+  }
+  if (el.dataset.dayname) {
+    const d = S.days.find(x => x.id === el.dataset.dayname);
+    if (d) { d.name = el.value; save(); renderTop(); } return;
+  }
+  if (el.dataset.ex) {
+    const [dayId, exId, field] = el.dataset.ex.split("|");
+    const d = S.days.find(x => x.id === dayId), ex = d && d.exercises.find(x => x.id === exId);
+    if (!ex) return;
+    ex[field] = ["sets", "start", "step", "rest"].includes(field) ? (+el.value || 0) : el.value;
+    if (field === "sets" && ex.sets < 1) ex.sets = 1;
+    save(); return;
+  }
+  if (el.id === "dateInput") {
+    curDate = el.value || today(); curDay = autoDay(); exIdx = firstUnfinished(); editIdx = null; render();
+  }
 });
 
-$("#importFile").addEventListener("change", e => {
-  const f = e.target.files[0];
-  if (!f) return;
+/* Vừa đủ (hoặc vừa thiếu) thông số → vẽ lại tab Tôi ở dạng tương ứng. */
+let hadProfile = !!targets();
+document.addEventListener("change", e => {
+  if (tab === "me" && e.target.id && e.target.id.startsWith("p-") && !!targets() !== hadProfile) {
+    hadProfile = !!targets(); render();
+  }
+});
+
+document.addEventListener("change", e => {
+  if (e.target.id !== "importFile") return;
+  const f = e.target.files[0]; if (!f) return;
   const r = new FileReader();
   r.onload = () => {
     try {
       const d = JSON.parse(r.result);
-      if (!d || !d.profile || !Array.isArray(d.days)) throw new Error("thiếu trường bắt buộc");
-      S = d; curDay = S.days[0] ? S.days[0].id : null;
+      if (!d || !d.profile || !Array.isArray(d.days) || !d.days.length) throw new Error("thiếu trường bắt buộc");
+      S = migrate(d); curDay = autoDay(); exIdx = firstUnfinished(); hadProfile = !!targets();
       save(true); render(); toast("Đã nhập dữ liệu");
     } catch (err) { toast("File không đọc được: " + err.message); }
   };
-  r.readAsText(f);
-  e.target.value = "";
+  r.readAsText(f); e.target.value = "";
 });
 
+/* ---------------- khởi động ---------------- */
+curDay = autoDay();
+exIdx = firstUnfinished();
 render();
 </script>
 </body>
