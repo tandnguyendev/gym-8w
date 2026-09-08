@@ -4,7 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0d1014">
+<meta name="description" content="Sổ tập tạ — ghi từng set, đếm giờ nghỉ, theo dõi cân nặng. Dữ liệu nằm trên máy bạn.">
 <title>Sổ Sắt</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="icon" href="./favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Sổ Sắt">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Be+Vietnam+Pro:wght@400;500;600&display=swap">
@@ -20,7 +29,8 @@
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--ground);color:var(--chalk);
   font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
-.app{max-width:640px;margin:0 auto;padding:0 16px calc(90px + env(safe-area-inset-bottom))}
+.app{max-width:640px;margin:0 auto;
+  padding:0 max(16px, env(safe-area-inset-left)) calc(90px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-right))}
 .num{font-family:var(--display);font-variant-numeric:tabular-nums;font-weight:600}
 .muted{color:var(--muted)} .dim{color:var(--dim)}
 .small{font-size:14px} .tiny{font-size:12.5px;letter-spacing:.06em;text-transform:uppercase}
@@ -34,7 +44,8 @@ h2:first-child{margin-top:8px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
 
 /* ---------- top bar ---------- */
-.topbar{position:sticky;top:0;z-index:20;background:var(--ground);padding:12px 0 10px}
+.topbar{position:sticky;top:0;z-index:20;background:var(--ground);
+  padding:calc(12px + env(safe-area-inset-top)) 0 10px}
 .topline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
 .session{font-family:var(--display);font-size:23px;font-weight:600;letter-spacing:.02em;text-transform:uppercase}
 .session em{font-style:normal;color:var(--brass)}
@@ -466,6 +477,34 @@ function viewHistory() {
   }).join("") + `</div>`;
 }
 
+/* ---------------- cài lên màn hình chính ---------------- */
+const isStandalone = () =>
+  matchMedia("(display-mode: standalone)").matches ||
+  matchMedia("(display-mode: fullscreen)").matches ||
+  navigator.standalone === true;
+const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+let installPrompt = null;
+
+function installCard() {
+  if (isStandalone()) return "";
+  const how = installPrompt
+    ? `<button class="btn" id="installBtn" style="margin-top:14px">Cài lên màn hình chính</button>`
+    : isIOS()
+      ? `<p class="small muted" style="margin:12px 0 0">Bấm nút <b>Chia sẻ</b> ở thanh dưới Safari →
+         <b>Thêm vào MH chính</b>. Mở từ icon sẽ chạy toàn màn hình, không còn thanh địa chỉ.</p>`
+      : `<p class="small muted" style="margin:12px 0 0">Mở menu ⋮ của trình duyệt →
+         <b>Thêm vào màn hình chính</b> (hoặc <b>Cài ứng dụng</b>).</p>`;
+  return `<div class="card" style="border-color:#8a6320">
+    <div class="row" style="align-items:flex-start">
+      <img src="./favicon.svg" alt="" width="46" height="46" style="border-radius:12px;flex:none">
+      <div>
+        <div class="num" style="font-size:20px">Cài như một app</div>
+        <div class="small muted">Chạy toàn màn hình, có icon riêng, và dùng được cả khi mất mạng.</div>
+      </div>
+    </div>${how}</div>`;
+}
+
 /* ---------------- TÔI ---------------- */
 function viewMe() {
   const p = S.profile, t = targets();
@@ -506,7 +545,8 @@ function viewMe() {
     <div class="sub">Nhập tuổi, chiều cao, cân nặng để trang tính mục tiêu calo và đạm.
       Số liệu chỉ nằm trong trình duyệt máy này, không gửi đi đâu.</div>
     <div class="card">${profileForm}</div>
-    <p class="small dim" style="margin-top:18px;text-align:center">Giáo án ở tab Tập dùng được ngay, không cần điền gì.</p>`;
+    <p class="small dim" style="margin-top:18px;text-align:center">Giáo án ở tab Tập dùng được ngay, không cần điền gì.</p>
+    <div style="margin-top:16px">${installCard()}</div>`;
 
   const bmi = latest / Math.pow(p.height / 100, 2);
   const goal = +p.goalWeight || 0;
@@ -549,6 +589,7 @@ function viewMe() {
 
   return `
   <div class="stack">
+    ${installCard()}
     <details class="sec" open><summary>Cân nặng</summary><div class="body">
       <div class="g3" style="text-align:center;padding:16px 0">
         <div><div class="num" style="font-size:30px">${n1(latest)}</div><div class="small dim">kg</div></div>
@@ -741,6 +782,12 @@ document.addEventListener("click", e => {
     a.download = "so-sat-" + today() + ".json"; a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000); toast("Đã xuất file"); return;
   }
+  if (el.id === "installBtn") {
+    if (!installPrompt) return;
+    installPrompt.prompt();
+    installPrompt.userChoice.finally(() => { installPrompt = null; render(); });
+    return;
+  }
   if (el.id === "importBtn") { $("#importFile").click(); return; }
   if (el.id === "resetBtn") {
     if (confirm("Khôi phục chương trình gốc?\nNhật ký và cân nặng vẫn được giữ.")) {
@@ -798,6 +845,17 @@ document.addEventListener("change", e => {
   };
   r.readAsText(f); e.target.value = "";
 });
+
+/* ---------------- cài đặt & offline ---------------- */
+window.addEventListener("beforeinstallprompt", e => {
+  e.preventDefault(); installPrompt = e;
+  if (tab === "me") render();
+});
+window.addEventListener("appinstalled", () => { installPrompt = null; if (tab === "me") render(); });
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () =>
+    navigator.serviceWorker.register("./sw.js").catch(() => { /* offline không bắt buộc */ }));
+}
 
 /* ---------------- khởi động ---------------- */
 curDay = autoDay();

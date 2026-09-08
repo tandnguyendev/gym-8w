@@ -14,6 +14,16 @@ không tài khoản. Mọi số liệu nằm trong `localStorage` của máy b�
 Kèm sẵn một giáo án full-body 8 tuần, 3 buổi/tuần, cho người quay lại tập sau
 một thời gian chỉ tập bodyweight. Sửa thoải mái — nó chỉ là dữ liệu khởi tạo.
 
+## Cài lên điện thoại
+
+Mở link bằng trình duyệt trên điện thoại rồi thêm vào màn hình chính:
+
+- **iPhone / Safari** — nút Chia sẻ → *Thêm vào MH chính*
+- **Android / Chrome** — menu ⋮ → *Cài ứng dụng*, hoặc bấm nút trong tab Tôi
+
+Mở từ icon sẽ chạy toàn màn hình (không thanh địa chỉ) và dùng được cả khi mất
+mạng — service worker lưu sẵn trang, icon và font.
+
 ## Chạy local
 
 ```
