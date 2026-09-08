@@ -6,7 +6,7 @@ không tài khoản. Mọi số liệu nằm trong `localStorage` của máy b�
 - **Tập** — mở là vào thẳng buổi hôm nay (tự chọn A hay B theo buổi gần nhất).
   Mỗi lần một bài, có thanh tiến độ và dãy chấm để biết đang ở đâu. Tạ và rep điền
   sẵn từ set trước, chỉnh bằng nút −/+, bấm một nút là xong set. Đồng hồ nghỉ tự
-  chạy sau mỗi set và rung báo khi hết.
+  chạy sau mỗi set và rung báo khi hết. Bấm vào set đã ghi để sửa, bấm × để xoá.
   Mỗi bài có ảnh minh hoạ hai khung (tư thế bắt đầu → kết thúc); tự mở sẵn ở
   bài bạn chưa từng tập.
 - **Nhật ký** — các buổi đã ghi, kèm tổng khối lượng (tạ × rep).

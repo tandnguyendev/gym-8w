@@ -97,11 +97,17 @@ details.note[open] summary::before{content:"▾ "}
 details.note p{margin:4px 0 0;font-size:14px;color:var(--muted);line-height:1.5}
 
 /* ---------- done sets ---------- */
-.doneset{display:flex;align-items:center;gap:12px;width:100%;background:var(--surface);
-  border:1px solid var(--line);border-radius:12px;padding:13px 15px;text-align:left;margin-bottom:8px}
-.doneset .tick{color:var(--jade);font-size:18px}
-.doneset .val{font-family:var(--display);font-size:21px;font-weight:600;font-variant-numeric:tabular-nums;margin-left:auto}
+.doneset{display:flex;align-items:stretch;background:var(--surface);border:1px solid var(--line);
+  border-radius:12px;margin-bottom:8px;overflow:hidden}
 .doneset.editing{border-color:var(--brass)}
+.ds-main{flex:1;min-width:0;display:flex;align-items:center;gap:12px;background:transparent;
+  border:0;padding:13px 6px 13px 15px;text-align:left;min-height:54px}
+.ds-main .tick{color:var(--jade);font-size:18px;flex:none}
+.ds-main .val{font-family:var(--display);font-size:21px;font-weight:600;
+  font-variant-numeric:tabular-nums;margin-left:auto;white-space:nowrap}
+.ds-del{flex:none;width:52px;background:transparent;border:0;border-left:1px solid var(--line);
+  color:var(--dim);font-size:23px;line-height:1}
+.ds-del:active{background:var(--raised);color:var(--rust)}
 
 /* ---------- stepper ---------- */
 .setlabel{font-family:var(--display);font-size:17px;letter-spacing:.08em;text-transform:uppercase;
@@ -434,10 +440,13 @@ function viewTrain() {
     : `<div class="prev dim">Chưa có buổi trước — số bạn ghi hôm nay là mốc gốc.</div>`;
 
   const doneList = done.map((s, i) => `
-    <button class="doneset ${editIdx === i ? "editing" : ""}" data-edit="${i}">
-      <span class="tick">✓</span><span class="muted">Set ${i + 1}</span>
-      <span class="val">${esc(s.kg)} <span style="color:var(--dim)">×</span> ${esc(s.reps)}</span>
-    </button>`).join("");
+    <div class="doneset ${editIdx === i ? "editing" : ""}">
+      <button class="ds-main" data-edit="${i}">
+        <span class="tick">✓</span><span class="muted">Set ${i + 1}</span>
+        <span class="val">${esc(s.kg)} <span style="color:var(--dim)">×</span> ${esc(s.reps)}</span>
+      </button>
+      <button class="ds-del" data-delset="${i}" aria-label="Xoá set ${i + 1}">×</button>
+    </div>`).join("");
 
   /* --- khu vực hành động --- */
   let action = "";
@@ -759,6 +768,19 @@ document.addEventListener("click", e => {
   }
   if (el.dataset.day) {
     curDay = el.dataset.day; exIdx = firstUnfinished(); editIdx = null; showPicker = false; render(); return;
+  }
+  if (el.dataset.delset !== undefined) {
+    const i = +el.dataset.delset, d = day(), k = lkey(curDate, d.id, d.exercises[exIdx].id);
+    const arr = S.log[k];
+    if (!arr || !arr[i]) return;
+    const gone = arr[i];
+    arr.splice(i, 1);                       // các set sau tự dồn số lại
+    if (!arr.length) delete S.log[k];       // xoá hẳn khoá để buổi rỗng không vào nhật ký
+    editIdx = null;
+    save(true);
+    stopRest();                             // set không tính thì cũng không phải nghỉ
+    toast(`Đã xoá set ${i + 1} · ${gone.kg}×${gone.reps}`);
+    return;
   }
   if (el.dataset.edit !== undefined) {
     editIdx = editIdx === +el.dataset.edit ? null : +el.dataset.edit;
