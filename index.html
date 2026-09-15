@@ -86,6 +86,13 @@ button{font-family:inherit;font-size:16px;cursor:pointer;color:inherit}
 .exname{font-family:var(--display);font-size:34px;font-weight:700;line-height:1.08;
   letter-spacing:.01em;margin:2px 0 4px;text-wrap:balance}
 .exrx{font-family:var(--display);font-size:18px;letter-spacing:.07em;text-transform:uppercase;color:var(--brass)}
+.exrx .of{color:var(--dim)}
+.alts{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:12px}
+.alts .lab{font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--dim);margin-right:2px}
+.chip{background:var(--surface);border:1px solid var(--line);border-radius:99px;
+  padding:7px 13px;min-height:38px;font-size:14px;color:var(--muted)}
+.chip:active{background:var(--raised)}
+.chip[aria-pressed=true]{border-color:var(--brass);color:var(--brass)}
 .prev{font-size:14px;color:var(--muted);background:var(--surface);border-left:3px solid var(--brass);
   border-radius:10px;padding:10px 13px;margin:14px 0}
 .prev b{color:var(--chalk);font-family:var(--display);font-size:16px;font-variant-numeric:tabular-nums}
@@ -232,11 +239,73 @@ const FIGKEY = {
   "Bulgarian Split Squat": "bss", "Lateral Raise": "lateral", "Hammer Curl": "curl",
   "Leg Press": "legpress", "Triceps Pushdown": "pushdown",
 };
+/** Bài thay thế khi máy bận, theo tên bài chính. Khởi điểm chỉ là ước lượng từ mức bài chính. */
+const alt = (id, name, reps, unit, start, step, note, fig) =>
+  ({ id, name, reps, unit, start, step, note, fig: fig || "" });
+const ALTS = {
+  "Back Squat": [
+    alt("goblet", "Goblet Squat", "8–12", "kg", 16, 2, "Ôm một quả tạ tay dựng đứng trước ngực, khuỷu chỉ xuống giữa hai gối. Không cần rack."),
+    alt("smith-squat", "Smith Squat", "6–8", "kg", 30, 2.5, "Tạ trên Smith không so được với tạ đòn (có ray đỡ, đòn máy nhẹ hơn) nên ghi riêng. Chân đặt hơi lên trước thanh đòn.", "squat"),
+  ],
+  "Bench Press": [
+    alt("db-bench", "Đẩy ngực tạ tay", "8–10", "kg/tay", 20, 2, "Hạ tạ tới ngang ngực, khuỷu chếch khoảng 45° so với thân. Chỉ cần một ghế phẳng."),
+    alt("chest-press", "Chest Press máy", "8–10", "kg", 35, 5, "Tay cầm ngang giữa ngực, siết bả vai ra sau trước khi đẩy."),
+  ],
+  "Xà đeo tạ": [
+    alt("pulldown", "Lat Pulldown", "8–10", "kg", 45, 5, "Kéo thanh về sát ngực trên, ngả người nhẹ, đừng giật bằng lưng."),
+  ],
+  "Romanian Deadlift": [
+    alt("db-rdl", "RDL tạ tay", "8–10", "kg/tay", 16, 2, "Giống RDL đòn: đẩy hông ra sau, tạ trượt sát ống chân, dừng khi thấy căng đùi sau.", "rdl"),
+    alt("leg-curl", "Leg Curl máy", "10–12", "kg", 25, 5, "Cuốn gót về phía mông, hạ chậm 2–3 giây."),
+  ],
+  "Leg Press": [
+    alt("hack", "Hack Squat máy", "8–10", "kg", 40, 5, "Chỉ tính đĩa gắn thêm, không tính bàn trượt."),
+    alt("lunge", "Lunge tạ tay", "10/chân", "kg/tay", 10, 2, "Bước dài vừa phải, gối sau hạ gần chạm sàn."),
+  ],
+  "Face Pull": [
+    alt("rear-fly", "Bay vai sau tạ tay", "15", "kg/tay", 5, 1, "Cúi người gần song song sàn, dang tay sang hai bên, siết bả vai."),
+    alt("reverse-pec", "Reverse Pec Deck", "15", "kg", 20, 5, "Ngồi quay mặt vào máy, tay duỗi gần thẳng, mở rộng ra sau."),
+  ],
+  "Hanging Leg Raise": [
+    alt("captain", "Nâng chân ghế tựa", "10–15", "+kg", 0, 1, "Tì cẳng tay lên đệm, lưng áp tựa, nâng gối lên ngực."),
+    alt("lying-raise", "Nằm nâng chân", "12–15", "+kg", 0, 1, "Nằm ngửa trên sàn, tay đặt dưới mông, lưng dưới ép sát sàn."),
+  ],
+  "Deadlift": [
+    alt("trapbar", "Trap Bar Deadlift", "5", "kg", 55, 5, "Đứng giữa khung, tay cầm hai bên, đẩy sàn bằng chân."),
+    alt("db-deadlift", "Deadlift tạ tay", "8", "kg/tay", 22, 2, "Tạ hai bên chân, lưng thẳng, hạ tới giữa ống chân."),
+  ],
+  "Overhead Press": [
+    alt("db-ohp", "Đẩy vai tạ tay", "8–10", "kg/tay", 12, 2, "Ngồi ghế có tựa hoặc đứng, siết bụng, đẩy tạ lên thẳng trên đầu."),
+    alt("shoulder-press", "Shoulder Press máy", "8–10", "kg", 25, 5, "Tay cầm ngang vai ở điểm thấp nhất."),
+  ],
+  "Barbell Row": [
+    alt("db-row", "Row tạ tay một tay", "8–10/tay", "kg", 22, 2, "Một gối và một tay tì ghế, kéo tạ về phía hông."),
+    alt("cable-row", "Kéo cáp ngồi", "10–12", "kg", 40, 5, "Ngồi thẳng lưng, kéo tay cầm về rốn, siết bả vai."),
+  ],
+  "Bulgarian Split Squat": [
+    alt("rev-lunge", "Lunge lùi tạ tay", "8–10/chân", "kg/tay", 10, 1, "Bước lùi thay vì tiến — đỡ áp lực lên gối trước."),
+    alt("stepup", "Step-up lên ghế", "8–10/chân", "kg/tay", 10, 1, "Đạp bằng gót chân trên ghế, đừng bật bằng chân dưới."),
+  ],
+  "Triceps Pushdown": [
+    alt("oh-ext", "Duỗi tay sau qua đầu", "10–12", "kg", 12, 2, "Hai tay ôm một quả tạ tay sau đầu, khuỷu chỉ lên trần."),
+    alt("bench-dip", "Dip trên ghế", "10–15", "+kg", 0, 2.5, "Tay chống mép ghế, hạ tới khuỷu vuông góc."),
+  ],
+  "Lateral Raise": [
+    alt("cable-lateral", "Nâng ngang cáp", "12–15/tay", "kg", 5, 2.5, "Ròng rọc thấp, dây vắt chéo trước người, nâng tới ngang vai."),
+    alt("lateral-machine", "Máy nâng vai ngang", "12–15", "kg", 15, 5, ""),
+  ],
+  "Hammer Curl": [
+    alt("rope-curl", "Cuốn cáp dây thừng", "10–12", "kg", 15, 2.5, "Ròng rọc thấp, lòng bàn tay hướng vào nhau như hammer curl."),
+    alt("ez-curl", "Cuốn tạ đòn EZ", "8–12", "kg", 20, 2.5, "Khuỷu giữ sát người, không đẩy hông lấy đà."),
+  ],
+};
+const altsFor = name => (ALTS[name] || []).map(a => ({ ...a }));
+
 const PROG_VERSION = 2;
 function seed() {
   const ex = (name, sets, reps, start, step, rest, unit, note) =>
     ({ id: uid(), name, sets, reps, start, step, rest, unit: unit || "kg",
-       note: note || "", fig: FIGKEY[name] || "" });
+       note: note || "", fig: FIGKEY[name] || "", alts: altsFor(name) });
   return {
     profile: { name: "", sex: "m", age: "", height: "", weight: "",
       activity: 1.6, surplus: 450, proteinPerKg: 2, fatPerKg: 1.2,
@@ -261,7 +330,7 @@ function seed() {
         ex("Hammer Curl", 3, "10–12", 10, 1, 60, "kg/tay", "Lòng bàn tay hướng vào nhau, khuỷu giữ sát người."),
       ]},
     ],
-    log: {}, bw: [], progVersion: PROG_VERSION,
+    log: {}, swap: {}, bw: [], progVersion: PROG_VERSION,
   };
 }
 
@@ -286,7 +355,9 @@ function migrate(old) {
     if (e.step == null) e.step = b.step || 2.5;
     if (e.rest == null) e.rest = b.rest || 120;
     if (e.fig == null) e.fig = FIGKEY[e.name] || "";
+    if (e.alts == null) e.alts = altsFor(e.name);
   }));
+  if (!old.swap) old.swap = {};
   return old;
 }
 /** Chương trình mặc định có bản mới: thay vào nếu người dùng chưa ghi buổi nào
@@ -361,12 +432,22 @@ function autoDay() {
   }
   return S.days[0].id;
 }
-/** Lần gần nhất TRƯỚC ngày đang mở có ghi bài này. */
-function lastPerf(exId) {
+/** Bài thay thế giữ id của ô bài chính (tiến độ, nhật ký tính như cũ) nhưng có tên, tạ, lịch sử riêng. */
+function eff(ex, date, dayId) {
+  const altId = S.swap[lkey(date, dayId, ex.id)] || "";
+  if (!altId) return { ...ex, altId: "", altOf: "" };
+  const a = (ex.alts || []).find(x => x.id === altId);
+  if (!a) return { ...ex, name: ex.name + " (bài thay đã xoá)", note: "", fig: "", altId, altOf: ex.name };
+  return { ...ex, name: a.name, reps: a.reps || ex.reps, unit: a.unit || ex.unit,
+    start: +a.start || 0, step: +a.step || ex.step, note: a.note || "", fig: a.fig || "",
+    altId, altOf: ex.name };
+}
+function lastPerf(exId, altId) {
   let best = null;
   for (const k in S.log) {
     const [d, , e] = k.split("|");
     if (e !== exId || d >= curDate || !(S.log[k] || []).length) continue;
+    if ((S.swap[k] || "") !== (altId || "")) continue;
     if (!best || d > best.date) best = { date: d, sets: S.log[k] };
   }
   return best;
@@ -376,7 +457,7 @@ const repLow = r => { const m = String(r).match(/\d+/); return m ? +m[0] : 8; };
 function suggest(ex, i) {
   const cur = sets(curDate, curDay, ex.id);
   if (i > 0 && cur[i - 1]) return { kg: cur[i - 1].kg, reps: cur[i - 1].reps };
-  const p = lastPerf(ex.id);
+  const p = lastPerf(ex.id, ex.altId);
   if (p) { const s = p.sets[Math.min(i, p.sets.length - 1)]; return { kg: s.kg, reps: s.reps }; }
   return { kg: ex.start != null ? ex.start : 0, reps: repLow(ex.reps) };
 }
@@ -410,7 +491,7 @@ function renderTop() {
   const dots = d.exercises.map((e, i) => {
     const n = sets(curDate, d.id, e.id).length;
     return `<button class="dot ${n >= e.sets ? "done" : ""}" data-jump="${i}"
-      aria-current="${i === exIdx}" aria-label="${esc(e.name)}">${n >= e.sets ? "✓" : i + 1}</button>`;
+      aria-current="${i === exIdx}" aria-label="${esc(eff(e, curDate, d.id).name)}">${n >= e.sets ? "✓" : i + 1}</button>`;
   }).join("");
   el.innerHTML = `
     <div class="topline">
@@ -430,7 +511,7 @@ function viewTrain() {
   if (!d.exercises.length) return `<div class="empty">Buổi này chưa có bài nào.<br><br>
     <button class="ghost" data-goto="me">Mở Hồ sơ → Chương trình</button></div>`;
   if (exIdx >= d.exercises.length) exIdx = 0;
-  const ex = d.exercises[exIdx];
+  const slot = d.exercises[exIdx], ex = eff(slot, curDate, d.id);
   const done = sets(curDate, d.id, ex.id);
   const total = +ex.sets || 1;
   const idx = editIdx != null ? editIdx : done.length;
@@ -447,11 +528,20 @@ function viewTrain() {
     </div>`;
   }
 
-  const p = lastPerf(ex.id);
+  const p = lastPerf(ex.id, ex.altId);
   const prev = p
     ? `<div class="prev">Lần trước · ${fmtDate(p.date)} — ` +
       p.sets.map(s => `<b>${esc(s.kg)}</b>×<b>${esc(s.reps)}</b>`).join(" &nbsp; ") + `</div>`
-    : `<div class="prev dim">Chưa có buổi trước — số bạn ghi hôm nay là mốc gốc.</div>`;
+    : ex.altId
+      ? `<div class="prev dim">Chưa tập bài này — mức gợi ý chỉ là ước lượng, set đầu làm nhẹ để dò.</div>`
+      : `<div class="prev dim">Chưa có buổi trước — số bạn ghi hôm nay là mốc gốc.</div>`;
+
+  const alts = (slot.alts || []).length
+    ? `<div class="alts" role="group" aria-label="Máy bận thì đổi bài"><span class="lab">Máy bận?</span>` +
+      [{ id: "", name: slot.name }].concat(slot.alts).map(a =>
+        `<button class="chip" data-alt="${esc(a.id)}" aria-pressed="${a.id === ex.altId}">${esc(a.name)}</button>`).join("") +
+      `</div>`
+    : "";
 
   const doneList = done.map((s, i) => `
     <div class="doneset ${editIdx === i ? "editing" : ""}">
@@ -511,7 +601,8 @@ function viewTrain() {
 
   return `${picker}
     <div class="exname">${esc(ex.name)}</div>
-    <div class="exrx">${total} set × ${esc(ex.reps)} rep</div>
+    <div class="exrx">${total} set × ${esc(ex.reps)} rep${ex.altOf ? ` <span class="of">· thay ${esc(ex.altOf)}</span>` : ""}</div>
+    ${alts}
     ${prev}
     ${doneList}
     ${action}
@@ -533,7 +624,7 @@ function viewHistory() {
     const dId = dayOfDate(date), d = S.days.find(x => x.id === dId);
     const rows = !d ? "" : d.exercises.map(e => {
       const s = sets(date, d.id, e.id);
-      return s.length ? `<div class="lrow"><div>${esc(e.name)}</div>
+      return s.length ? `<div class="lrow"><div>${esc(eff(e, date, d.id).name)}</div>
         <div class="num muted">${s.map(x => `${esc(x.kg)}×${esc(x.reps)}`).join("  ")}</div></div>` : "";
     }).join("");
     return `<div class="card">
@@ -575,6 +666,26 @@ function installCard() {
 }
 
 /* ---------------- TÔI ---------------- */
+function altEditor(d, e) {
+  const f = (a, field) => `data-altf="${d.id}|${e.id}|${esc(a.id)}|${field}"`;
+  return `<div class="tiny muted" style="margin:14px 0 8px">Bài thay thế khi máy bận</div>` +
+    (e.alts || []).map(a => `
+      <div style="border-left:2px solid var(--line);padding-left:10px;margin-bottom:12px">
+        <div class="row" style="margin-bottom:8px">
+          <input value="${esc(a.name)}" ${f(a, "name")} aria-label="Tên bài thay thế">
+          <button class="iconbtn" style="color:var(--rust);border-color:#4d2c25" data-delalt="${d.id}|${e.id}|${esc(a.id)}" aria-label="Xoá bài thay thế">×</button>
+        </div>
+        <div class="g2" style="margin-bottom:8px">
+          <label class="f"><span>Rep</span><input value="${esc(a.reps)}" ${f(a, "reps")} style="font-family:var(--display);font-size:21px;text-align:center;padding:10px 4px"></label>
+          <label class="f"><span>Đơn vị</span><input value="${esc(a.unit)}" ${f(a, "unit")} style="font-size:14px;text-align:center;padding:14px 4px"></label>
+        </div>
+        <div class="g2">
+          <label class="f"><span>Khởi điểm</span><input type="number" step="0.5" inputmode="decimal" value="${esc(a.start)}" ${f(a, "start")}></label>
+          <label class="f"><span>Bước ±</span><input type="number" step="0.5" inputmode="decimal" value="${esc(a.step)}" ${f(a, "step")}></label>
+        </div>
+      </div>`).join("") +
+    `<button class="ghost sm" data-addalt="${d.id}|${e.id}">+ Bài thay thế</button>`;
+}
 function viewMe() {
   const p = S.profile, t = targets();
   const bw = [...S.bw].sort((a, b) => b.date.localeCompare(a.date));
@@ -657,6 +768,7 @@ function viewMe() {
               ${Object.keys(FIGLABEL).map(k => `<option value="${k}"${e.fig === k ? " selected" : ""}>${FIGLABEL[k]}</option>`).join("")}
             </select></label>
           <textarea rows="2" placeholder="Ghi chú kỹ thuật…" data-ex="${d.id}|${e.id}|note" style="font-size:14px;margin-top:9px">${esc(e.note)}</textarea>
+          ${altEditor(d, e)}
         </div>`).join("")}
       <button class="ghost sm" data-addex="${d.id}">+ Thêm bài</button>
     </div>`).join("");
@@ -719,10 +831,16 @@ function viewMe() {
 }
 
 /* ---------------- render ---------------- */
+let lastTab = null;
 function render() {
   if (!curDay || !S.days.some(d => d.id === curDay)) curDay = autoDay();
   renderTop();
+  // vẽ lại tab Tôi (thêm bài, thêm bài thay thế…) không được gập mục người dùng đang mở
+  const wasOpen = tab === "me" && lastTab === "me"
+    ? [...document.querySelectorAll("#view details")].map(x => x.open) : null;
   $("#view").innerHTML = tab === "train" ? viewTrain() : tab === "history" ? viewHistory() : viewMe();
+  if (wasOpen) document.querySelectorAll("#view details").forEach((x, i) => { if (i < wasOpen.length) x.open = wasOpen[i]; });
+  lastTab = tab;
   document.querySelectorAll(".tab").forEach(b =>
     b.dataset.tab === tab ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current"));
 }
@@ -783,6 +901,13 @@ document.addEventListener("click", e => {
   if (el.dataset.day) {
     curDay = el.dataset.day; exIdx = firstUnfinished(); editIdx = null; showPicker = false; render(); return;
   }
+  if (el.dataset.alt !== undefined) {
+    const d = day(), k = lkey(curDate, d.id, d.exercises[exIdx].id), want = el.dataset.alt;
+    if ((S.swap[k] || "") === want) return;
+    if ((S.log[k] || []).length) { toast("Xoá các set đã ghi rồi mới đổi"); return; }
+    if (want) S.swap[k] = want; else delete S.swap[k];
+    editIdx = null; save(true); render(); return;
+  }
   if (el.dataset.delset !== undefined) {
     const i = +el.dataset.delset, d = day(), k = lkey(curDate, d.id, d.exercises[exIdx].id);
     const arr = S.log[k];
@@ -803,7 +928,7 @@ document.addEventListener("click", e => {
 
   if (el.dataset.step) {
     const [f, dir] = el.dataset.step.split(":");
-    const ex = day().exercises[exIdx];
+    const ex = eff(day().exercises[exIdx], curDate, day().id);
     const input = $(f === "kg" ? "#kgVal" : "#repVal");
     const step = f === "kg" ? (+ex.step || 2.5) : 1;
     let v = parseFloat(input.value); if (!isFinite(v)) v = 0;
@@ -852,6 +977,21 @@ document.addEventListener("click", e => {
     if (d) { d.exercises.push({ id: uid(), name: "Bài mới", sets: 3, reps: "8–10",
       unit: "kg", start: 20, step: 2.5, rest: 120, note: "" }); save(true); render(); }
     return;
+  }
+  if (el.dataset.addalt) {
+    const [dayId, exId] = el.dataset.addalt.split("|");
+    const d = S.days.find(x => x.id === dayId), ex = d && d.exercises.find(x => x.id === exId);
+    if (ex) { (ex.alts = ex.alts || []).push({ id: uid(), name: "Bài thay thế", reps: ex.reps,
+      unit: ex.unit, start: 0, step: ex.step || 2.5, note: "", fig: "" }); save(true); render(); }
+    return;
+  }
+  if (el.dataset.delalt) {
+    const [dayId, exId, altId] = el.dataset.delalt.split("|");
+    const d = S.days.find(x => x.id === dayId), ex = d && d.exercises.find(x => x.id === exId);
+    const a = ex && (ex.alts || []).find(x => x.id === altId);
+    if (a && confirm(`Xoá bài thay thế "${a.name}"?\nCác set đã ghi vẫn giữ trong nhật ký.`)) {
+      ex.alts = ex.alts.filter(x => x.id !== altId); save(true); render();
+    } return;
   }
   if (el.dataset.delex) {
     const [dayId, exId] = el.dataset.delex.split("|");
@@ -903,6 +1043,14 @@ document.addEventListener("input", e => {
     if (!ex) return;
     ex[field] = ["sets", "start", "step", "rest"].includes(field) ? (+el.value || 0) : el.value;
     if (field === "sets" && ex.sets < 1) ex.sets = 1;
+    save(); return;
+  }
+  if (el.dataset.altf) {
+    const [dayId, exId, altId, field] = el.dataset.altf.split("|");
+    const d = S.days.find(x => x.id === dayId), ex = d && d.exercises.find(x => x.id === exId);
+    const a = ex && (ex.alts || []).find(x => x.id === altId);
+    if (!a) return;
+    a[field] = ["start", "step"].includes(field) ? (+el.value || 0) : el.value;
     save(); return;
   }
   if (el.id === "dateInput") {
