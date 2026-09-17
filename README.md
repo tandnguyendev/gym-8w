@@ -16,13 +16,24 @@ không tài khoản. Mọi số liệu nằm trong `localStorage` của máy b�
 - **Tôi** — cân nặng, BMI, mục tiêu calo/đạm (Mifflin–St Jeor), trình sửa chương
   trình, xuất/nhập JSON.
 
-Kèm sẵn một giáo án full-body 8 tuần, 3 buổi/tuần, cho người từng tập tạ vài
-năm rồi nghỉ. Mức tạ khởi điểm đặt ở khoảng 65% mức cũ; khối lượng dồn về
-đùi trước vì đó thường là nhóm bị bỏ khi tập kiểu chia nhóm cơ. Sửa thoải
+Kèm sẵn một giáo án full-body 8 tuần, 3 buổi/tuần (A và B xen kẽ), cho người
+từng tập tạ vài năm rồi nghỉ, mục tiêu tăng cân tăng cơ. Mức tạ khởi điểm đặt ở
+khoảng 65% mức cũ; khối lượng dồn về đùi trước vì đó thường là nhóm bị bỏ khi
+tập kiểu chia nhóm cơ, và mỗi nhóm cơ chính có khoảng 9–16 set/tuần. Sửa thoải
 mái — nó chỉ là dữ liệu khởi tạo.
 
+Vì không có PT đi kèm, app tự lo mấy việc PT hay nhắc:
+
+- **Tăng tạ** — buổi trước đạt số rep cao nhất ở mọi set thì hôm nay tự gợi ý
+  tăng một bước tạ.
+- **Khởi động** — danh sách khởi động chung ở bài đầu, và set khởi động tính
+  sẵn theo mức tạ chính cho Squat, Bench, Deadlift, OHP.
+- **Nhịp tăng cân** — trong tab Tôi, so các lần cân cách nhau 1–3 tuần và báo
+  nên ăn thêm, giữ nguyên hay bớt.
+
 Chương trình có `progVersion`: khi bản mặc định đổi, app tự thay vào nếu bạn
-chưa ghi buổi nào, còn đã tập rồi thì giữ nguyên dữ liệu của bạn.
+chưa ghi buổi nào; đã tập rồi thì chỉ chèn bài mới vào đúng chỗ, bài cũ, mức
+tạ và nhật ký giữ nguyên.
 
 ## Cài lên điện thoại
 

@@ -96,6 +96,13 @@ button{font-family:inherit;font-size:16px;cursor:pointer;color:inherit}
 .prev{font-size:14px;color:var(--muted);background:var(--surface);border-left:3px solid var(--brass);
   border-radius:10px;padding:10px 13px;margin:14px 0}
 .prev b{color:var(--chalk);font-family:var(--display);font-size:16px;font-variant-numeric:tabular-nums}
+.prev .rule{display:block;margin-top:5px;font-size:13px;color:var(--dim)}
+.prev .up{display:block;margin-top:6px;color:var(--jade);font-weight:500}
+.warm{background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:11px 14px;margin-bottom:4px}
+.warm .lab{font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--dim)}
+.warm .ws{font-family:var(--display);font-size:21px;font-weight:600;font-variant-numeric:tabular-nums;margin-top:2px}
+.effort{text-align:center;color:var(--dim);font-size:13px;margin-top:10px}
+details.note ul{margin:6px 0 0;padding-left:20px;font-size:14px;color:var(--muted);line-height:1.65}
 details.note{margin-top:14px}
 details.note summary{color:var(--muted);font-size:14px;cursor:pointer;list-style:none;padding:6px 0}
 details.note summary::-webkit-details-marker{display:none}
@@ -217,7 +224,8 @@ const FIGLABEL = { squat: "Squat (đòn trên vai)", bench: "Đẩy ngực nằm
   rdl: "Romanian deadlift", facepull: "Face pull (cáp)", legraise: "Treo nâng chân",
   deadlift: "Deadlift từ sàn", ohp: "Đẩy vai qua đầu", row: "Kéo tạ khom người",
   bss: "Squat một chân, chân sau gác", lateral: "Nâng tạ ngang vai", curl: "Cuốn tay trước",
-  legpress: "Đạp đùi (máy)", pushdown: "Đẩy tay sau (cáp)" };
+  legpress: "Đạp đùi (máy)", pushdown: "Đẩy tay sau (cáp)",
+  incline: "Đẩy ngực ghế dốc", dbcurl: "Cuốn tạ tay", calf: "Nhón bắp chân" };
 
 function figureHTML(key) {
   if (!key || !FIGLABEL[key]) return "";
@@ -238,6 +246,7 @@ const FIGKEY = {
   "Deadlift": "deadlift", "Overhead Press": "ohp", "Barbell Row": "row",
   "Bulgarian Split Squat": "bss", "Lateral Raise": "lateral", "Hammer Curl": "curl",
   "Leg Press": "legpress", "Triceps Pushdown": "pushdown",
+  "Incline Dumbbell Press": "incline", "Dumbbell Curl": "dbcurl", "Calf Raise": "calf",
 };
 /** Bài thay thế khi máy bận, theo tên bài chính. Khởi điểm chỉ là ước lượng từ mức bài chính. */
 const alt = (id, name, reps, unit, start, step, note, fig) =>
@@ -298,14 +307,27 @@ const ALTS = {
     alt("rope-curl", "Cuốn cáp dây thừng", "10–12", "kg", 15, 2.5, "Ròng rọc thấp, lòng bàn tay hướng vào nhau như hammer curl."),
     alt("ez-curl", "Cuốn tạ đòn EZ", "8–12", "kg", 20, 2.5, "Khuỷu giữ sát người, không đẩy hông lấy đà."),
   ],
+  "Incline Dumbbell Press": [
+    alt("incline-machine", "Incline Chest Press máy", "8–10", "kg", 30, 5, "Tay cầm ngang ngực trên, siết bả vai ra sau trước khi đẩy."),
+    alt("feet-up-pushup", "Hít đất chân kê cao", "10–15", "+kg", 0, 2.5, "Chân gác ghế, thân thẳng một đường. Dễ quá thì đeo balo có tạ."),
+  ],
+  "Dumbbell Curl": [
+    alt("cable-curl", "Cuốn cáp thanh thẳng", "10–12", "kg", 15, 2.5, "Ròng rọc thấp, khuỷu đứng yên, hạ chậm."),
+    alt("ez-curl", "Cuốn tạ đòn EZ", "8–12", "kg", 20, 2.5, "Khuỷu giữ sát người, không đẩy hông lấy đà."),
+  ],
+  "Calf Raise": [
+    alt("calf-machine", "Calf Raise máy đứng", "12–15", "kg", 40, 5, "Hạ gót sâu, dừng 1 giây ở dưới rồi nhón hết cỡ."),
+    alt("seated-calf", "Calf Raise ngồi máy", "15–20", "kg", 20, 5, "Ngồi thì tập phần cơ dép phía dưới — rep cao hơn."),
+  ],
 };
 const altsFor = name => (ALTS[name] || []).map(a => ({ ...a }));
+const WARM = ["Back Squat", "Bench Press", "Deadlift", "Overhead Press"];
 
-const PROG_VERSION = 2;
+const PROG_VERSION = 3;
 function seed() {
   const ex = (name, sets, reps, start, step, rest, unit, note) =>
     ({ id: uid(), name, sets, reps, start, step, rest, unit: unit || "kg",
-       note: note || "", fig: FIGKEY[name] || "", alts: altsFor(name) });
+       note: note || "", fig: FIGKEY[name] || "", alts: altsFor(name), warm: WARM.includes(name) });
   return {
     profile: { name: "", sex: "m", age: "", height: "", weight: "",
       activity: 1.6, surplus: 450, proteinPerKg: 2, fatPerKg: 1.2,
@@ -318,16 +340,20 @@ function seed() {
         ex("Romanian Deadlift", 3, "8–10", 40, 2.5, 120, "kg", "Đùi sau. Đẩy hông ra sau, gối hơi cong, tạ trượt sát chân. Thấy căng đùi sau là đúng."),
         ex("Leg Press", 3, "10–12", 60, 5, 120, "kg", "Thêm khối lượng cho đùi mà không dồn thêm mỏi lên cột sống sau squat. Đừng duỗi khoá gối ở đỉnh."),
         ex("Face Pull", 4, "15", 12.5, 2.5, 60, "kg", "Chống vai gù do ngồi bàn phím. Kéo dây về phía trán, siết bả vai, đừng nặng quá."),
+        ex("Dumbbell Curl", 3, "8–12", 10, 1, 60, "kg/tay", "Tay trước. Lòng bàn tay ngửa lên, khuỷu đứng yên, hạ chậm 2 giây. Làm xen kẽ từng set với Face Pull để đỡ tốn thời gian."),
+        ex("Lateral Raise", 3, "12–15", 6, 1, 60, "kg/tay", "Thêm 3 set ở buổi A để vai ngang đủ ~10 set/tuần. Làm xen kẽ từng set với Hanging Leg Raise."),
         ex("Hanging Leg Raise", 3, "10–15", 0, 1, 60, "+kg", "Treo người trên xà, nâng chân bằng cơ bụng. Không đu người lấy đà."),
       ]},
       { id: uid(), name: "Buổi B", exercises: [
         ex("Deadlift", 3, "5", 52.5, 5, 180, "kg", "Khởi điểm 52.5kg ≈ 65% mức cũ 80kg. Lưng thẳng tuyệt đối, đẩy sàn bằng chân chứ không giật bằng lưng."),
         ex("Overhead Press", 3, "6–8", 25, 2.5, 150, "kg", "Siết mông và bụng để khỏi ưỡn lưng. Đòn không đã là 20kg."),
         ex("Barbell Row", 4, "8–10", 35, 2.5, 120, "kg", "Người gập khoảng 45°, kéo tạ về phía rốn."),
+        ex("Incline Dumbbell Press", 3, "8–10", 16, 2, 120, "kg/tay", "Ngực trên, ghế dốc khoảng 30°. Bù cho ngực vốn chỉ có Bench ở buổi A. Hạ tạ tới ngang ngực trên, khuỷu chếch 45°."),
         ex("Bulgarian Split Squat", 4, "8–10/chân", 12, 1, 120, "kg/tay", "Sửa lệch chân trái phải, rất hợp dân đá banh. Chân sau gác ghế, dồn lực vào gót chân trước."),
         ex("Triceps Pushdown", 3, "10–12", 15, 2.5, 60, "kg", "Tay sau chỉ được tập gián tiếp qua bench và OHP nên cần thêm bài riêng. Khuỷu giữ sát người."),
         ex("Lateral Raise", 4, "12–15", 6, 1, 60, "kg/tay", "Vai ngang, giúp nở vai. Nhẹ thôi, nâng tới ngang vai rồi hạ chậm."),
         ex("Hammer Curl", 3, "10–12", 10, 1, 60, "kg/tay", "Lòng bàn tay hướng vào nhau, khuỷu giữ sát người."),
+        ex("Calf Raise", 3, "12–15", 12, 2, 60, "kg", "Mũi chân đứng trên bậc, một tay vịn, tay kia cầm tạ. Hạ gót thật sâu, dừng 1 giây rồi nhón hết cỡ. Làm xen kẽ từng set với Hammer Curl."),
       ]},
     ],
     log: {}, swap: {}, bw: [], progVersion: PROG_VERSION,
@@ -356,18 +382,31 @@ function migrate(old) {
     if (e.rest == null) e.rest = b.rest || 120;
     if (e.fig == null) e.fig = FIGKEY[e.name] || "";
     if (e.alts == null) e.alts = altsFor(e.name);
+    if (e.warm == null) e.warm = WARM.includes(e.name);
   }));
   if (!old.swap) old.swap = {};
   return old;
 }
 /** Chương trình mặc định có bản mới: thay vào nếu người dùng chưa ghi buổi nào
- *  (đã tập rồi thì giữ nguyên — dùng nút "Khôi phục chương trình gốc" nếu muốn đổi). */
+ *  (đã tập rồi thì chỉ chèn bài mới vào đúng chỗ — bài cũ, mức tạ, nhật ký giữ nguyên). */
 function refresh(d) {
   if (d.progVersion >= PROG_VERSION) return d;
   const daGhi = Object.keys(d.log || {}).some(k => (d.log[k] || []).length);
   if (!daGhi) d.days = seed().days;
+  else addNewExercises(d);
   d.progVersion = PROG_VERSION;
   return d;
+}
+function addNewExercises(d) {
+  seed().days.forEach(b => {
+    const u = d.days.find(x => x.exercises.some(e => e.name === b.exercises[0].name));
+    if (!u) return;
+    b.exercises.forEach((e, i) => {
+      if (u.exercises.some(x => x.name === e.name)) return;
+      const prev = i ? u.exercises.findIndex(x => x.name === b.exercises[i - 1].name) : -1;
+      u.exercises.splice(prev >= 0 ? prev + 1 : u.exercises.length, 0, e);
+    });
+  });
 }
 let saveTimer = null;
 function save(now) {
@@ -453,11 +492,38 @@ function lastPerf(exId, altId) {
   return best;
 }
 const repLow = r => { const m = String(r).match(/\d+/); return m ? +m[0] : 8; };
+const repHigh = r => { const m = String(r).match(/\d+/g); return m ? +m[m.length - 1] : 10; };
+/** Không có lịch sử ở ô này thì lấy bài cùng tên ở buổi khác (Lateral Raise nằm ở cả A và B). */
+function perf(ex) {
+  const own = lastPerf(ex.id, ex.altId);
+  if (own) return own;
+  let best = null;
+  for (const k in S.log) {
+    const [d, dayId, exId] = k.split("|");
+    if (d >= curDate || exId === ex.id || !(S.log[k] || []).length || (best && d <= best.date)) continue;
+    const dd = S.days.find(x => x.id === dayId), e = dd && dd.exercises.find(x => x.id === exId);
+    if (e && eff(e, d, dayId).name === ex.name) best = { date: d, sets: S.log[k] };
+  }
+  return best;
+}
+function levelUp(ex, p) {
+  if (!p || !(+ex.step > 0) || p.sets.length < ex.sets) return null;
+  if (!p.sets.every(s => +s.reps >= repHigh(ex.reps))) return null;
+  return n1(Math.max(...p.sets.map(s => +s.kg || 0)) + +ex.step);
+}
+function warmups(work, name) {
+  const r = x => Math.round(x / 2.5) * 2.5, dl = name === "Deadlift", out = [];
+  [[dl ? 0 : 20, 10], [r(work * .5), dl ? 8 : 5], [r(work * .7), 3], [r(work * .85), 2]].forEach(([kg, reps]) => {
+    if (kg >= 20 && kg <= work - 5 && (!out.length || kg >= out[out.length - 1].kg + 5)) out.push({ kg, reps });
+  });
+  return out;
+}
 /** Gợi ý tạ/rep: set trước trong buổi → cùng set buổi trước → mức khởi điểm. */
 function suggest(ex, i) {
   const cur = sets(curDate, curDay, ex.id);
   if (i > 0 && cur[i - 1]) return { kg: cur[i - 1].kg, reps: cur[i - 1].reps };
-  const p = lastPerf(ex.id, ex.altId);
+  const p = perf(ex), up = levelUp(ex, p);
+  if (up != null) return { kg: up, reps: repLow(ex.reps) };
   if (p) { const s = p.sets[Math.min(i, p.sets.length - 1)]; return { kg: s.kg, reps: s.reps }; }
   return { kg: ex.start != null ? ex.start : 0, reps: repLow(ex.reps) };
 }
@@ -528,10 +594,14 @@ function viewTrain() {
     </div>`;
   }
 
-  const p = lastPerf(ex.id, ex.altId);
+  const p = perf(ex), up = levelUp(ex, p), unit = String(ex.unit).replace(/^\+/, "");
   const prev = p
     ? `<div class="prev">Lần trước · ${fmtDate(p.date)} — ` +
-      p.sets.map(s => `<b>${esc(s.kg)}</b>×<b>${esc(s.reps)}</b>`).join(" &nbsp; ") + `</div>`
+      p.sets.map(s => `<b>${esc(s.kg)}</b>×<b>${esc(s.reps)}</b>`).join(" &nbsp; ") +
+      (up != null
+        ? `<span class="up">↑ Đủ rep ở mọi set — hôm nay lên ${esc(up)} ${esc(unit)}</span>`
+        : `<span class="rule">Đủ ${repHigh(ex.reps)} rep ở cả ${total} set thì buổi sau app tự tăng ${esc(ex.step)} ${esc(unit)}.</span>`) +
+      `</div>`
     : ex.altId
       ? `<div class="prev dim">Chưa tập bài này — mức gợi ý chỉ là ước lượng, set đầu làm nhẹ để dò.</div>`
       : `<div class="prev dim">Chưa có buổi trước — số bạn ghi hôm nay là mốc gốc.</div>`;
@@ -578,7 +648,10 @@ function viewTrain() {
         : `<button class="btn" data-jump="0">Quay lại bài chưa xong</button>`;
   } else {
     const sg = editIdx != null ? done[editIdx] : suggest(ex, idx);
-    action = `
+    const wu = ex.warm && !ex.altId && !done.length && editIdx == null ? warmups(+sg.kg, ex.name) : [];
+    action = (wu.length ? `
+      <div class="warm"><div class="lab">Khởi động · nghỉ ~1 phút · không ghi</div>
+        <div class="ws">${wu.map(w => `${w.kg}×${w.reps}`).join(" &nbsp;·&nbsp; ")}</div></div>` : "") + `
       <div class="setlabel">${editIdx != null ? "Sửa set " + (editIdx + 1) : "Set " + (idx + 1) + " / " + total}</div>
       <div class="steppers">
         <div class="stepper"><div class="cap">${esc(ex.unit)}</div>
@@ -596,10 +669,22 @@ function viewTrain() {
       </div>
       <button class="btn" id="logSet" style="margin-top:14px">
         ${editIdx != null ? "Cập nhật set " + (editIdx + 1) : "✓ Xong set " + (idx + 1)}</button>
+      ${editIdx == null && idx === 0 ? `<div class="effort">Mỗi set dừng khi còn 1–3 rep nữa là hết sức, không để gãy form</div>` : ""}
       ${editIdx != null ? `<button class="ghost" id="cancelEdit" style="margin-top:10px;width:100%">Huỷ</button>` : ""}`;
   }
 
-  return `${picker}
+  const general = exIdx === 0 && !progress().done ? `<details class="note" style="margin:0 0 12px">
+      <summary>Khởi động chung · 8–10 phút trước bài đầu</summary>
+      <ul><li>Đạp xe hoặc đi bộ dốc 4–5 phút, tới khi hơi ra mồ hôi</li>
+        <li>Vung chân trước–sau rồi sang ngang · 10 mỗi chân</li>
+        <li>World's greatest stretch · 5 mỗi bên</li>
+        <li>Cat–camel · 8 lần</li>
+        <li>Glute bridge · 12 lần</li>
+        <li>Squat không tạ, giữ dưới 2 giây · 10 lần</li>
+        <li>Xoay tay vòng lớn, dang tay siết bả vai · 15 lần</li></ul>
+      <p>Không kéo giãn giữ lâu trước khi tập nặng — để dành cho sau buổi.</p></details>` : "";
+
+  return `${picker}${general}
     <div class="exname">${esc(ex.name)}</div>
     <div class="exrx">${total} set × ${esc(ex.reps)} rep${ex.altOf ? ` <span class="of">· thay ${esc(ex.altOf)}</span>` : ""}</div>
     ${alts}
@@ -666,6 +751,19 @@ function installCard() {
 }
 
 /* ---------------- TÔI ---------------- */
+/** Nhịp tăng cân từ lần cân mới nhất so với lần cân cách đó 1–3 tuần (bw xếp mới → cũ). */
+function gainPace(bw) {
+  const last = bw[0], gap = e => (new Date(last.date) - new Date(e.date)) / 864e5;
+  const base = last && bw.filter(e => gap(e) >= 7 && gap(e) <= 21).pop();
+  if (!base) return `<p class="small muted" style="margin:14px 0 0">Cân 1–2 lần mỗi tuần. Có số liệu cách nhau từ 1 tuần, app sẽ cho biết có cần ăn thêm không.</p>`;
+  const rate = n1((last.kg - base.kg) / gap(base) * 7);
+  const [color, msg] = rate < 0.1 ? ["var(--rust)", "Chậm quá — thêm 200–300 kcal mỗi ngày (một cốc sữa hoặc Ensure)."]
+    : rate > 0.6 ? ["var(--brass)", "Hơi nhanh, dễ tích mỡ — bớt 150–200 kcal mỗi ngày."]
+    : ["var(--jade)", "Đúng nhịp — giữ nguyên cách ăn."];
+  return `<div class="card" style="margin-top:14px;border-color:${color}">
+    <div class="num" style="font-size:22px;color:${color}">${rate > 0 ? "+" : ""}${rate} kg/tuần</div>
+    <div class="small muted">${msg} Mục tiêu 0.25–0.5 kg/tuần.</div></div>`;
+}
 function altEditor(d, e) {
   const f = (a, field) => `data-altf="${d.id}|${e.id}|${esc(a.id)}|${field}"`;
   return `<div class="tiny muted" style="margin:14px 0 8px">Bài thay thế khi máy bận</div>` +
@@ -787,6 +885,7 @@ function viewMe() {
         <label class="f"><span>Cân nặng</span><input type="number" step="0.1" inputmode="decimal" id="bwKg" placeholder="${n1(latest)}"></label>
         <button class="ghost" id="bwAdd" style="min-width:70px">Ghi</button>
       </div>
+      ${gainPace(bw)}
       <p class="small dim" style="margin:12px 0 0">Cân buổi sáng, sau vệ sinh, trước khi ăn — cùng điều kiện mỗi lần.</p>
       ${bw.length ? `<div style="margin-top:8px">${rows}</div>` : ""}
     </div></details>
