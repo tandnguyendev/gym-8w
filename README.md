@@ -28,6 +28,10 @@ Vì không có PT đi kèm, app tự lo mấy việc PT hay nhắc:
   tăng một bước tạ.
 - **Khởi động** — danh sách khởi động chung ở bài đầu, và set khởi động tính
   sẵn theo mức tạ chính cho Squat, Bench, Deadlift, OHP.
+- **Bài chính / bài phụ** — bài phụ có viền đứt và nhãn "Phụ". Nút *Ẩn bài
+  phụ* ở thanh trên chỉ giữ lại bài chính cho ngày mệt hay phòng đông; xong
+  bài chính thì app báo để bạn chọn làm tiếp hay về. Đổi nhãn trong tab Tôi →
+  Chương trình.
 - **Nhịp tăng cân** — trong tab Tôi, so các lần cân cách nhau 1–3 tuần và báo
   nên ăn thêm, giữ nguyên hay bớt.
 

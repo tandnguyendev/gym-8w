@@ -56,6 +56,10 @@ h2:first-child{margin-top:8px}
   background:var(--surface);color:var(--dim);font-family:var(--display);font-size:17px;font-weight:600}
 .dot.done{background:#1d3830;border-color:#27503f;color:var(--jade)}
 .dot[aria-current=true]{background:var(--brass);border-color:var(--brass);color:var(--brass-ink)}
+.dot.opt{border-style:dashed}
+.dotsep{flex:none;width:1px;background:var(--line);margin:5px 2px}
+.opttag{display:inline-block;font-size:13px;line-height:1.35;padding:0 7px;margin-right:8px;
+  border:1px dashed currentColor;border-radius:6px;color:var(--muted);vertical-align:2px}
 
 /* ---------- buttons ---------- */
 button{font-family:inherit;font-size:16px;cursor:pointer;color:inherit}
@@ -322,12 +326,15 @@ const ALTS = {
 };
 const altsFor = name => (ALTS[name] || []).map(a => ({ ...a }));
 const WARM = ["Back Squat", "Bench Press", "Deadlift", "Overhead Press"];
+const OPTIONAL = ["Leg Press", "Face Pull", "Dumbbell Curl", "Lateral Raise", "Hanging Leg Raise",
+  "Triceps Pushdown", "Hammer Curl", "Calf Raise"];
 
 const PROG_VERSION = 3;
 function seed() {
   const ex = (name, sets, reps, start, step, rest, unit, note) =>
     ({ id: uid(), name, sets, reps, start, step, rest, unit: unit || "kg",
-       note: note || "", fig: FIGKEY[name] || "", alts: altsFor(name), warm: WARM.includes(name) });
+       note: note || "", fig: FIGKEY[name] || "", alts: altsFor(name), warm: WARM.includes(name),
+       opt: OPTIONAL.includes(name) });
   return {
     profile: { name: "", sex: "m", age: "", height: "", weight: "",
       activity: 1.6, surplus: 450, proteinPerKg: 2, fatPerKg: 1.2,
@@ -383,6 +390,7 @@ function migrate(old) {
     if (e.fig == null) e.fig = FIGKEY[e.name] || "";
     if (e.alts == null) e.alts = altsFor(e.name);
     if (e.warm == null) e.warm = WARM.includes(e.name);
+    if (e.opt == null) e.opt = OPTIONAL.includes(e.name);
   }));
   if (!old.swap) old.swap = {};
   return old;
@@ -451,6 +459,7 @@ function weekNo(d) {
 const lkey = (date, dayId, exId) => date + "|" + dayId + "|" + exId;
 const sets = (date, dayId, exId) => S.log[lkey(date, dayId, exId)] || [];
 const day = () => S.days.find(d => d.id === curDay) || S.days[0];
+const visible = d => d.exercises.map((e, i) => i).filter(i => !(S.hideOpt && d.exercises[i].opt));
 
 function sessionDates() {
   const s = new Set();
@@ -528,9 +537,15 @@ function suggest(ex, i) {
   return { kg: ex.start != null ? ex.start : 0, reps: repLow(ex.reps) };
 }
 function progress() {
-  const d = day(); let done = 0, total = 0;
-  d.exercises.forEach(e => { done += Math.min(sets(curDate, d.id, e.id).length, e.sets); total += +e.sets || 0; });
-  return { done, total, pct: total ? Math.round(done / total * 100) : 0 };
+  const d = day(), r = { mainDone: 0, mainTotal: 0, optDone: 0, optTotal: 0 };
+  d.exercises.forEach(e => {
+    const n = Math.min(sets(curDate, d.id, e.id).length, e.sets), t = +e.sets || 0;
+    if (e.opt) { r.optDone += n; r.optTotal += t; } else { r.mainDone += n; r.mainTotal += t; }
+  });
+  r.done = r.mainDone + (S.hideOpt ? 0 : r.optDone);
+  r.total = r.mainTotal + (S.hideOpt ? 0 : r.optTotal);
+  r.pct = r.total ? Math.round(r.done / r.total * 100) : 0;
+  return r;
 }
 function volume(date) {
   let v = 0;
@@ -553,19 +568,29 @@ function renderTop() {
     el.innerHTML = `<div class="topline"><div class="session">${tab === "history" ? "Nhật <em>ký</em>" : "Hồ <em>sơ</em>"}</div></div>`;
     return;
   }
-  const d = day(), pr = progress();
-  const dots = d.exercises.map((e, i) => {
-    const n = sets(curDate, d.id, e.id).length;
-    return `<button class="dot ${n >= e.sets ? "done" : ""}" data-jump="${i}"
-      aria-current="${i === exIdx}" aria-label="${esc(eff(e, curDate, d.id).name)}">${n >= e.sets ? "✓" : i + 1}</button>`;
+  const d = day(), pr = progress(), hasOpt = pr.optTotal > 0;
+  const vis = visible(d), firstOpt = vis.find(i => d.exercises[i].opt);
+  const dots = vis.map((i, k) => {
+    const e = d.exercises[i], n = sets(curDate, d.id, e.id).length;
+    return (i === firstOpt && k ? `<span class="dotsep" aria-hidden="true"></span>` : "") +
+      `<button class="dot ${e.opt ? "opt" : ""} ${n >= e.sets ? "done" : ""}" data-jump="${i}"
+      aria-current="${i === exIdx}" aria-label="${esc(eff(e, curDate, d.id).name)}${e.opt ? " (phụ)" : ""}">${n >= e.sets ? "✓" : k + 1}</button>`;
   }).join("");
+  const count = hasOpt
+    ? `<span style="white-space:nowrap">${pr.mainDone}/${pr.mainTotal} chính</span>${S.hideOpt ? ""
+      : ` · <span style="white-space:nowrap">${pr.optDone}/${pr.optTotal} phụ</span>`}`
+    : `${pr.done}/${pr.total} set`;
   el.innerHTML = `
     <div class="topline">
       <div>
         <div class="session">${hiName(d.name)}</div>
-        <div class="small muted" style="margin-top:-2px">Tuần ${weekNo(curDate)} · ${fmtDate(curDate)} · ${pr.done}/${pr.total} set</div>
+        <div class="small muted" style="margin-top:-2px">Tuần ${weekNo(curDate)} · ${fmtDate(curDate)} · ${count}</div>
       </div>
-      <button class="iconbtn" id="pickerBtn" aria-label="Đổi ngày hoặc buổi tập">${showPicker ? "×" : "⋯"}</button>
+      <div class="row" style="gap:8px">
+        ${hasOpt ? `<button class="ghost sm" id="optToggle" style="white-space:nowrap;padding:8px 11px" aria-pressed="${!!S.hideOpt}"
+          aria-label="${S.hideOpt ? "Hiện bài phụ" : "Ẩn bài phụ"}">${S.hideOpt ? "Hiện phụ" : "Ẩn phụ"}</button>` : ""}
+        <button class="iconbtn" id="pickerBtn" aria-label="Đổi ngày hoặc buổi tập">${showPicker ? "×" : "⋯"}</button>
+      </div>
     </div>
     <div class="bar"><i style="width:${pr.pct}%"></i></div>
     <div class="dots">${dots}</div>`;
@@ -578,6 +603,7 @@ function viewTrain() {
     <button class="ghost" data-goto="me">Mở Hồ sơ → Chương trình</button></div>`;
   if (exIdx >= d.exercises.length) exIdx = 0;
   const slot = d.exercises[exIdx], ex = eff(slot, curDate, d.id);
+  const vis = visible(d), pos = vis.indexOf(exIdx), prevI = vis[pos - 1], nextI = vis[pos + 1];
   const done = sets(curDate, d.id, ex.id);
   const total = +ex.sets || 1;
   const idx = editIdx != null ? editIdx : done.length;
@@ -635,17 +661,23 @@ function viewTrain() {
         <button class="ghost" id="restSkip">Bỏ qua</button>
       </div></div>`;
   } else if (finished) {
-    const next = exIdx + 1 < d.exercises.length ? d.exercises[exIdx + 1] : null;
-    const pr = progress();
-    action = next
-      ? `<button class="btn jade" data-jump="${exIdx + 1}">Bài tiếp · ${esc(next.name)}</button>`
+    const pr = progress(), next = nextI != null ? eff(d.exercises[nextI], curDate, d.id) : null;
+    const optLeft = d.exercises.findIndex(e => e.opt && sets(curDate, d.id, e.id).length < e.sets);
+    action = !ex.opt && !S.hideOpt && optLeft >= 0 && pr.mainDone >= pr.mainTotal
+      ? `<div class="card" style="text-align:center;border-color:var(--jade)">
+          <div class="num" style="font-size:34px;color:var(--jade)">Xong bài chính</div>
+          <div class="muted small" style="margin-bottom:12px">Còn sức và thời gian thì làm bài phụ, mệt thì về — không sao.</div>
+          <div class="pair"><button class="ghost" data-jump="${optLeft}">Làm bài phụ</button>
+            <button class="ghost" data-goto="history">Kết thúc buổi</button></div></div>`
+      : next
+      ? `<button class="btn jade" data-jump="${nextI}">Bài tiếp · ${esc(next.name)}${next.opt ? " (phụ)" : ""}</button>`
       : pr.done >= pr.total
         ? `<div class="card" style="text-align:center;border-color:var(--jade)">
             <div class="num" style="font-size:38px;color:var(--jade)">Xong buổi</div>
             <div class="muted small" style="margin-bottom:12px">Tổng khối lượng
               <b class="num" style="color:var(--chalk);font-size:19px">${Math.round(volume(curDate)).toLocaleString("vi-VN")}</b> kg</div>
             <button class="ghost" data-goto="history">Xem nhật ký</button></div>`
-        : `<button class="btn" data-jump="0">Quay lại bài chưa xong</button>`;
+        : `<button class="btn" data-jump="${firstUnfinished()}">Quay lại bài chưa xong</button>`;
   } else {
     const sg = editIdx != null ? done[editIdx] : suggest(ex, idx);
     const wu = ex.warm && !ex.altId && !done.length && editIdx == null ? warmups(+sg.kg, ex.name) : [];
@@ -686,7 +718,7 @@ function viewTrain() {
 
   return `${picker}${general}
     <div class="exname">${esc(ex.name)}</div>
-    <div class="exrx">${total} set × ${esc(ex.reps)} rep${ex.altOf ? ` <span class="of">· thay ${esc(ex.altOf)}</span>` : ""}</div>
+    <div class="exrx">${ex.opt ? `<span class="opttag">Phụ</span>` : ""}${total} set × ${esc(ex.reps)} rep${ex.altOf ? ` <span class="of">· thay ${esc(ex.altOf)}</span>` : ""}</div>
     ${alts}
     ${prev}
     ${doneList}
@@ -695,8 +727,8 @@ function viewTrain() {
       <summary>Cách tập${p ? "" : " · mở sẵn vì bạn chưa tập bài này"}</summary>
       ${figureHTML(ex.fig)}${ex.note ? `<p>${esc(ex.note)}</p>` : ""}</details>` : ""}
     <div class="pair" style="margin-top:22px">
-      <button class="ghost" data-jump="${exIdx - 1}"${exIdx === 0 ? ' disabled style="opacity:.35"' : ""}>‹ Bài trước</button>
-      <button class="ghost" data-jump="${exIdx + 1}"${exIdx >= d.exercises.length - 1 ? ' disabled style="opacity:.35"' : ""}>Bài sau ›</button>
+      <button class="ghost" data-jump="${prevI ?? -1}"${prevI == null ? ' disabled style="opacity:.35"' : ""}>‹ Bài trước</button>
+      <button class="ghost" data-jump="${nextI ?? -1}"${nextI == null ? ' disabled style="opacity:.35"' : ""}>Bài sau ›</button>
     </div>`;
 }
 
@@ -850,6 +882,10 @@ function viewMe() {
             <input value="${esc(e.name)}" data-ex="${d.id}|${e.id}|name" aria-label="Tên bài">
             <button class="iconbtn" style="color:var(--rust);border-color:#4d2c25" data-delex="${d.id}|${e.id}" aria-label="Xoá bài">×</button>
           </div>
+          <label class="row small muted" style="gap:9px;margin-bottom:9px;cursor:pointer">
+            <input type="checkbox" data-ex="${d.id}|${e.id}|opt"${e.opt ? " checked" : ""}
+              style="width:20px;height:20px;min-height:20px;padding:0;flex:none;accent-color:var(--brass)">
+            Bài phụ — bỏ được khi mệt hoặc thiếu giờ</label>
           <div class="g3" style="margin-bottom:9px">
             <label class="f"><span>Set</span><input type="number" inputmode="numeric" value="${esc(e.sets)}" data-ex="${d.id}|${e.id}|sets"></label>
             <label class="f"><span>Rep</span><input value="${esc(e.reps)}" data-ex="${d.id}|${e.id}|reps" style="font-family:var(--display);font-size:21px;text-align:center;padding:10px 4px"></label>
@@ -933,6 +969,7 @@ function viewMe() {
 let lastTab = null;
 function render() {
   if (!curDay || !S.days.some(d => d.id === curDay)) curDay = autoDay();
+  if (S.hideOpt && (day().exercises[exIdx] || {}).opt) exIdx = firstUnfinished();
   renderTop();
   // vẽ lại tab Tôi (thêm bài, thêm bài thay thế…) không được gập mục người dùng đang mở
   const wasOpen = tab === "me" && lastTab === "me"
@@ -976,10 +1013,9 @@ function startRest(sec) {
 function stopRest() { clearInterval(restTimer); restTimer = null; restEnd = 0; render(); }
 
 function firstUnfinished() {
-  const d = day();
-  for (let i = 0; i < d.exercises.length; i++)
-    if (sets(curDate, d.id, d.exercises[i].id).length < d.exercises[i].sets) return i;
-  return 0;
+  const d = day(), vis = visible(d);
+  for (const i of vis) if (sets(curDate, d.id, d.exercises[i].id).length < d.exercises[i].sets) return i;
+  return vis.length ? vis[0] : 0;
 }
 
 /* ---------------- sự kiện ---------------- */
@@ -991,6 +1027,10 @@ document.addEventListener("click", e => {
 
   if (el.dataset.goto) { tab = el.dataset.goto; render(); window.scrollTo(0, 0); return; }
   if (el.id === "pickerBtn") { showPicker = !showPicker; render(); return; }
+  if (el.id === "optToggle") {
+    S.hideOpt = !S.hideOpt; editIdx = null; save(true); render();
+    toast(S.hideOpt ? "Đã ẩn bài phụ" : "Hiện lại bài phụ"); return;
+  }
 
   if (el.dataset.jump !== undefined) {
     const i = +el.dataset.jump, d = day();
@@ -1140,7 +1180,8 @@ document.addEventListener("input", e => {
     const [dayId, exId, field] = el.dataset.ex.split("|");
     const d = S.days.find(x => x.id === dayId), ex = d && d.exercises.find(x => x.id === exId);
     if (!ex) return;
-    ex[field] = ["sets", "start", "step", "rest"].includes(field) ? (+el.value || 0) : el.value;
+    ex[field] = field === "opt" ? el.checked
+      : ["sets", "start", "step", "rest"].includes(field) ? (+el.value || 0) : el.value;
     if (field === "sets" && ex.sets < 1) ex.sets = 1;
     save(); return;
   }
