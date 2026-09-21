@@ -1,5 +1,5 @@
 /* Service worker: cho phép cài lên màn hình chính và chạy offline khi phòng gym sóng yếu. */
-const VERSION = "so-sat-v7";
+const VERSION = "so-sat-v8";
 const CORE = ["./", "./index.html", "./manifest.webmanifest",
   "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./favicon.svg",
   "./img/squat-0.jpg", "./img/squat-1.jpg",
@@ -18,7 +18,8 @@ const CORE = ["./", "./index.html", "./manifest.webmanifest",
   "./img/pushdown-0.jpg", "./img/pushdown-1.jpg",
   "./img/incline-0.jpg", "./img/incline-1.jpg",
   "./img/dbcurl-0.jpg", "./img/dbcurl-1.jpg",
-  "./img/calf-0.jpg", "./img/calf-1.jpg"];
+  "./img/calf-0.jpg", "./img/calf-1.jpg",
+  "./img/legcurl-0.jpg", "./img/legcurl-1.jpg"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(VERSION)

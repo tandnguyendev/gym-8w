@@ -16,11 +16,12 @@ không tài khoản. Mọi số liệu nằm trong `localStorage` của máy b�
 - **Tôi** — cân nặng, BMI, mục tiêu calo/đạm (Mifflin–St Jeor), trình sửa chương
   trình, xuất/nhập JSON.
 
-Kèm sẵn một giáo án full-body 8 tuần, 3 buổi/tuần (A và B xen kẽ), cho người
-từng tập tạ vài năm rồi nghỉ, mục tiêu tăng cân tăng cơ. Mức tạ khởi điểm đặt ở
-khoảng 65% mức cũ; khối lượng dồn về đùi trước vì đó thường là nhóm bị bỏ khi
-tập kiểu chia nhóm cơ, và mỗi nhóm cơ chính có khoảng 9–16 set/tuần. Sửa thoải
-mái — nó chỉ là dữ liệu khởi tạo.
+Kèm sẵn một giáo án **đẩy / kéo / chân** cho người từng tập tạ vài năm rồi
+nghỉ, mục tiêu tăng cân tăng cơ. Ba buổi xoay vòng, hợp với 5–6 buổi/tuần: mỗi
+buổi chỉ quanh một hai khu của phòng tập nên đỡ phải đi tới lui chờ máy. Mức tạ
+khởi điểm đặt ở khoảng 65% mức cũ; khối lượng dồn về đùi trước vì đó thường là
+nhóm bị bỏ khi tập kiểu chia nhóm cơ. Sửa thoải mái — nó chỉ là dữ liệu khởi
+tạo.
 
 Vì không có PT đi kèm, app tự lo mấy việc PT hay nhắc:
 
@@ -36,8 +37,9 @@ Vì không có PT đi kèm, app tự lo mấy việc PT hay nhắc:
   nên ăn thêm, giữ nguyên hay bớt.
 
 Chương trình có `progVersion`: khi bản mặc định đổi, app tự thay vào nếu bạn
-chưa ghi buổi nào; đã tập rồi thì chỉ chèn bài mới vào đúng chỗ, bài cũ, mức
-tạ và nhật ký giữ nguyên.
+chưa ghi buổi nào; đã tập rồi thì xếp lại các bài theo bản mới nhưng giữ id,
+mức tạ và nhật ký của từng bài (khoá nhật ký được đổi theo buổi mới, bài trùng
+tên dư ra thì giữ lại và gắn nhãn phụ).
 
 ## Cài lên điện thoại
 

@@ -229,7 +229,8 @@ const FIGLABEL = { squat: "Squat (đòn trên vai)", bench: "Đẩy ngực nằm
   deadlift: "Deadlift từ sàn", ohp: "Đẩy vai qua đầu", row: "Kéo tạ khom người",
   bss: "Squat một chân, chân sau gác", lateral: "Nâng tạ ngang vai", curl: "Cuốn tay trước",
   legpress: "Đạp đùi (máy)", pushdown: "Đẩy tay sau (cáp)",
-  incline: "Đẩy ngực ghế dốc", dbcurl: "Cuốn tạ tay", calf: "Nhón bắp chân" };
+  incline: "Đẩy ngực ghế dốc", dbcurl: "Cuốn tạ tay", calf: "Nhón bắp chân",
+  legcurl: "Cuốn đùi sau (máy)" };
 
 function figureHTML(key) {
   if (!key || !FIGLABEL[key]) return "";
@@ -251,6 +252,7 @@ const FIGKEY = {
   "Bulgarian Split Squat": "bss", "Lateral Raise": "lateral", "Hammer Curl": "curl",
   "Leg Press": "legpress", "Triceps Pushdown": "pushdown",
   "Incline Dumbbell Press": "incline", "Dumbbell Curl": "dbcurl", "Calf Raise": "calf",
+  "Leg Curl": "legcurl",
 };
 /** Bài thay thế khi máy bận, theo tên bài chính. Khởi điểm chỉ là ước lượng từ mức bài chính. */
 const alt = (id, name, reps, unit, start, step, note, fig) =>
@@ -323,13 +325,17 @@ const ALTS = {
     alt("calf-machine", "Calf Raise máy đứng", "12–15", "kg", 40, 5, "Hạ gót sâu, dừng 1 giây ở dưới rồi nhón hết cỡ."),
     alt("seated-calf", "Calf Raise ngồi máy", "15–20", "kg", 20, 5, "Ngồi thì tập phần cơ dép phía dưới — rep cao hơn."),
   ],
+  "Leg Curl": [
+    alt("seated-leg-curl", "Leg Curl ngồi máy", "10–12", "kg", 25, 5, "Đệm chặn đặt trên đùi dưới, cuốn gót xuống hết cỡ."),
+    alt("nordic", "Nordic curl (quỳ ngả người)", "6–10", "+kg", 0, 2.5, "Quỳ, nhờ người giữ cổ chân hoặc kê dưới thanh tạ. Ngả người ra trước thật chậm."),
+  ],
 };
 const altsFor = name => (ALTS[name] || []).map(a => ({ ...a }));
 const WARM = ["Back Squat", "Bench Press", "Deadlift", "Overhead Press"];
-const OPTIONAL = ["Leg Press", "Face Pull", "Dumbbell Curl", "Lateral Raise", "Hanging Leg Raise",
-  "Triceps Pushdown", "Hammer Curl", "Calf Raise"];
+const OPTIONAL = ["Triceps Pushdown", "Face Pull", "Hammer Curl", "Hanging Leg Raise",
+  "Leg Press", "Leg Curl", "Calf Raise"];
 
-const PROG_VERSION = 3;
+const PROG_VERSION = 4;
 function seed() {
   const ex = (name, sets, reps, start, step, rest, unit, note) =>
     ({ id: uid(), name, sets, reps, start, step, rest, unit: unit || "kg",
@@ -340,27 +346,29 @@ function seed() {
       activity: 1.6, surplus: 450, proteinPerKg: 2, fatPerKg: 1.2,
       goalWeight: "", startDate: today(), weeks: 8 },
     days: [
-      { id: uid(), name: "Buổi A", exercises: [
-        ex("Back Squat", 4, "6–8", 42.5, 2.5, 180, "kg", "Bài quan trọng nhất với bạn — squat đang là lift yếu nhất so với thân trên. Xuống tới khi đùi song song sàn. Khởi điểm 42.5kg ≈ 65% mức cũ."),
-        ex("Bench Press", 3, "6–10", 40, 2.5, 150, "kg", "Ngực đang là điểm mạnh, 3 set đủ để giữ. Siết bả vai xuống, chân đạp chắc sàn."),
-        ex("Xà đeo tạ", 4, "5–8", 5, 2.5, 150, "+kg", "Balo đựng tạ hoặc đai. Đủ 8 rep ở set cuối 2 buổi liên tiếp thì tăng 2.5kg."),
-        ex("Romanian Deadlift", 3, "8–10", 40, 2.5, 120, "kg", "Đùi sau. Đẩy hông ra sau, gối hơi cong, tạ trượt sát chân. Thấy căng đùi sau là đúng."),
-        ex("Leg Press", 3, "10–12", 60, 5, 120, "kg", "Thêm khối lượng cho đùi mà không dồn thêm mỏi lên cột sống sau squat. Đừng duỗi khoá gối ở đỉnh."),
-        ex("Face Pull", 4, "15", 12.5, 2.5, 60, "kg", "Chống vai gù do ngồi bàn phím. Kéo dây về phía trán, siết bả vai, đừng nặng quá."),
-        ex("Dumbbell Curl", 3, "8–12", 10, 1, 60, "kg/tay", "Tay trước. Lòng bàn tay ngửa lên, khuỷu đứng yên, hạ chậm 2 giây. Làm xen kẽ từng set với Face Pull để đỡ tốn thời gian."),
-        ex("Lateral Raise", 3, "12–15", 6, 1, 60, "kg/tay", "Thêm 3 set ở buổi A để vai ngang đủ ~10 set/tuần. Làm xen kẽ từng set với Hanging Leg Raise."),
-        ex("Hanging Leg Raise", 3, "10–15", 0, 1, 60, "+kg", "Treo người trên xà, nâng chân bằng cơ bụng. Không đu người lấy đà."),
-      ]},
-      { id: uid(), name: "Buổi B", exercises: [
-        ex("Deadlift", 3, "5", 52.5, 5, 180, "kg", "Khởi điểm 52.5kg ≈ 65% mức cũ 80kg. Lưng thẳng tuyệt đối, đẩy sàn bằng chân chứ không giật bằng lưng."),
-        ex("Overhead Press", 3, "6–8", 25, 2.5, 150, "kg", "Siết mông và bụng để khỏi ưỡn lưng. Đòn không đã là 20kg."),
-        ex("Barbell Row", 4, "8–10", 35, 2.5, 120, "kg", "Người gập khoảng 45°, kéo tạ về phía rốn."),
-        ex("Incline Dumbbell Press", 3, "8–10", 16, 2, 120, "kg/tay", "Ngực trên, ghế dốc khoảng 30°. Bù cho ngực vốn chỉ có Bench ở buổi A. Hạ tạ tới ngang ngực trên, khuỷu chếch 45°."),
-        ex("Bulgarian Split Squat", 4, "8–10/chân", 12, 1, 120, "kg/tay", "Sửa lệch chân trái phải, rất hợp dân đá banh. Chân sau gác ghế, dồn lực vào gót chân trước."),
-        ex("Triceps Pushdown", 3, "10–12", 15, 2.5, 60, "kg", "Tay sau chỉ được tập gián tiếp qua bench và OHP nên cần thêm bài riêng. Khuỷu giữ sát người."),
+      { id: uid(), name: "Buổi Đẩy", exercises: [
+        ex("Bench Press", 4, "6–8", 40, 2.5, 180, "kg", "Ngực. Siết bả vai xuống, chân đạp chắc sàn, hạ tạ tới ngang ngực rồi đẩy thẳng lên."),
+        ex("Incline Dumbbell Press", 3, "8–10", 16, 2, 120, "kg/tay", "Ngực trên, ghế dốc khoảng 30°. Ghế dốc thường ngay cạnh ghế phẳng nên không phải đổi khu."),
+        ex("Overhead Press", 3, "6–8", 25, 2.5, 150, "kg", "Vai trước. Siết mông và bụng để khỏi ưỡn lưng. Đòn không đã là 20kg."),
         ex("Lateral Raise", 4, "12–15", 6, 1, 60, "kg/tay", "Vai ngang, giúp nở vai. Nhẹ thôi, nâng tới ngang vai rồi hạ chậm."),
-        ex("Hammer Curl", 3, "10–12", 10, 1, 60, "kg/tay", "Lòng bàn tay hướng vào nhau, khuỷu giữ sát người."),
-        ex("Calf Raise", 3, "12–15", 12, 2, 60, "kg", "Mũi chân đứng trên bậc, một tay vịn, tay kia cầm tạ. Hạ gót thật sâu, dừng 1 giây rồi nhón hết cỡ. Làm xen kẽ từng set với Hammer Curl."),
+        ex("Triceps Pushdown", 3, "10–12", 15, 2.5, 60, "kg", "Tay sau. Khuỷu giữ sát người, chỉ cẳng tay chuyển động."),
+      ]},
+      { id: uid(), name: "Buổi Kéo", exercises: [
+        ex("Deadlift", 3, "5", 52.5, 5, 180, "kg", "Khởi điểm 52.5kg ≈ 65% mức cũ 80kg. Lưng thẳng tuyệt đối, đẩy sàn bằng chân chứ không giật bằng lưng."),
+        ex("Xà đeo tạ", 4, "5–8", 5, 2.5, 150, "+kg", "Lưng xô. Balo đựng tạ hoặc đai. Đủ 8 rep ở set cuối 2 buổi liên tiếp thì tăng 2.5kg."),
+        ex("Barbell Row", 4, "8–10", 35, 2.5, 120, "kg", "Lưng giữa. Người gập khoảng 45°, kéo tạ về phía rốn. Dùng luôn đòn vừa deadlift."),
+        ex("Dumbbell Curl", 3, "8–12", 10, 1, 60, "kg/tay", "Tay trước. Lòng bàn tay ngửa lên, khuỷu đứng yên, hạ chậm 2 giây."),
+        ex("Face Pull", 4, "15", 12.5, 2.5, 60, "kg", "Vai sau, chống vai gù do ngồi bàn phím. Kéo dây về phía trán, siết bả vai, đừng nặng quá."),
+        ex("Hammer Curl", 3, "10–12", 10, 1, 60, "kg/tay", "Lòng bàn tay hướng vào nhau. Làm xen kẽ từng set với Face Pull."),
+        ex("Hanging Leg Raise", 3, "10–15", 0, 1, 60, "+kg", "Bụng. Treo người trên xà, nâng chân bằng cơ bụng, không đu người lấy đà."),
+      ]},
+      { id: uid(), name: "Buổi Chân", exercises: [
+        ex("Back Squat", 4, "6–8", 42.5, 2.5, 180, "kg", "Bài quan trọng nhất với bạn — squat đang là lift yếu nhất so với thân trên. Xuống tới khi đùi song song sàn."),
+        ex("Romanian Deadlift", 3, "8–10", 40, 2.5, 120, "kg", "Đùi sau. Đẩy hông ra sau, gối hơi cong, tạ trượt sát chân. Dùng luôn đòn vừa squat, chỉ cần bớt tạ."),
+        ex("Bulgarian Split Squat", 3, "8–10/chân", 12, 1, 120, "kg/tay", "Sửa lệch chân trái phải. Chân sau gác ghế, dồn lực vào gót chân trước."),
+        ex("Leg Press", 3, "10–12", 60, 5, 120, "kg", "Thêm khối lượng cho đùi mà không dồn thêm mỏi lên cột sống sau squat. Đừng duỗi khoá gối ở đỉnh."),
+        ex("Leg Curl", 3, "10–12", 25, 5, 60, "kg", "Đùi sau phần gần gối. Cuốn gót về phía mông, hạ chậm 2–3 giây."),
+        ex("Calf Raise", 4, "12–15", 12, 2, 60, "kg", "Mũi chân đứng trên bậc, một tay vịn, tay kia cầm tạ. Hạ gót thật sâu, dừng 1 giây rồi nhón hết cỡ."),
       ]},
     ],
     log: {}, swap: {}, bw: [], progVersion: PROG_VERSION,
@@ -396,24 +404,42 @@ function migrate(old) {
   return old;
 }
 /** Chương trình mặc định có bản mới: thay vào nếu người dùng chưa ghi buổi nào
- *  (đã tập rồi thì chỉ chèn bài mới vào đúng chỗ — bài cũ, mức tạ, nhật ký giữ nguyên). */
+ *  (đã tập rồi thì xếp lại theo bản mới nhưng giữ id, mức tạ và nhật ký của từng bài). */
 function refresh(d) {
   if (d.progVersion >= PROG_VERSION) return d;
   const daGhi = Object.keys(d.log || {}).some(k => (d.log[k] || []).length);
   if (!daGhi) d.days = seed().days;
-  else addNewExercises(d);
+  else regroup(d);
   d.progVersion = PROG_VERSION;
   return d;
 }
-function addNewExercises(d) {
-  seed().days.forEach(b => {
-    const u = d.days.find(x => x.exercises.some(e => e.name === b.exercises[0].name));
-    if (!u) return;
-    b.exercises.forEach((e, i) => {
-      if (u.exercises.some(x => x.name === e.name)) return;
-      const prev = i ? u.exercises.findIndex(x => x.name === b.exercises[i - 1].name) : -1;
-      u.exercises.splice(prev >= 0 ? prev + 1 : u.exercises.length, 0, e);
-    });
+function regroup(d) {
+  const old = new Map();
+  d.days.forEach(x => x.exercises.forEach(e => {
+    if (!old.has(e.name)) old.set(e.name, []);
+    old.get(e.name).push(e);
+  }));
+  d.days = seed().days.map(b => ({ ...b, exercises: b.exercises.map(e => {
+    const prev = (old.get(e.name) || []).shift();
+    return prev ? { ...e, id: prev.id, start: prev.start, step: prev.step } : e;
+  }) }));
+  old.forEach((left, name) => left.forEach(e => {
+    const home = d.days.find(x => x.exercises.some(y => y.name === name)) || d.days[d.days.length - 1];
+    home.exercises.push({ ...e, opt: true });
+  }));
+  remapDays(d);
+}
+/** Khoá nhật ký gồm cả id buổi tập, nên bài chuyển sang buổi khác thì khoá phải đổi theo. */
+function remapDays(d) {
+  const home = {};
+  d.days.forEach(x => x.exercises.forEach(e => { home[e.id] = x.id; }));
+  ["log", "swap"].forEach(f => {
+    const out = {};
+    for (const k in d[f] || {}) {
+      const [date, dayId, exId] = k.split("|");
+      out[[date, home[exId] || dayId, exId].join("|")] = d[f][k];
+    }
+    d[f] = out;
   });
 }
 let saveTimer = null;
@@ -733,17 +759,31 @@ function viewTrain() {
 }
 
 /* ---------------- NHẬT KÝ ---------------- */
+/** Các bài đã ghi trong một ngày, kể cả bài nay đã chuyển sang buổi khác. */
+function sessionRows(date) {
+  const rows = [];
+  for (const k in S.log) {
+    if (!k.startsWith(date + "|") || !(S.log[k] || []).length) continue;
+    const [, dayId, exId] = k.split("|");
+    const di = S.days.findIndex(x => x.exercises.some(e => e.id === exId));
+    const d = di >= 0 ? S.days[di] : null, e = d && d.exercises.find(x => x.id === exId);
+    rows.push({ dayId: d ? d.id : dayId, sets: S.log[k],
+      order: e ? di * 100 + d.exercises.indexOf(e) : 9999,
+      name: e ? eff(e, date, d.id).name : "Bài đã xoá" });
+  }
+  return rows.sort((a, b) => a.order - b.order);
+}
 function viewHistory() {
   const dates = sessionDates();
   if (!dates.length) return `<div class="empty">Chưa ghi buổi nào.<br>Sang tab Tập và bấm xong set đầu tiên.</div>`;
   return `<div class="sub">${dates.length} buổi. Khối lượng = tạ × rep cộng dồn — con số này tăng đều nghĩa là bạn đang tiến bộ.</div>
   <div class="stack">` + dates.map(date => {
-    const dId = dayOfDate(date), d = S.days.find(x => x.id === dId);
-    const rows = !d ? "" : d.exercises.map(e => {
-      const s = sets(date, d.id, e.id);
-      return s.length ? `<div class="lrow"><div>${esc(eff(e, date, d.id).name)}</div>
-        <div class="num muted">${s.map(x => `${esc(x.kg)}×${esc(x.reps)}`).join("  ")}</div></div>` : "";
-    }).join("");
+    const list = sessionRows(date), tally = {};
+    list.forEach(r => { tally[r.dayId] = (tally[r.dayId] || 0) + r.sets.length; });
+    const top = Object.keys(tally).sort((a, b) => tally[b] - tally[a])[0];
+    const d = S.days.find(x => x.id === top);
+    const rows = list.map(r => `<div class="lrow"><div>${esc(r.name)}</div>
+        <div class="num muted">${r.sets.map(x => `${esc(x.kg)}×${esc(x.reps)}`).join("  ")}</div></div>`).join("");
     return `<div class="card">
       <div class="spread" style="margin-bottom:8px">
         <div><div class="num" style="font-size:22px">${fmtDate(date)} · ${esc(d ? d.name : "?")}</div>
