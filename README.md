@@ -63,6 +63,7 @@ Copy `index.html` lên bất kỳ host tĩnh nào.
 
 ## Nguồn ảnh
 
-Ảnh động tác trong `img/` lấy từ [free-exercise-db](https://github.com/yuhonas/free-exercise-db),
+Ảnh động tác trong `img/` (cả bài chính lẫn bài thay thế, 51 động tác) lấy từ
+[free-exercise-db](https://github.com/yuhonas/free-exercise-db),
 giấy phép **Unlicense** (phạm vi công cộng). Đã thu nhỏ còn 400px và nén để
 service worker lưu được cho chế độ offline.

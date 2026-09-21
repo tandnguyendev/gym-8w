@@ -230,7 +230,18 @@ const FIGLABEL = { squat: "Squat (đòn trên vai)", bench: "Đẩy ngực nằm
   bss: "Squat một chân, chân sau gác", lateral: "Nâng tạ ngang vai", curl: "Cuốn tay trước",
   legpress: "Đạp đùi (máy)", pushdown: "Đẩy tay sau (cáp)",
   incline: "Đẩy ngực ghế dốc", dbcurl: "Cuốn tạ tay", calf: "Nhón bắp chân",
-  legcurl: "Cuốn đùi sau (máy)" };
+  legcurl: "Cuốn đùi sau (máy)",
+  goblet: "Goblet squat (ôm tạ)", smithsquat: "Squat máy Smith", dbbench: "Đẩy ngực tạ tay",
+  chestpress: "Đẩy ngực máy", pulldown: "Kéo xô (cáp)", dbrdl: "RDL tạ tay", hack: "Hack squat (máy)",
+  lunge: "Lunge tạ tay", rearfly: "Bay vai sau tạ tay", reversepec: "Bay vai sau (máy)",
+  lyingraise: "Nằm nâng chân", cablecrunch: "Gập bụng cáp", trapbar: "Deadlift khung lục giác",
+  rackpull: "Rack pull (kéo từ giá)", dbohp: "Đẩy vai tạ tay", machohp: "Đẩy vai (máy)",
+  dbrow: "Row tạ tay một tay", cablerow: "Kéo cáp ngồi", revlunge: "Lunge lùi tạ tay",
+  stepup: "Step-up lên ghế", ohext: "Duỗi tay sau qua đầu", benchdip: "Dip trên ghế",
+  cablelateral: "Nâng ngang cáp", seatedlateral: "Nâng ngang ngồi ghế", ropecurl: "Cuốn cáp dây thừng",
+  ezcurl: "Cuốn tạ đòn EZ", inclinemachine: "Đẩy ngực dốc (máy)", pushupfeet: "Hít đất chân kê cao",
+  cablecurl: "Cuốn cáp thanh thẳng", calfmachine: "Nhón bắp chân (máy đứng)",
+  seatedcalf: "Nhón bắp chân (ngồi)", seatedlegcurl: "Cuốn đùi sau (ngồi)", nordic: "Nordic curl" };
 
 function figureHTML(key) {
   if (!key || !FIGLABEL[key]) return "";
@@ -259,75 +270,75 @@ const alt = (id, name, reps, unit, start, step, note, fig) =>
   ({ id, name, reps, unit, start, step, note, fig: fig || "" });
 const ALTS = {
   "Back Squat": [
-    alt("goblet", "Goblet Squat", "8–12", "kg", 16, 2, "Ôm một quả tạ tay dựng đứng trước ngực, khuỷu chỉ xuống giữa hai gối. Không cần rack."),
-    alt("smith-squat", "Smith Squat", "6–8", "kg", 30, 2.5, "Tạ trên Smith không so được với tạ đòn (có ray đỡ, đòn máy nhẹ hơn) nên ghi riêng. Chân đặt hơi lên trước thanh đòn.", "squat"),
+    alt("goblet", "Goblet Squat", "8–12", "kg", 16, 2, "Ôm một quả tạ tay dựng đứng trước ngực, khuỷu chỉ xuống giữa hai gối. Không cần rack.", "goblet"),
+    alt("smith-squat", "Smith Squat", "6–8", "kg", 30, 2.5, "Tạ trên Smith không so được với tạ đòn (có ray đỡ, đòn máy nhẹ hơn) nên ghi riêng. Chân đặt hơi lên trước thanh đòn.", "smithsquat"),
   ],
   "Bench Press": [
-    alt("db-bench", "Đẩy ngực tạ tay", "8–10", "kg/tay", 20, 2, "Hạ tạ tới ngang ngực, khuỷu chếch khoảng 45° so với thân. Chỉ cần một ghế phẳng."),
-    alt("chest-press", "Chest Press máy", "8–10", "kg", 35, 5, "Tay cầm ngang giữa ngực, siết bả vai ra sau trước khi đẩy."),
+    alt("db-bench", "Đẩy ngực tạ tay", "8–10", "kg/tay", 20, 2, "Hạ tạ tới ngang ngực, khuỷu chếch khoảng 45° so với thân. Chỉ cần một ghế phẳng.", "dbbench"),
+    alt("chest-press", "Chest Press máy", "8–10", "kg", 35, 5, "Tay cầm ngang giữa ngực, siết bả vai ra sau trước khi đẩy.", "chestpress"),
   ],
   "Xà đeo tạ": [
-    alt("pulldown", "Lat Pulldown", "8–10", "kg", 45, 5, "Kéo thanh về sát ngực trên, ngả người nhẹ, đừng giật bằng lưng."),
+    alt("pulldown", "Lat Pulldown", "8–10", "kg", 45, 5, "Kéo thanh về sát ngực trên, ngả người nhẹ, đừng giật bằng lưng.", "pulldown"),
   ],
   "Romanian Deadlift": [
-    alt("db-rdl", "RDL tạ tay", "8–10", "kg/tay", 16, 2, "Giống RDL đòn: đẩy hông ra sau, tạ trượt sát ống chân, dừng khi thấy căng đùi sau.", "rdl"),
-    alt("leg-curl", "Leg Curl máy", "10–12", "kg", 25, 5, "Cuốn gót về phía mông, hạ chậm 2–3 giây."),
+    alt("db-rdl", "RDL tạ tay", "8–10", "kg/tay", 16, 2, "Giống RDL đòn: đẩy hông ra sau, tạ trượt sát ống chân, dừng khi thấy căng đùi sau.", "dbrdl"),
+    alt("leg-curl", "Leg Curl máy", "10–12", "kg", 25, 5, "Cuốn gót về phía mông, hạ chậm 2–3 giây.", "legcurl"),
   ],
   "Leg Press": [
-    alt("hack", "Hack Squat máy", "8–10", "kg", 40, 5, "Chỉ tính đĩa gắn thêm, không tính bàn trượt."),
-    alt("lunge", "Lunge tạ tay", "10/chân", "kg/tay", 10, 2, "Bước dài vừa phải, gối sau hạ gần chạm sàn."),
+    alt("hack", "Hack Squat máy", "8–10", "kg", 40, 5, "Chỉ tính đĩa gắn thêm, không tính bàn trượt.", "hack"),
+    alt("lunge", "Lunge tạ tay", "10/chân", "kg/tay", 10, 2, "Bước dài vừa phải, gối sau hạ gần chạm sàn.", "lunge"),
   ],
   "Face Pull": [
-    alt("rear-fly", "Bay vai sau tạ tay", "15", "kg/tay", 5, 1, "Cúi người gần song song sàn, dang tay sang hai bên, siết bả vai."),
-    alt("reverse-pec", "Reverse Pec Deck", "15", "kg", 20, 5, "Ngồi quay mặt vào máy, tay duỗi gần thẳng, mở rộng ra sau."),
+    alt("rear-fly", "Bay vai sau tạ tay", "15", "kg/tay", 5, 1, "Cúi người gần song song sàn, dang tay sang hai bên, siết bả vai.", "rearfly"),
+    alt("reverse-pec", "Reverse Pec Deck", "15", "kg", 20, 5, "Ngồi quay mặt vào máy, tay duỗi gần thẳng, mở rộng ra sau.", "reversepec"),
   ],
   "Hanging Leg Raise": [
-    alt("captain", "Nâng chân ghế tựa", "10–15", "+kg", 0, 1, "Tì cẳng tay lên đệm, lưng áp tựa, nâng gối lên ngực."),
-    alt("lying-raise", "Nằm nâng chân", "12–15", "+kg", 0, 1, "Nằm ngửa trên sàn, tay đặt dưới mông, lưng dưới ép sát sàn."),
+    alt("captain", "Gập bụng cáp", "12–15", "kg", 20, 5, "Quỳ trước ròng rọc cao, dây thừng sau gáy, gập người bằng cơ bụng chứ không kéo bằng tay.", "cablecrunch"),
+    alt("lying-raise", "Nằm nâng chân", "12–15", "+kg", 0, 1, "Nằm ngửa trên sàn, tay đặt dưới mông, lưng dưới ép sát sàn.", "lyingraise"),
   ],
   "Deadlift": [
-    alt("trapbar", "Trap Bar Deadlift", "5", "kg", 55, 5, "Đứng giữa khung, tay cầm hai bên, đẩy sàn bằng chân."),
-    alt("db-deadlift", "Deadlift tạ tay", "8", "kg/tay", 22, 2, "Tạ hai bên chân, lưng thẳng, hạ tới giữa ống chân."),
+    alt("trapbar", "Trap Bar Deadlift", "5", "kg", 55, 5, "Đứng giữa khung, tay cầm hai bên, đẩy sàn bằng chân.", "trapbar"),
+    alt("db-deadlift", "Rack Pull", "5", "kg", 60, 5, "Đặt đòn trên giá ngang dưới gối, kéo đoạn trên của deadlift. Dùng khi sàn deadlift bận.", "rackpull"),
   ],
   "Overhead Press": [
-    alt("db-ohp", "Đẩy vai tạ tay", "8–10", "kg/tay", 12, 2, "Ngồi ghế có tựa hoặc đứng, siết bụng, đẩy tạ lên thẳng trên đầu."),
-    alt("shoulder-press", "Shoulder Press máy", "8–10", "kg", 25, 5, "Tay cầm ngang vai ở điểm thấp nhất."),
+    alt("db-ohp", "Đẩy vai tạ tay", "8–10", "kg/tay", 12, 2, "Ngồi ghế có tựa hoặc đứng, siết bụng, đẩy tạ lên thẳng trên đầu.", "dbohp"),
+    alt("shoulder-press", "Shoulder Press máy", "8–10", "kg", 25, 5, "Tay cầm ngang vai ở điểm thấp nhất.", "machohp"),
   ],
   "Barbell Row": [
-    alt("db-row", "Row tạ tay một tay", "8–10/tay", "kg", 22, 2, "Một gối và một tay tì ghế, kéo tạ về phía hông."),
-    alt("cable-row", "Kéo cáp ngồi", "10–12", "kg", 40, 5, "Ngồi thẳng lưng, kéo tay cầm về rốn, siết bả vai."),
+    alt("db-row", "Row tạ tay một tay", "8–10/tay", "kg", 22, 2, "Một gối và một tay tì ghế, kéo tạ về phía hông.", "dbrow"),
+    alt("cable-row", "Kéo cáp ngồi", "10–12", "kg", 40, 5, "Ngồi thẳng lưng, kéo tay cầm về rốn, siết bả vai.", "cablerow"),
   ],
   "Bulgarian Split Squat": [
-    alt("rev-lunge", "Lunge lùi tạ tay", "8–10/chân", "kg/tay", 10, 1, "Bước lùi thay vì tiến — đỡ áp lực lên gối trước."),
-    alt("stepup", "Step-up lên ghế", "8–10/chân", "kg/tay", 10, 1, "Đạp bằng gót chân trên ghế, đừng bật bằng chân dưới."),
+    alt("rev-lunge", "Lunge lùi tạ tay", "8–10/chân", "kg/tay", 10, 1, "Bước lùi thay vì tiến — đỡ áp lực lên gối trước.", "revlunge"),
+    alt("stepup", "Step-up lên ghế", "8–10/chân", "kg/tay", 10, 1, "Đạp bằng gót chân trên ghế, đừng bật bằng chân dưới.", "stepup"),
   ],
   "Triceps Pushdown": [
-    alt("oh-ext", "Duỗi tay sau qua đầu", "10–12", "kg", 12, 2, "Hai tay ôm một quả tạ tay sau đầu, khuỷu chỉ lên trần."),
-    alt("bench-dip", "Dip trên ghế", "10–15", "+kg", 0, 2.5, "Tay chống mép ghế, hạ tới khuỷu vuông góc."),
+    alt("oh-ext", "Duỗi tay sau qua đầu", "10–12", "kg", 12, 2, "Hai tay ôm một quả tạ tay sau đầu, khuỷu chỉ lên trần.", "ohext"),
+    alt("bench-dip", "Dip trên ghế", "10–15", "+kg", 0, 2.5, "Tay chống mép ghế, hạ tới khuỷu vuông góc.", "benchdip"),
   ],
   "Lateral Raise": [
-    alt("cable-lateral", "Nâng ngang cáp", "12–15/tay", "kg", 5, 2.5, "Ròng rọc thấp, dây vắt chéo trước người, nâng tới ngang vai."),
-    alt("lateral-machine", "Máy nâng vai ngang", "12–15", "kg", 15, 5, ""),
+    alt("cable-lateral", "Nâng ngang cáp", "12–15/tay", "kg", 5, 2.5, "Ròng rọc thấp, dây vắt chéo trước người, nâng tới ngang vai.", "cablelateral"),
+    alt("lateral-machine", "Nâng ngang ngồi ghế", "12–15", "kg/tay", 5, 1, "Ngồi ghế tựa thẳng lưng, không đu người lấy đà — vai ngang phải làm hết việc.", "seatedlateral"),
   ],
   "Hammer Curl": [
-    alt("rope-curl", "Cuốn cáp dây thừng", "10–12", "kg", 15, 2.5, "Ròng rọc thấp, lòng bàn tay hướng vào nhau như hammer curl."),
-    alt("ez-curl", "Cuốn tạ đòn EZ", "8–12", "kg", 20, 2.5, "Khuỷu giữ sát người, không đẩy hông lấy đà."),
+    alt("rope-curl", "Cuốn cáp dây thừng", "10–12", "kg", 15, 2.5, "Ròng rọc thấp, lòng bàn tay hướng vào nhau như hammer curl.", "ropecurl"),
+    alt("ez-curl", "Cuốn tạ đòn EZ", "8–12", "kg", 20, 2.5, "Khuỷu giữ sát người, không đẩy hông lấy đà.", "ezcurl"),
   ],
   "Incline Dumbbell Press": [
-    alt("incline-machine", "Incline Chest Press máy", "8–10", "kg", 30, 5, "Tay cầm ngang ngực trên, siết bả vai ra sau trước khi đẩy."),
-    alt("feet-up-pushup", "Hít đất chân kê cao", "10–15", "+kg", 0, 2.5, "Chân gác ghế, thân thẳng một đường. Dễ quá thì đeo balo có tạ."),
+    alt("incline-machine", "Incline Chest Press máy", "8–10", "kg", 30, 5, "Tay cầm ngang ngực trên, siết bả vai ra sau trước khi đẩy.", "inclinemachine"),
+    alt("feet-up-pushup", "Hít đất chân kê cao", "10–15", "+kg", 0, 2.5, "Chân gác ghế, thân thẳng một đường. Dễ quá thì đeo balo có tạ.", "pushupfeet"),
   ],
   "Dumbbell Curl": [
-    alt("cable-curl", "Cuốn cáp thanh thẳng", "10–12", "kg", 15, 2.5, "Ròng rọc thấp, khuỷu đứng yên, hạ chậm."),
-    alt("ez-curl", "Cuốn tạ đòn EZ", "8–12", "kg", 20, 2.5, "Khuỷu giữ sát người, không đẩy hông lấy đà."),
+    alt("cable-curl", "Cuốn cáp thanh thẳng", "10–12", "kg", 15, 2.5, "Ròng rọc thấp, khuỷu đứng yên, hạ chậm.", "cablecurl"),
+    alt("ez-curl", "Cuốn tạ đòn EZ", "8–12", "kg", 20, 2.5, "Khuỷu giữ sát người, không đẩy hông lấy đà.", "ezcurl"),
   ],
   "Calf Raise": [
-    alt("calf-machine", "Calf Raise máy đứng", "12–15", "kg", 40, 5, "Hạ gót sâu, dừng 1 giây ở dưới rồi nhón hết cỡ."),
-    alt("seated-calf", "Calf Raise ngồi máy", "15–20", "kg", 20, 5, "Ngồi thì tập phần cơ dép phía dưới — rep cao hơn."),
+    alt("calf-machine", "Calf Raise máy đứng", "12–15", "kg", 40, 5, "Hạ gót sâu, dừng 1 giây ở dưới rồi nhón hết cỡ.", "calfmachine"),
+    alt("seated-calf", "Calf Raise ngồi máy", "15–20", "kg", 20, 5, "Ngồi thì tập phần cơ dép phía dưới — rep cao hơn.", "seatedcalf"),
   ],
   "Leg Curl": [
-    alt("seated-leg-curl", "Leg Curl ngồi máy", "10–12", "kg", 25, 5, "Đệm chặn đặt trên đùi dưới, cuốn gót xuống hết cỡ."),
-    alt("nordic", "Nordic curl (quỳ ngả người)", "6–10", "+kg", 0, 2.5, "Quỳ, nhờ người giữ cổ chân hoặc kê dưới thanh tạ. Ngả người ra trước thật chậm."),
+    alt("seated-leg-curl", "Leg Curl ngồi máy", "10–12", "kg", 25, 5, "Đệm chặn đặt trên đùi dưới, cuốn gót xuống hết cỡ.", "seatedlegcurl"),
+    alt("nordic", "Nordic curl (quỳ ngả người)", "6–10", "+kg", 0, 2.5, "Quỳ, nhờ người giữ cổ chân hoặc kê dưới thanh tạ. Ngả người ra trước thật chậm.", "nordic"),
   ],
 };
 const altsFor = name => (ALTS[name] || []).map(a => ({ ...a }));
