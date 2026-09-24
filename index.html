@@ -346,7 +346,7 @@ const WARM = ["Back Squat", "Bench Press", "Deadlift", "Overhead Press"];
 const OPTIONAL = ["Triceps Pushdown", "Face Pull", "Hammer Curl", "Hanging Leg Raise",
   "Leg Press", "Leg Curl", "Calf Raise"];
 
-const PROG_VERSION = 4;
+const PROG_VERSION = 5;
 function seed() {
   const ex = (name, sets, reps, start, step, rest, unit, note) =>
     ({ id: uid(), name, sets, reps, start, step, rest, unit: unit || "kg",
@@ -382,7 +382,7 @@ function seed() {
         ex("Calf Raise", 4, "12–15", 12, 2, 60, "kg", "Mũi chân đứng trên bậc, một tay vịn, tay kia cầm tạ. Hạ gót thật sâu, dừng 1 giây rồi nhón hết cỡ."),
       ]},
     ],
-    log: {}, swap: {}, bw: [], progVersion: PROG_VERSION,
+    log: {}, swap: {}, skip: {}, bw: [], progVersion: PROG_VERSION,
   };
 }
 
@@ -412,6 +412,7 @@ function migrate(old) {
     if (e.opt == null) e.opt = OPTIONAL.includes(e.name);
   }));
   if (!old.swap) old.swap = {};
+  if (!old.skip) old.skip = {};
   return old;
 }
 /** Chương trình mặc định có bản mới: thay vào nếu người dùng chưa ghi buổi nào
@@ -420,9 +421,49 @@ function refresh(d) {
   if (d.progVersion >= PROG_VERSION) return d;
   const daGhi = Object.keys(d.log || {}).some(k => (d.log[k] || []).length);
   if (!daGhi) d.days = seed().days;
-  else regroup(d);
+  else { if (d.progVersion < 4) regroup(d); repair(d); }
   d.progVersion = PROG_VERSION;
   return d;
+}
+/** Bài thay thế nằm trong dữ liệu đã lưu: bản cũ (chưa có ảnh, tên cũ) phải thay bằng bản hiện tại, bài tự thêm thì giữ. */
+function repair(d) {
+  const base = new Map();
+  seed().days.forEach(x => x.exercises.forEach(e => base.set(e.name, e)));
+  d.days.forEach(x => x.exercises.forEach(e => {
+    const b = base.get(e.name);
+    if (!b) { e.fig = e.fig || FIGKEY[e.name] || ""; return; }
+    e.fig = e.fig || b.fig;
+    const mine = (e.alts || []).filter(a => !b.alts.some(y => y.id === a.id));
+    e.alts = b.alts.map(a => ({ ...a })).concat(mine);
+  }));
+  dedupe(d);
+}
+/** v4 giữ bài trùng tên lại làm bài phụ để khỏi mất nhật ký — nay gộp về một bài. */
+function dedupe(d) {
+  const keep = new Map(), moved = {};
+  d.days.forEach(x => {
+    x.exercises = x.exercises.filter(e => {
+      const first = keep.get(e.name);
+      if (!first) { keep.set(e.name, e); return true; }
+      moved[e.id] = first.id;
+      return false;
+    });
+  });
+  if (!Object.keys(moved).length) return;
+  const home = {};
+  d.days.forEach(x => x.exercises.forEach(e => { home[e.id] = x.id; }));
+  ["log", "swap", "skip"].forEach(f => {
+    const out = {};
+    for (const k in d[f] || {}) {
+      const [date, dayId, exId] = k.split("|");
+      const id = moved[exId] || exId;
+      const nk = [date, home[id] || dayId, id].join("|");
+      if (out[nk] === undefined) out[nk] = d[f][k];
+      else if (f === "log") out[nk] = out[nk].concat(d[f][k]);
+      else if (f === "skip") out[nk] = Math.max(out[nk], d[f][k]);
+    }
+    d[f] = out;
+  });
 }
 function regroup(d) {
   const old = new Map();
@@ -444,7 +485,7 @@ function regroup(d) {
 function remapDays(d) {
   const home = {};
   d.days.forEach(x => x.exercises.forEach(e => { home[e.id] = x.id; }));
-  ["log", "swap"].forEach(f => {
+  ["log", "swap", "skip"].forEach(f => {
     const out = {};
     for (const k in d[f] || {}) {
       const [date, dayId, exId] = k.split("|");
@@ -495,6 +536,8 @@ function weekNo(d) {
 }
 const lkey = (date, dayId, exId) => date + "|" + dayId + "|" + exId;
 const sets = (date, dayId, exId) => S.log[lkey(date, dayId, exId)] || [];
+const skipped = (date, dayId, exId) => +(S.skip || {})[lkey(date, dayId, exId)] || 0;
+const rested = (date, dayId, e) => sets(date, dayId, e.id).length + skipped(date, dayId, e.id);
 const day = () => S.days.find(d => d.id === curDay) || S.days[0];
 const visible = d => d.exercises.map((e, i) => i).filter(i => !(S.hideOpt && d.exercises[i].opt));
 
@@ -576,7 +619,7 @@ function suggest(ex, i) {
 function progress() {
   const d = day(), r = { mainDone: 0, mainTotal: 0, optDone: 0, optTotal: 0 };
   d.exercises.forEach(e => {
-    const n = Math.min(sets(curDate, d.id, e.id).length, e.sets), t = +e.sets || 0;
+    const n = Math.min(rested(curDate, d.id, e), e.sets), t = +e.sets || 0;
     if (e.opt) { r.optDone += n; r.optTotal += t; } else { r.mainDone += n; r.mainTotal += t; }
   });
   r.done = r.mainDone + (S.hideOpt ? 0 : r.optDone);
@@ -608,7 +651,7 @@ function renderTop() {
   const d = day(), pr = progress(), hasOpt = pr.optTotal > 0;
   const vis = visible(d), firstOpt = vis.find(i => d.exercises[i].opt);
   const dots = vis.map((i, k) => {
-    const e = d.exercises[i], n = sets(curDate, d.id, e.id).length;
+    const e = d.exercises[i], n = rested(curDate, d.id, e);
     return (i === firstOpt && k ? `<span class="dotsep" aria-hidden="true"></span>` : "") +
       `<button class="dot ${e.opt ? "opt" : ""} ${n >= e.sets ? "done" : ""}" data-jump="${i}"
       aria-current="${i === exIdx}" aria-label="${esc(eff(e, curDate, d.id).name)}${e.opt ? " (phụ)" : ""}">${n >= e.sets ? "✓" : k + 1}</button>`;
@@ -642,9 +685,10 @@ function viewTrain() {
   const slot = d.exercises[exIdx], ex = eff(slot, curDate, d.id);
   const vis = visible(d), pos = vis.indexOf(exIdx), prevI = vis[pos - 1], nextI = vis[pos + 1];
   const done = sets(curDate, d.id, ex.id);
+  const skip = skipped(curDate, d.id, ex.id);
   const total = +ex.sets || 1;
   const idx = editIdx != null ? editIdx : done.length;
-  const finished = done.length >= total && editIdx == null;
+  const finished = done.length + skip >= total && editIdx == null;
 
   let picker = "";
   if (showPicker) {
@@ -683,7 +727,12 @@ function viewTrain() {
         <span class="val">${esc(s.kg)} <span style="color:var(--dim)">×</span> ${esc(s.reps)}</span>
       </button>
       <button class="ds-del" data-delset="${i}" aria-label="Xoá set ${i + 1}">×</button>
-    </div>`).join("");
+    </div>`).join("") + (skip ? `
+    <div class="doneset">
+      <div class="ds-main"><span class="tick" style="color:var(--dim)">–</span>
+        <span class="muted">Đã bỏ qua ${skip} set</span></div>
+      <button class="ds-del" data-unskip="1" aria-label="Hoàn lại set đã bỏ qua">×</button>
+    </div>` : "");
 
   /* --- khu vực hành động --- */
   let action = "";
@@ -699,7 +748,7 @@ function viewTrain() {
       </div></div>`;
   } else if (finished) {
     const pr = progress(), next = nextI != null ? eff(d.exercises[nextI], curDate, d.id) : null;
-    const optLeft = d.exercises.findIndex(e => e.opt && sets(curDate, d.id, e.id).length < e.sets);
+    const optLeft = d.exercises.findIndex(e => e.opt && rested(curDate, d.id, e) < e.sets);
     action = !ex.opt && !S.hideOpt && optLeft >= 0 && pr.mainDone >= pr.mainTotal
       ? `<div class="card" style="text-align:center;border-color:var(--jade)">
           <div class="num" style="font-size:34px;color:var(--jade)">Xong bài chính</div>
@@ -738,6 +787,10 @@ function viewTrain() {
       </div>
       <button class="btn" id="logSet" style="margin-top:14px">
         ${editIdx != null ? "Cập nhật set " + (editIdx + 1) : "✓ Xong set " + (idx + 1)}</button>
+      ${editIdx == null ? `<div class="pair" style="margin-top:10px">
+        <button class="ghost sm" data-skip="one">Bỏ qua set</button>
+        ${total - done.length - skip > 1 ? `<button class="ghost sm" data-skip="rest">Bỏ qua bài</button>` : ""}
+      </div>` : ""}
       ${editIdx == null && idx === 0 ? `<div class="effort">Mỗi set dừng khi còn 1–3 rep nữa là hết sức, không để gãy form</div>` : ""}
       ${editIdx != null ? `<button class="ghost" id="cancelEdit" style="margin-top:10px;width:100%">Huỷ</button>` : ""}`;
   }
@@ -1065,7 +1118,7 @@ function stopRest() { clearInterval(restTimer); restTimer = null; restEnd = 0; r
 
 function firstUnfinished() {
   const d = day(), vis = visible(d);
-  for (const i of vis) if (sets(curDate, d.id, d.exercises[i].id).length < d.exercises[i].sets) return i;
+  for (const i of vis) if (rested(curDate, d.id, d.exercises[i]) < d.exercises[i].sets) return i;
   return vis.length ? vis[0] : 0;
 }
 
@@ -1110,6 +1163,20 @@ document.addEventListener("click", e => {
     stopRest();                             // set không tính thì cũng không phải nghỉ
     toast(`Đã xoá set ${i + 1} · ${gone.kg}×${gone.reps}`);
     return;
+  }
+  if (el.dataset.skip) {
+    const d = day(), ex = d.exercises[exIdx], k = lkey(curDate, d.id, ex.id);
+    const left = (+ex.sets || 1) - rested(curDate, d.id, ex);
+    if (left <= 0) return;
+    const n = el.dataset.skip === "rest" ? left : 1;
+    S.skip[k] = skipped(curDate, d.id, ex.id) + n;
+    editIdx = null; save(true); stopRest();
+    toast(n > 1 ? `Đã bỏ qua ${n} set còn lại` : "Đã bỏ qua 1 set");
+    return;
+  }
+  if (el.dataset.unskip) {
+    delete S.skip[lkey(curDate, day().id, day().exercises[exIdx].id)];
+    save(true); render(); toast("Đã hoàn lại"); return;
   }
   if (el.dataset.edit !== undefined) {
     editIdx = editIdx === +el.dataset.edit ? null : +el.dataset.edit;

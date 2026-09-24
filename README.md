@@ -29,6 +29,9 @@ Vì không có PT đi kèm, app tự lo mấy việc PT hay nhắc:
   tăng một bước tạ.
 - **Khởi động** — danh sách khởi động chung ở bài đầu, và set khởi động tính
   sẵn theo mức tạ chính cho Squat, Bench, Deadlift, OHP.
+- **Bỏ qua set** — dưới nút ghi set có *Bỏ qua set* và *Bỏ qua bài*: set bỏ qua
+  vẫn tính vào tiến độ để bài coi như xong, nhưng không vào nhật ký. Bấm × ở
+  dòng "đã bỏ qua" để hoàn lại.
 - **Bài chính / bài phụ** — bài phụ có viền đứt và nhãn "Phụ". Nút *Ẩn bài
   phụ* ở thanh trên chỉ giữ lại bài chính cho ngày mệt hay phòng đông; xong
   bài chính thì app báo để bạn chọn làm tiếp hay về. Đổi nhãn trong tab Tôi →
