@@ -32,6 +32,9 @@ Vì không có PT đi kèm, app tự lo mấy việc PT hay nhắc:
 - **Giãn cơ sau buổi** — xong bài chính hoặc xong buổi thì hiện 5 động tác
   giãn ~5 phút theo buổi Đẩy / Kéo / Chân (tên buổi khác thì dùng bộ chung).
   Mỗi động tác có ảnh minh hoạ. Không bắt buộc, không ghi nhật ký.
+- **Cách thở** — dưới nút ghi set luôn có một dòng nhắc thở. Squat, deadlift,
+  RDL, bench, OHP: hít căng bụng rồi nín trong rep (kèm lưu ý cho người huyết áp
+  cao); bài còn lại: thở ra khi gắng sức, hít vào khi hạ.
 - **Bỏ qua set** — dưới nút ghi set có *Bỏ qua set* và *Bỏ qua bài*: set bỏ qua
   vẫn tính vào tiến độ để bài coi như xong, nhưng không vào nhật ký. Bấm × ở
   dòng "đã bỏ qua" để hoàn lại.
