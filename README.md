@@ -29,6 +29,9 @@ Vì không có PT đi kèm, app tự lo mấy việc PT hay nhắc:
   tăng một bước tạ.
 - **Khởi động** — danh sách khởi động chung ở bài đầu, và set khởi động tính
   sẵn theo mức tạ chính cho Squat, Bench, Deadlift, OHP.
+- **Giãn cơ sau buổi** — xong bài chính hoặc xong buổi thì hiện 5 động tác
+  giãn ~5 phút theo buổi Đẩy / Kéo / Chân (tên buổi khác thì dùng bộ chung).
+  Không bắt buộc, không ghi nhật ký.
 - **Bỏ qua set** — dưới nút ghi set có *Bỏ qua set* và *Bỏ qua bài*: set bỏ qua
   vẫn tính vào tiến độ để bài coi như xong, nhưng không vào nhật ký. Bấm × ở
   dòng "đã bỏ qua" để hoàn lại.

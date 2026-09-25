@@ -1,5 +1,5 @@
 /* Service worker: cho phép cài lên màn hình chính và chạy offline khi phòng gym sóng yếu. */
-const VERSION = "so-sat-v9";
+const VERSION = "so-sat-v10";
 const CORE = ["./", "./index.html", "./manifest.webmanifest",
   "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./favicon.svg",
   "./img/bench-0.jpg", "./img/bench-1.jpg",

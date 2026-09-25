@@ -676,6 +676,38 @@ function renderTop() {
     <div class="dots">${dots}</div>`;
 }
 
+/* ---------------- giãn cơ sau buổi ---------------- */
+const COOLDOWN = {
+  day: ["Giãn ngực ở khung cửa, tay vuông góc · 30–45 giây mỗi bên",
+    "Kéo tay ngang ngực giãn vai sau · 30 giây mỗi bên",
+    "Tay sau: gập khuỷu qua đầu, tay kia kéo nhẹ · 30 giây mỗi bên",
+    "Mở ngực: nằm nghiêng, xoay tay trên ra sau · 5 lần mỗi bên",
+    "Thở chậm bằng bụng · 1 phút"],
+  keo: ["Child's pose, hai tay vươn xa, ngả hông sang từng bên · 45 giây",
+    "Treo người thả lỏng trên xà · 20–30 giây",
+    "Tay trước: úp lòng bàn tay vào tường, xoay người ra · 30 giây mỗi bên",
+    "Cat–camel chậm · 8 lần",
+    "Thở chậm bằng bụng · 1 phút"],
+  chan: ["Hông trước: quỳ một gối, siết mông, đẩy hông tới · 45 giây mỗi bên",
+    "Đùi trước: đứng một chân, kéo gót về mông · 30 giây mỗi bên",
+    "Đùi sau: gác gót lên ghế thấp, gập hông lưng thẳng · 45 giây mỗi bên",
+    "Mông: nằm ngửa bắt chéo cổ chân lên gối (số 4) · 45 giây mỗi bên",
+    "Bắp chuối: dồn chân sau vào tường, gót sát sàn · 30 giây mỗi bên"],
+  chung: ["Giãn ngực ở khung cửa · 30–45 giây mỗi bên",
+    "Child's pose · 45 giây",
+    "Hông trước: quỳ một gối, đẩy hông tới · 45 giây mỗi bên",
+    "Đùi sau: gác gót lên ghế thấp · 45 giây mỗi bên",
+    "Thở chậm bằng bụng · 1 phút"],
+};
+function cooldown(d) {
+  const n = d.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/gi, "d").toLowerCase();
+  const list = COOLDOWN[/day/.test(n) ? "day" : /keo/.test(n) ? "keo" : /chan/.test(n) ? "chan" : "chung"];
+  return `<details class="note" open style="text-align:left;margin:14px 0 0">
+    <summary>Giãn cơ sau buổi · ~5 phút</summary>
+    <ul>${list.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+    <p>Giữ nhẹ tới hơi căng, không đau, không nhún. Không bắt buộc, nhưng làm đều sẽ giúp squat và đẩy qua đầu sâu hơn.</p></details>`;
+}
+
 /* ---------------- TẬP ---------------- */
 function viewTrain() {
   const d = day();
@@ -754,7 +786,7 @@ function viewTrain() {
           <div class="num" style="font-size:34px;color:var(--jade)">Xong bài chính</div>
           <div class="muted small" style="margin-bottom:12px">Còn sức và thời gian thì làm bài phụ, mệt thì về — không sao.</div>
           <div class="pair"><button class="ghost" data-jump="${optLeft}">Làm bài phụ</button>
-            <button class="ghost" data-goto="history">Kết thúc buổi</button></div></div>`
+            <button class="ghost" data-goto="history">Kết thúc buổi</button></div>${cooldown(d)}</div>`
       : next
       ? `<button class="btn jade" data-jump="${nextI}">Bài tiếp · ${esc(next.name)}${next.opt ? " (phụ)" : ""}</button>`
       : pr.done >= pr.total
@@ -762,7 +794,7 @@ function viewTrain() {
             <div class="num" style="font-size:38px;color:var(--jade)">Xong buổi</div>
             <div class="muted small" style="margin-bottom:12px">Tổng khối lượng
               <b class="num" style="color:var(--chalk);font-size:19px">${Math.round(volume(curDate)).toLocaleString("vi-VN")}</b> kg</div>
-            <button class="ghost" data-goto="history">Xem nhật ký</button></div>`
+            <button class="ghost" data-goto="history">Xem nhật ký</button>${cooldown(d)}</div>`
         : `<button class="btn" data-jump="${firstUnfinished()}">Quay lại bài chưa xong</button>`;
   } else {
     const sg = editIdx != null ? done[editIdx] : suggest(ex, idx);
