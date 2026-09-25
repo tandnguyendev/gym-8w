@@ -108,6 +108,11 @@ button{font-family:inherit;font-size:16px;cursor:pointer;color:inherit}
 .effort{text-align:center;color:var(--dim);font-size:13px;margin-top:10px}
 details.note ul{margin:6px 0 0;padding-left:20px;font-size:14px;color:var(--muted);line-height:1.65}
 details.note{margin-top:14px}
+details.note ul.cool{list-style:none;padding:0;display:grid;gap:10px}
+.cool li{display:grid;grid-template-columns:112px 1fr;gap:12px;align-items:center}
+.cool img,.cool .noimg{width:112px;height:75px;object-fit:cover;border-radius:8px;display:block}
+.cool .noimg{height:0}
+details.note .cool+p{margin-top:14px}
 details.note summary{color:var(--muted);font-size:14px;cursor:pointer;list-style:none;padding:6px 0}
 details.note summary::-webkit-details-marker{display:none}
 details.note summary::before{content:"▸ ";color:var(--dim)}
@@ -676,35 +681,38 @@ function renderTop() {
     <div class="dots">${dots}</div>`;
 }
 
-/* ---------------- giãn cơ sau buổi ---------------- */
+/* ---------------- giãn cơ sau buổi ----------------
+   [lời dặn, khoá ảnh img/st-<khoá>.jpg — cùng nguồn free-exercise-db, "" = không ảnh] */
 const COOLDOWN = {
-  day: ["Giãn ngực ở khung cửa, tay vuông góc · 30–45 giây mỗi bên",
-    "Kéo tay ngang ngực giãn vai sau · 30 giây mỗi bên",
-    "Tay sau: gập khuỷu qua đầu, tay kia kéo nhẹ · 30 giây mỗi bên",
-    "Mở ngực: nằm nghiêng, xoay tay trên ra sau · 5 lần mỗi bên",
-    "Thở chậm bằng bụng · 1 phút"],
-  keo: ["Child's pose, hai tay vươn xa, ngả hông sang từng bên · 45 giây",
-    "Treo người thả lỏng trên xà · 20–30 giây",
-    "Tay trước: úp lòng bàn tay vào tường, xoay người ra · 30 giây mỗi bên",
-    "Cat–camel chậm · 8 lần",
-    "Thở chậm bằng bụng · 1 phút"],
-  chan: ["Hông trước: quỳ một gối, siết mông, đẩy hông tới · 45 giây mỗi bên",
-    "Đùi trước: đứng một chân, kéo gót về mông · 30 giây mỗi bên",
-    "Đùi sau: gác gót lên ghế thấp, gập hông lưng thẳng · 45 giây mỗi bên",
-    "Mông: nằm ngửa bắt chéo cổ chân lên gối (số 4) · 45 giây mỗi bên",
-    "Bắp chuối: dồn chân sau vào tường, gót sát sàn · 30 giây mỗi bên"],
-  chung: ["Giãn ngực ở khung cửa · 30–45 giây mỗi bên",
-    "Child's pose · 45 giây",
-    "Hông trước: quỳ một gối, đẩy hông tới · 45 giây mỗi bên",
-    "Đùi sau: gác gót lên ghế thấp · 45 giây mỗi bên",
-    "Thở chậm bằng bụng · 1 phút"],
+  day: [["Ngực, vai trước: đan tay sau lưng, duỗi thẳng rồi nâng lên, ưỡn ngực · 30–45 giây", "chest"],
+    ["Vai sau: kéo tay ngang ngực, tay kia giữ ở khuỷu · 30 giây mỗi bên", "rearsh"],
+    ["Tay sau: gập khuỷu qua đầu, tay kia kéo nhẹ · 30 giây mỗi bên", "triceps"],
+    ["Ngồi ghế, hai tay ôm sau đầu, xoay và nghiêng thân sang từng bên · 5 lần mỗi bên", "spinal"],
+    ["Thở chậm bằng bụng · 1 phút", ""]],
+  keo: [["Child's pose, hai tay vươn xa, ngả hông sang từng bên · 45 giây", "childs"],
+    ["Lưng xô: một tay vịn tường cao, ngả hông ra xa · 30 giây mỗi bên", "latwall"],
+    ["Tay trước: đan tay sau lưng, duỗi thẳng khuỷu, nâng tay lên · 30 giây", "chest"],
+    ["Cat–camel chậm: cong lưng lên rồi võng xuống · 8 lần", "cat"],
+    ["Thở chậm bằng bụng · 1 phút", ""]],
+  chan: [["Hông trước: quỳ một gối, siết mông, đẩy hông tới · 45 giây mỗi bên", "hipflex"],
+    ["Đùi trước: gác mu bàn chân sau lên ghế, hạ gối xuống · 30 giây mỗi bên", "quad"],
+    ["Đùi sau: gác gót lên bục thấp, gập hông lưng thẳng · 45 giây mỗi bên", "ham"],
+    ["Mông: nằm ngửa bắt chéo cổ chân lên gối (số 4), kéo đùi về ngực · 45 giây mỗi bên", "fig4"],
+    ["Bắp chuối: chống tay vào tường, chân sau thẳng, gót sát sàn · 30 giây mỗi bên", "calf"]],
+  chung: [["Ngực, vai trước: đan tay sau lưng, duỗi thẳng rồi nâng lên · 30–45 giây", "chest"],
+    ["Child's pose · 45 giây", "childs"],
+    ["Hông trước: quỳ một gối, đẩy hông tới · 45 giây mỗi bên", "hipflex"],
+    ["Đùi sau: gác gót lên bục thấp · 45 giây mỗi bên", "ham"],
+    ["Thở chậm bằng bụng · 1 phút", ""]],
 };
 function cooldown(d) {
   const n = d.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/gi, "d").toLowerCase();
   const list = COOLDOWN[/day/.test(n) ? "day" : /keo/.test(n) ? "keo" : /chan/.test(n) ? "chan" : "chung"];
   return `<details class="note" open style="text-align:left;margin:14px 0 0">
     <summary>Giãn cơ sau buổi · ~5 phút</summary>
-    <ul>${list.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+    <ul class="cool">${list.map(([t, k]) => `<li>${k
+      ? `<img src="./img/st-${k}.jpg" width="400" height="267" loading="lazy" decoding="async" alt="">`
+      : `<span class="noimg"></span>`}<span>${esc(t)}</span></li>`).join("")}</ul>
     <p>Giữ nhẹ tới hơi căng, không đau, không nhún. Không bắt buộc, nhưng làm đều sẽ giúp squat và đẩy qua đầu sâu hơn.</p></details>`;
 }
 
